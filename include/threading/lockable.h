@@ -216,8 +216,7 @@ static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
  * An abstract class for lockable objects, this provides
  * certain interfacing guarantees for lock management classes.
  */
-// TODO add noncopyable back in
-class Lockable : public boost::enable_shared_from_this<Lockable> {
+class Lockable : public boost::enable_shared_from_this<Lockable>, private boost::noncopyable {
 private:
 	const int mutexPriority;
 	const bool readLockable;

@@ -126,76 +126,78 @@ BOOST_AUTO_TEST_CASE(tsQueuePrivateStruct) {
 
 /* Tests concurrency functionality */
 /* Concurrency Testing */
-void tsQueueEnqueueWorker(IntQueue& testQInt) {
+void tsQueueEnqueueWorker(pointers<IntQueue>::SharedPtr testQInt, int workerNum) {
+    // Do NOT use BOOST_TEST_MESSAGE here, it's not thread safe
     for (int i = 0; i < 100; i++) {
-        testQInt.enqueue(i);
+        testQInt->enqueue(i);
     }
 }
 
-void tsQueueDequeueWorker(IntQueue& testQInt) {
+void tsQueueDequeueWorker(pointers<IntQueue>::SharedPtr testQInt, int workerNum) {
     int i = 0;
-    while (i < 99) {
-        if (testQInt.empty()) {
+    while (i < 100) {
+        // Do NOT use BOOST_TEST_MESSAGE here, it's not thread safe
+        if (testQInt->empty()) {
             boost::this_thread::sleep(boost::posix_time::milliseconds(1));
         } else {
-            if (testQInt.dequeue()) { i++; }
+            if (testQInt->dequeue()) { i++; }
         }
     }
-    std::cout << "Finished";
 }
 
 BOOST_AUTO_TEST_CASE(tsQueueConcurrency) {
-    IntQueue intQ;
+    pointers<IntQueue>::SharedPtr intQ(new IntQueue());
     boost::posix_time::time_duration wait = boost::posix_time::milliseconds(500);
     // need to make this ugly vector of shared pointers to get around non-copyable interfaces
-    std::vector<ThreadPtr> enthrds;
-    std::vector<ThreadPtr> dethrds;
+    pointers<Thread>::containers<>::PtrVector enthrds;
+    pointers<Thread>::containers<>::PtrVector dethrds;
     int numEnqueueThreads = 10;
-    intQ.clear();
+    intQ->clear();
     for(int i = 0; i < numEnqueueThreads; i++) {
-        enthrds.push_back(ThreadPtr(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ))));
-        BOOST_TEST_MESSAGE("Enqueue Worker " << i+1 << " started");
-        dethrds.push_back(ThreadPtr(new Thread(boost::bind(&tsQueueDequeueWorker, intQ))));
-        BOOST_TEST_MESSAGE("Dequeue Worker " << i+1 << " started");
+        BOOST_TEST_MESSAGE("CHECK 1");
+        enthrds.push_back(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ, i)));
+        BOOST_TEST_MESSAGE("Enqueue Worker " << i << " started");
+        dethrds.push_back(new Thread(boost::bind(&tsQueueDequeueWorker, intQ, i)));
+        BOOST_TEST_MESSAGE("Dequeue Worker " << i << " started");
     }
-
+    BOOST_TEST_MESSAGE("CHECK 2");
     for(int j = 0; j < numEnqueueThreads; j++) {
-        if (!enthrds[j]->timed_join(wait)) {
-            BOOST_ERROR("Thread timed out");
+        if (!enthrds[j].timed_join(wait)) {
+            BOOST_FAIL("Thread timed out");
         }
-        BOOST_TEST_MESSAGE("Enqueue Worker " << j+1 << " finished");
+        BOOST_TEST_MESSAGE("Enqueue Worker " << j << " finished");
     }
     for(int j = 0; j < numEnqueueThreads; j++) {
-        if (!dethrds[j]->timed_join(wait)) {
-            BOOST_ERROR("Thread timed out");
+        if (!dethrds[j].timed_join(wait)) {
+            BOOST_FAIL("Thread timed out");
         }
-        BOOST_TEST_MESSAGE("Dequeue Worker " << j+1 << " finished");
+        BOOST_TEST_MESSAGE("Dequeue Worker " << j << " finished");
     }
-    std::cout << intQ.size();
+    std::cout << intQ->size();
 
-    BOOST_REQUIRE_MESSAGE(intQ.empty(),
+    BOOST_REQUIRE_MESSAGE(intQ->empty(),
             "Dequeue did not reduce Queue size during concurrency test");
 
-    dethrds.push_back(ThreadPtr(new Thread(boost::bind(&tsQueueDequeueWorker, intQ))));
-    BOOST_TEST_MESSAGE("Dequeue Worker "+toString(numEnqueueThreads+1)+" Started");
-    enthrds.push_back(ThreadPtr(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ))));
-    BOOST_TEST_MESSAGE("Enqueue Worker "+toString(numEnqueueThreads+1)+" Started");
-    enthrds.push_back(ThreadPtr(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ))));
-    BOOST_TEST_MESSAGE("Enqueue Worker "+toString(numEnqueueThreads+1)+" Started");
-    enthrds.push_back(ThreadPtr(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ))));
-    BOOST_TEST_MESSAGE("Enqueue Worker "+toString(numEnqueueThreads+1)+" Started");
+    dethrds.push_back(new Thread(boost::bind(&tsQueueDequeueWorker, intQ, numEnqueueThreads)));
+    BOOST_TEST_MESSAGE("Dequeue Worker " << numEnqueueThreads << " Started");
+    enthrds.push_back(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ, numEnqueueThreads)));
+    BOOST_TEST_MESSAGE("Enqueue Worker " << numEnqueueThreads << " Started");
+    enthrds.push_back(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ, numEnqueueThreads+1)));
+    BOOST_TEST_MESSAGE("Enqueue Worker " << numEnqueueThreads+1 << " Started");
+    enthrds.push_back(new Thread(boost::bind(&tsQueueEnqueueWorker, intQ, numEnqueueThreads+2)));
+    BOOST_TEST_MESSAGE("Enqueue Worker " << numEnqueueThreads+2 << " Started");
 
-    for(int k = numEnqueueThreads; k <= numEnqueueThreads+3; k++) {
-        if (!enthrds[k]->timed_join(wait)) {
-            BOOST_ERROR("Thread timed out");
+    for(int k = numEnqueueThreads; k < numEnqueueThreads+3; k++) {
+        if (!enthrds[k].timed_join(wait)) {
+            BOOST_FAIL("Thread timed out");
         }
-        BOOST_TEST_MESSAGE("TSQueueWorker " << k+1 << " finished");
+        BOOST_TEST_MESSAGE("TSQueueWorker " << k << " finished");
     }
 
-    BOOST_REQUIRE_MESSAGE(!intQ.empty(),
+    BOOST_REQUIRE_MESSAGE(!intQ->empty(),
             "Enqueue did not increase Queue size during concurrency test");
-    intQ.clear();
-    BOOST_REQUIRE_MESSAGE(intQ.empty(), "Clear did not reduce Queue size");
+    intQ->clear();
+    BOOST_REQUIRE_MESSAGE(intQ->empty(), "Clear did not reduce Queue size");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

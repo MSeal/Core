@@ -7,6 +7,10 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/interprocess/smart_ptr/unique_ptr.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/ptr_list.hpp>
+#include <boost/ptr_container/ptr_deque.hpp>
+#include <boost/ptr_container/ptr_array.hpp>
 #include <boost/move/move.hpp>
 
 namespace core {
@@ -37,6 +41,19 @@ struct pointers {
     // don't support std::move yet -- aka any older macs.
     typedef boost::interprocess::unique_ptr<T, UniqueDeleter> UniquePtr;
     typedef std::auto_ptr<T> AutoPtr;
+
+    template<typename CloneAllocator=boost::heap_clone_allocator,
+             typename Allocator=std::allocator<void*> >
+    struct containers {
+        typedef boost::ptr_vector<T, CloneAllocator, Allocator> PtrVector;
+        typedef boost::ptr_list<T, CloneAllocator, Allocator> PtrList;
+        typedef boost::ptr_deque<T, CloneAllocator, Allocator> PtrDeque;
+
+        template<unsigned int ArraySize>
+        struct array {
+            typedef boost::ptr_array<T, ArraySize, CloneAllocator> PtrArray;
+        };
+    };
 };
 
 }
