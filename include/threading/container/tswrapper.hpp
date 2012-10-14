@@ -9,9 +9,9 @@
 #include <boost/thread.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
-#include "threading/lockable.h"
-#include "threading/conditionLockable.h"
-#include "pointers.h"
+#include "threading/lockable.hpp"
+#include "threading/conditionLockable.hpp"
+#include "pointers.hpp"
 
 namespace core { namespace threading { namespace container {
 
@@ -25,8 +25,8 @@ namespace hidden {
 template<typename Wrapped, typename Mutex>
 class LockableWrappedContents {
 protected:
-	typename pointers<Wrapped>::SharedPtr wrapped;
-	typename pointers<Mutex>::SharedPtr mutex;
+	typename pointers::smart<Wrapped>::SharedPtr wrapped;
+	typename pointers::smart<Mutex>::SharedPtr mutex;
 
 public:
 	explicit LockableWrappedContents(int priority) :

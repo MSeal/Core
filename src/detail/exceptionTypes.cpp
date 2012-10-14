@@ -1,5 +1,5 @@
 #include "detail/exceptionTypes.hpp"
-#include "enum.h"
+#include "enum.hpp"
 
 namespace core {
 /*

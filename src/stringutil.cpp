@@ -1,4 +1,4 @@
-#include "stringutil.h"
+#include "stringutil.hpp"
 
 namespace core {
 const StrStarter strstart = StrStarter();

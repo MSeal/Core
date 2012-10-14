@@ -13,14 +13,14 @@
 #include <vector>
 #include <boost/thread/thread_time.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
-#include "threading/container/tswrapper.h"
-#include "threading/container/tsqueue.h"
-#include "exceptions.h"
-#include "stringutil.h"
-#include "pointers.h"
-#include "factory.h"
-#include "loops.h"
-#include "enum.h"
+#include "threading/container/tswrapper.hpp"
+#include "threading/container/tsqueue.hpp"
+#include "exceptions.hpp"
+#include "stringutil.hpp"
+#include "pointers.hpp"
+#include "factory.hpp"
+#include "loops.hpp"
+#include "enum.hpp"
 
 namespace core {
 // Forward declarations
@@ -211,7 +211,7 @@ public:
         stamp(boost::get_system_time()) {}
 };
 typedef TimestampedLevelMessage<std::string> TSLevelString;
-typedef pointers<TSLevelString>::UniquePtr TSLevelStringPtr;
+typedef pointers::smart<TSLevelString>::UniquePtr TSLevelStringPtr;
 
 /*
  * Defines a Thread Safe Queue sink which pushes all inputs

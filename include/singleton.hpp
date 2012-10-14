@@ -8,7 +8,7 @@
 #ifndef SINGLETON_H_
 #define SINGLETON_H_
 
-#include "pointers.h"
+#include "pointers.hpp"
 
 namespace core {
 
@@ -20,9 +20,9 @@ namespace core {
  */
 template<typename T>
 class Singleton : private boost::noncopyable {
-    friend class pointers<T>::ScopedPtr;
+    friend class pointers::smart<T>::ScopedPtr;
 public:
-    typedef typename pointers<T>::ScopedPtr SingletonPtr;
+    typedef typename pointers::smart<T>::ScopedPtr SingletonPtr;
 
 protected:
 	static SingletonPtr singletonInstance;

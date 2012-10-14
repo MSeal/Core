@@ -6,9 +6,9 @@
 #ifndef TEST_ENVIRONMENT_TSQUEUE_H_
 #define TEST_ENVIRONMENT_TSQUEUE_H_
 
-#include "threading/container/tsqueue.h"
-#include "threading/thread.h"
-#include "stringutil.h"
+#include "threading/container/tsqueue.hpp"
+#include "threading/thread.hpp"
+#include "stringutil.hpp"
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 #include <vector>
 #include <boost/test/unit_test.hpp>
@@ -126,14 +126,14 @@ BOOST_AUTO_TEST_CASE(tsQueuePrivateStruct) {
 
 /* Tests concurrency functionality */
 /* Concurrency Testing */
-void tsQueueEnqueueWorker(pointers<IntQueue>::SharedPtr testQInt, int workerNum) {
+void tsQueueEnqueueWorker(pointers::smart<IntQueue>::SharedPtr testQInt, int workerNum) {
     // Do NOT use BOOST_TEST_MESSAGE here, it's not thread safe
     for (int i = 0; i < 100; i++) {
         testQInt->enqueue(i);
     }
 }
 
-void tsQueueDequeueWorker(pointers<IntQueue>::SharedPtr testQInt, int workerNum) {
+void tsQueueDequeueWorker(pointers::smart<IntQueue>::SharedPtr testQInt, int workerNum) {
     int i = 0;
     while (i < 100) {
         // Do NOT use BOOST_TEST_MESSAGE here, it's not thread safe
@@ -146,11 +146,11 @@ void tsQueueDequeueWorker(pointers<IntQueue>::SharedPtr testQInt, int workerNum)
 }
 
 BOOST_AUTO_TEST_CASE(tsQueueConcurrency) {
-    pointers<IntQueue>::SharedPtr intQ(new IntQueue());
+    pointers::smart<IntQueue>::SharedPtr intQ(new IntQueue());
     boost::posix_time::time_duration wait = boost::posix_time::milliseconds(500);
     // need to make this ugly vector of shared pointers to get around non-copyable interfaces
-    pointers<Thread>::containers<>::PtrVector enthrds;
-    pointers<Thread>::containers<>::PtrVector dethrds;
+    pointers::lists<Thread>::PtrVector enthrds;
+    pointers::lists<Thread>::PtrVector dethrds;
     int numEnqueueThreads = 10;
     intQ->clear();
     for(int i = 0; i < numEnqueueThreads; i++) {

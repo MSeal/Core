@@ -9,7 +9,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/thread/condition_variable.hpp>
-#include "lockable.h"
+#include "lockable.hpp"
 
 namespace core { namespace threading {
 

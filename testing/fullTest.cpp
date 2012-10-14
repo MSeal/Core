@@ -4,8 +4,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include <stdio.h>
-#include "testNumUtil.h"
-#include "testTSQueue.h"
+#include "testNumUtil.hpp"
+#include "testTSQueue.hpp"
 
 namespace core {
 

@@ -1,5 +1,5 @@
-#include "threading/threadTracker.h"
-#include "application.h"
+#include "threading/threadTracker.hpp"
+#include "application.hpp"
 #include <boost/interprocess/detail/atomic.hpp>
 
 namespace core { namespace threading {

@@ -3,7 +3,7 @@
 
 #include <boost/exception/all.hpp>
 #include <boost/current_function.hpp>
-#include "enum.h"
+#include "enum.hpp"
 
 namespace core {
 /* Base exception struct */

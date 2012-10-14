@@ -13,7 +13,7 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/logic/tribool.hpp>
-#include "lockable.h"
+#include "lockable.hpp"
 
 namespace core { namespace threading {
 

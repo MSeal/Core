@@ -6,9 +6,8 @@
 #ifndef TS_QUEUE_H_
 #define TS_QUEUE_H_
 
-#include "container/uniquePtrList.h"
-#include "tswrapper.h"
-#include "pointers.h"
+#include "tswrapper.hpp"
+#include "pointers.hpp"
 
 namespace core { namespace threading { namespace container {
 
@@ -19,10 +18,10 @@ namespace core { namespace threading { namespace container {
 template <typename T,
           typename CloneAllocator = boost::heap_clone_allocator,
           typename Allocator = std::allocator<void*> >
-class TSQueue : public TSWrapper<core::container::UniquePtrList<T, CloneAllocator, Allocator> > {
+class TSQueue : public TSWrapper<typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList> {
 private:
 	// Class renaming for readability
-	typedef TSWrapper<core::container::UniquePtrList<T, CloneAllocator, Allocator> > Queue;
+	typedef TSWrapper<typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList> Queue;
 	typedef typename Queue::ScopedLock ScopedLock;
 
 protected:
@@ -30,9 +29,9 @@ protected:
 
 public:
 	typedef T ElemType;
-	typedef typename pointers<T>::UniquePtr PtrType;
-	typedef core::container::UniquePtrList<T, CloneAllocator, Allocator> QList;
-	typedef typename pointers<QList>::SharedPtr QListPtr;
+	typedef typename pointers::smart<T>::UniquePtr PtrType;
+	typedef typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList QList;
+	typedef typename pointers::smart<QList>::SharedPtr QListPtr;
 	explicit TSQueue(int priority = 0) : Queue(priority), cloner() {}
 
 	/*
@@ -82,7 +81,7 @@ public:
         this->wrapped->push_back(enq);
     }
 
-    void enqueue(const typename pointers<T>::AutoPtr enq) {
+    void enqueue(const typename pointers::smart<T>::AutoPtr enq) {
         ScopedLock lock(this->getMutex());
         this->wrapped->push_back(enq);
     }

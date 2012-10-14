@@ -1,5 +1,5 @@
-#include "logger.h"
-#include "application.h"
+#include "logger.hpp"
+#include "application.hpp"
 
 namespace core {
 /*

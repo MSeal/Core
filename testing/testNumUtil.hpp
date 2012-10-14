@@ -5,7 +5,7 @@
 #ifndef TEST_NUM_UTIL_H_
 #define TEST_NUM_UTIL_H_
 
-#include "numutil.h"
+#include "numutil.hpp"
 #include <boost/test/unit_test.hpp>
 
 namespace core {

@@ -6,7 +6,7 @@
 #define UNIQUEPTRLIST_H_
 
 #include <boost/ptr_container/ptr_list.hpp>
-#include "pointers.h"
+#include "detail/boostPointers.hpp"
 
 namespace core { namespace container {
 
@@ -20,34 +20,43 @@ template<class T,
 class UniquePtrList : public boost::ptr_list<T, CloneAllocator, Allocator> {
 protected:
     typedef UniquePtrList<T, CloneAllocator, Allocator> UPtrListType;
+    typedef typename pointers::detail::smart_boost<UPtrListType>::AutoPtr AutoPtrUniqueListType;
+    typedef typename pointers::detail::smart_boost<UPtrListType>::UniquePtr UniquePtrUniqueListType;
     typedef boost::ptr_list<T, CloneAllocator, Allocator> PtrListType;
+    typedef typename pointers::detail::smart_boost<PtrListType>::AutoPtr AutoPtrListType;
+    typedef typename pointers::detail::smart_boost<PtrListType>::UniquePtr UniquePtrListType;
+
+    struct TDeleter {
+        void operator()(T *p) { delete p; }
+    };
 
 public:
-    typedef typename pointers<T>::UniquePtr UniquePtr;
+
+    typedef typename ::core::pointers::detail::smart_boost<T>::UniquePtr UniquePtr;
 
     UniquePtrList() {}
     explicit UniquePtrList(const Allocator& a) : PtrListType(a) {}
 
     // AutoPtr lists
-    explicit UniquePtrList(typename pointers<UPtrListType>::AutoPtr r) : PtrListType(r) {}
-    UniquePtrList& operator=(typename pointers<UPtrListType>::AutoPtr r) {
+    explicit UniquePtrList(AutoPtrUniqueListType r) : PtrListType(r) {}
+    UniquePtrList& operator=(AutoPtrUniqueListType r) {
         PtrListType::operator=(r);
         return *this;
     }
-    explicit UniquePtrList(typename pointers<PtrListType>::AutoPtr r) : PtrListType(r) {}
-    UniquePtrList& operator=(typename pointers<PtrListType>::AutoPtr r) {
+    explicit UniquePtrList(AutoPtrListType r) : PtrListType(r) {}
+    UniquePtrList& operator=(AutoPtrListType r) {
         PtrListType::operator=(r);
         return *this;
     }
 
     // UniquePtr lists
-    explicit UniquePtrList(typename pointers<UPtrListType>::UniquePtr r) : PtrListType(r) {}
-    UniquePtrList& operator=(typename pointers<UPtrListType>::UniquePtr r) {
+    explicit UniquePtrList(UniquePtrUniqueListType r) : PtrListType(r) {}
+    UniquePtrList& operator=(UniquePtrUniqueListType r) {
         PtrListType::operator=(*r);
         return *this;
     }
-    explicit UniquePtrList(typename pointers<PtrListType>::UniquePtr r) : PtrListType(r) {}
-    UniquePtrList& operator=(typename pointers<PtrListType>::UniquePtr r) {
+    explicit UniquePtrList(UniquePtrListType r) : PtrListType(r) {}
+    UniquePtrList& operator=(UniquePtrListType r) {
         PtrListType::operator=(*r);
         return *this;
     }
@@ -81,7 +90,7 @@ public:
      * Add unique_ptr push_front interface.
      */
     template<class U>
-    void push_front(typename pointers<U>::UniquePtr x) {
+    void push_front(UniquePtr x) {
         PtrListType::push_front(x.release());
     }
 
@@ -102,6 +111,5 @@ inline UniquePtrList<T,CA,A>* new_clone(const UniquePtrList<T,CA,A>& r) {
 }
 
 }}
-
 
 #endif /* UNIQUEPTRLIST_H_ */

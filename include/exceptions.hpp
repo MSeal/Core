@@ -1,7 +1,7 @@
 #ifndef EXCEPTIONS_UTIL_H_
 #define EXCEPTIONS_UTIL_H_
 
-#include "stringutil.h"
+#include "stringutil.hpp"
 #include "detail/exceptionTypes.hpp"
 
 namespace core {

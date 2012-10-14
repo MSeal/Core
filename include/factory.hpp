@@ -6,8 +6,8 @@
 #define CORE_FACTORY_H_
 
 #include <boost/ptr_container/ptr_map.hpp>
-#include "exceptions.h"
-#include "pointers.h"
+#include "exceptions.hpp"
+#include "pointers.hpp"
 
 namespace core {
 
@@ -33,7 +33,7 @@ struct DefaultBuilder {
  */
 template<typename T,
          typename Builder=detail::DefaultBuilder<T>,
-         typename PtrType=typename pointers<T>::UniquePtr>
+         typename PtrType=typename pointers::smart<T>::UniquePtr>
 class Factory {
 protected:
     Builder builder;

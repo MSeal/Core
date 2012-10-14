@@ -8,12 +8,12 @@
 #ifndef THREAD_TRACKER_H_
 #define THREAD_TRACKER_H_
 
-#include "threading/thread.h"
+#include "threading/thread.hpp"
 #include <boost/smart_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/cstdint.hpp>
-#include "threading/container/tsvector.h"
+#include "threading/container/tsvector.hpp"
 
 namespace core {
 

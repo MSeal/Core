@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <boost/thread.hpp>
-#include "tswrapper.h"
+#include "tswrapper.hpp"
 
 namespace core { namespace threading { namespace container {
 

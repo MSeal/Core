@@ -5,9 +5,9 @@
 #ifndef CORE_APPLICATION_H_
 #define CORE_APPLICATION_H_
 
-#include "factory.h"
-#include "logger.h"
-#include "threading/threadTracker.h"
+#include "factory.hpp"
+#include "logger.hpp"
+#include "threading/threadTracker.hpp"
 
 namespace core {
 
