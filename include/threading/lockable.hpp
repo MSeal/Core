@@ -378,44 +378,50 @@ public:
 };
 
 /*
+ * Allows any arbitrary class or set of functions to become
+ * Lockable objects. The functions required to lock and unlock
+ * must be passed to the constructor, which then uses those
+ * functions when necessary.
+ */
 class LockableWrap : public Lockable {
-public:
-    explicit LockableWrap(boost::function<void()> lock, ) :
-        Lockable(lReference->getPriority(), lReference->isReadLockable()),
-        lockReference(lReference) {}
+protected:
+    const boost::function<void()> lockFunc;
+    const boost::function<void()> unlockFunc;
+    const boost::function<bool()> tryLockFunc;
+    void *lockAddress;
 
-    virtual ~LockableProxy() {}
+public:
+    LockableWrap(const boost::function<void()> lock,
+                 const boost::function<void()> unlock,
+                 void *address) :
+      lockFunc(lock), unlockFunc(unlock), tryLockFunc(NULL), lockAddress(address) {}
+
+    LockableWrap(const boost::function<void()> lock,
+                 const boost::function<void()> unlock,
+                 const boost::function<bool()> tryLock,
+                 void *address) :
+          lockFunc(lock), unlockFunc(unlock), tryLockFunc(tryLock), lockAddress(address) {}
+
+    virtual ~LockableWrap() {}
 
     virtual void lock() {
-        lockReference->lock();
+        lockFunc();
     }
     virtual bool tryLock() {
-        return lockReference->tryLock();
+        if (tryLockFunc) {
+            return tryLockFunc();
+        } else {
+            return false;
+        }
     }
     virtual void unlock() {
-        lockReference->unlock();
+        unlockFunc();
     }
 
-    virtual void *getAddress() const { lockReference->getAddress(); }
-
-    *
-     * These four methods allow a reference Lockable to act as
-     * this object's lockable by proxy.
-     *
-    virtual LockablePtr getLockablePtr() {
-        return lockReference;
-    }
-    virtual ConstLockablePtr getLockablePtr() const {
-        return lockReference;
-    }
-    virtual Lockable& getLockable() {
-        return *lockReference;
-    }
-    virtual const Lockable& getLockable() const {
-        return *lockReference;
+    virtual void *getAddress() const {
+        return lockAddress;
     }
 };
-*/
 
 /**
  * Extends the Lockable abstract class to include read (shared)
@@ -506,6 +512,52 @@ public:
 };
 
 /**
+ * Acts much like LockableWrap, except it also includes the
+ * read lock capabilities.
+ */
+class ReadWriteLockableWrap : public LockableWrap {
+protected:
+    const boost::function<void()> sharedLockFunc;
+    const boost::function<void()> sharedUnlockFunc;
+    const boost::function<bool()> sharedTryLockFunc;
+
+public:
+    ReadWriteLockableWrap(const boost::function<void()> lock,
+                          const boost::function<void()> unlock,
+                          const boost::function<void()> sharedLock,
+                          const boost::function<void()> sharedUnlock,
+                          void *address) :
+        LockableWrap(lock, unlock, address),
+        sharedLockFunc(sharedLock), sharedUnlockFunc(sharedUnlock), sharedTryLockFunc(NULL) {}
+
+    ReadWriteLockableWrap(const boost::function<void()> lock,
+                          const boost::function<void()> unlock,
+                          const boost::function<bool()> tryLock,
+                          const boost::function<void()> sharedLock,
+                          const boost::function<void()> sharedUnlock,
+                          const boost::function<bool()> trySharedLock,
+                          void *address) :
+        LockableWrap(lock, unlock, tryLock, address),
+        sharedLockFunc(sharedLock), sharedUnlockFunc(sharedUnlock), sharedTryLockFunc(trySharedLock) {}
+
+    virtual void lockShared() {
+        sharedLockFunc();
+    }
+
+    virtual bool tryLockShared() {
+        if (sharedTryLockFunc) {
+            return sharedTryLockFunc();
+        } else {
+            return false;
+        }
+    }
+
+    virtual void unlockShared() {
+        sharedUnlockFunc();
+    }
+};
+
+/**
  * Compares two mutexes and returns an indicator for which
  * mutex should be locked first.
  * A positive value indicates that the first mutex should
@@ -530,6 +582,7 @@ static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
     }
     return 0;
 }
+
 template<typename FirstMutex>
 static int compareMutexes(const FirstMutex& first, const Lockable& second,
                           int firstPriority = 0, int secondPriority = 0) {
@@ -541,11 +594,13 @@ static int compareMutexes(const FirstMutex& first, const Lockable& second,
     }
     return 0;
 }
+
 template<typename FirstMutex>
 static int compareMutexes(const FirstMutex& first, const LockablePtr second,
                           int firstPriority = 0, int secondPriority = 0) {
     return compareMutexes(first, *second, firstPriority, secondPriority);
 }
+
 template<typename SecondMutex>
 static int compareMutexes(const Lockable& first, const SecondMutex& second,
                           int firstPriority = 0, int secondPriority = 0) {
@@ -557,11 +612,13 @@ static int compareMutexes(const Lockable& first, const SecondMutex& second,
     }
     return 0;
 }
+
 template<typename SecondMutex>
 static int compareMutexes(const LockablePtr first, const SecondMutex& second,
                           int firstPriority = 0, int secondPriority = 0) {
     return compareMutexes(*first, second, firstPriority, secondPriority);
 }
+
 static int compareMutexes(const Lockable& first, const Lockable& second,
                           int firstPriority = 0, int secondPriority = 0) {
     if (firstPriority == secondPriority) {
@@ -573,6 +630,7 @@ static int compareMutexes(const Lockable& first, const Lockable& second,
     }
     return 0;
 }
+
 static int compareMutexes(const LockablePtr first, const LockablePtr second,
                           int firstPriority = 0, int secondPriority = 0) {
     return compareMutexes(*first, *second, firstPriority, secondPriority);
