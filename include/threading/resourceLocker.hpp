@@ -134,7 +134,7 @@ private:
 		}
 	}
 
-	/*
+	/**
 	 * Locks the mutex.
 	 * If asReadLockIfPossible is set to true, then the lock will try to
 	 * perform a read lock instead. If this fails it will perform a
@@ -165,7 +165,7 @@ private:
 		// Otherwise do nothing
 	}
 
-	/*
+	/**
 	 * Locks the next sequentially significant lock.
 	 * If asReadLockIfPossible is set to true, then the lock will try to
 	 * perform a read lock instead. If this fails it will perform a
@@ -179,7 +179,7 @@ private:
 		}
 	}
 
-	/*
+	/**
 	 * Unlock the next sequentially significant lock
 	 */
 	void unlockLastLocked() {
@@ -189,7 +189,7 @@ private:
 		}
 	}
 
-	/*
+	/**
 	 * Sorts the locks such that they lock in the correct ordering
 	 */
 	void sortLocks() {
@@ -197,14 +197,14 @@ private:
 	}
 
 public:
-	/*
+	/**
 	 * Returns the number of locks associated with this resource.
 	 */
 	long getNumLocks() const {
 		return locks.size();
 	}
 
-	/*
+	/**
 	 * Gets the lock position among all of the resource's locks.
 	 * This position can change if a new lock is added to the
 	 * resource.
@@ -220,14 +220,14 @@ public:
 		return -1;
 	}
 
-	/*
+	/**
 	 * Checks if the lock is contained among the locks of this resource
 	 */
 	bool containsLock(boost::shared_ptr<Lockable> lock) {
 		return (getLockPosition(lock) >= 0);
 	}
 
-	/*
+	/**
 	 * Gets the lock at a specified position.
 	 */
 	boost::shared_ptr<Lockable> getLock(long position) const {
@@ -238,14 +238,14 @@ public:
 		}
 	}
 
-	/*
+	/**
 	 * Returns true if any locks are active.
 	 */
 	bool hasActiveLock() const {
 		return nextLockIndex != 0;
 	}
 
-	/*
+	/**
 	 * Returns the current lock position for this resource.
 	 * This is the last lock that was locked.
 	 * Returns -1 if no locks are active.
@@ -254,7 +254,7 @@ public:
 		return nextLockIndex-1;
 	}
 
-	/*
+	/**
 	 * Returns true if the specified locks for this resource is actively
 	 * locked.
 	 * Note does not know about other resource's shared locks.
@@ -266,7 +266,7 @@ public:
 		return isLocked(getLockPosition(lock));
 	}
 
-	/*
+	/**
 	 * Returns true if all of the locks for this resource are actively
 	 * locked.
 	 * Note does not know about other resource's shared locks.
@@ -275,7 +275,7 @@ public:
 		return nextLockIndex == (long)locks.size();
 	}
 
-	/*
+	/**
 	 * Returns true if none of the locks for this resource are actively
 	 * locked.
 	 * Note does not know about other resource's shared locks.
@@ -284,7 +284,7 @@ public:
 		return nextLockIndex == 0;
 	}
 
-	/*
+	/**
 	 * Locks all locks through to the input lock/position.
 	 * If asReadLockIfPossible is set to true, then the lock will try to
 	 * perform a read lock instead. If this fails it will perform a
@@ -306,7 +306,7 @@ public:
 		}
 	}
 
-	/*
+	/**
 	 * Unlocks all locks through to the input lock/position.
 	 */
 	void unlock(long position = 0) {
@@ -323,7 +323,7 @@ public:
 		}
 	}
 
-	/*
+	/**
 	 * Unlocks any read locks (and locks after those read locks) and
 	 * relocks each as a write lock.
 	 * Note this does release the original lock temporarily.
@@ -354,7 +354,7 @@ public:
 		}
 	}
 
-	/*
+	/**
 	 * Sets the default action of a lock request for a specified
 	 * lock
 	 */
@@ -374,7 +374,7 @@ public:
 		}
 	}
 
-	/*
+	/**
 	 * Adds a lockable object to the resource.
 	 * Releases all locks held by the resource to avoid deadlocking issues.
 	 * Avoiding adding locks after resource begins locking.
@@ -397,7 +397,7 @@ public:
 		}
 	}
 
-	/*
+	/**
 	 * Adds all of the locks from another resource to this resource's
 	 * lock pool.
 	 * All locks are unlocked on this resource (but not on the other's)

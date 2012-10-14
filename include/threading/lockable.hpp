@@ -1,5 +1,5 @@
 /**
- * lockable.h
+ * @file lockable.h
  *
  * Defines several objects which can be locked and unlocked
  */
@@ -24,6 +24,18 @@ typedef typename pointers::smart<const ReadWriteLockable>::SharedPtr ConstReadWr
 
 template<typename Ref> class LockedReferencePtr;
 template<typename Ref> class ReadLockedReferencePtr;
+
+template<typename FirstMutex, typename SecondMutex>
+static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
+                          int firstPriority, int secondPriority);
+template<typename SecondMutex>
+static int compareMutexes(const Lockable& first, const SecondMutex& second,
+                          int firstPriority, int secondPriority);
+template<typename FirstMutex>
+static int compareMutexes(const FirstMutex& first, const Lockable& second,
+                          int firstPriority, int secondPriority);
+static int compareMutexes(const Lockable& first, const Lockable& second,
+                          int firstPriority, int secondPriority);
 
 /**
  * Used to create a locked reference to an object. The mutex
@@ -211,32 +223,6 @@ public:
 };
 
 /**
- * Compares two mutexes and returns an indicator for which
- * mutex should be locked first.
- * A positive value indicates that the first mutex should
- * be locked first, a negative that it should be locked second.
- * The comparison function is deterministic and unchanging
- * between call on the same mutexes
- *
- * @param firstPriority The priority of the first mutex over the second.
- * @param secondPriority The priority of the first mutex over the second.
- * @return A positive value if the first mutex is considered 'greater'
- *         than the second mutex. Priority overrides the standard comparison
- *         metrics.
- */
-template<typename FirstMutex, typename SecondMutex>
-static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
-		int firstPriority = 0, int secondPriority = 0) {
-	if (firstPriority == secondPriority) {
-		if ((&first) - (&second) > 0) return 1;
-		else if ((&first) - (&second) < 0) return -1;
-	} else {
-		return firstPriority - secondPriority;
-	}
-	return 0;
-}
-
-/**
  * An abstract class for lockable objects, this provides
  * certain interfacing guarantees for lock management classes.
  */
@@ -266,6 +252,12 @@ public:
 	virtual void lockSharedIfPossible() { lock(); }
 	virtual bool tryLockSharedIfPossible() { return tryLock(); }
 	virtual void unlockSharedIfPossible() { unlock(); }
+
+	/**
+	 * Used to indicate which address should be compared by
+	 * mutex comparison functions.
+	 */
+	virtual void *getAddress() const { return (void *)this; }
 
 	virtual bool isReadLockable() const {
 		return readLockable;
@@ -363,6 +355,10 @@ public:
 		lockReference->unlock();
 	}
 
+	virtual void *getAddress() const {
+	    return lockReference->getAddress();
+	}
+
 	/*
 	 * These four methods allow a reference Lockable to act as
 	 * this object's lockable by proxy.
@@ -380,6 +376,46 @@ public:
 		return *lockReference;
 	}
 };
+
+/*
+class LockableWrap : public Lockable {
+public:
+    explicit LockableWrap(boost::function<void()> lock, ) :
+        Lockable(lReference->getPriority(), lReference->isReadLockable()),
+        lockReference(lReference) {}
+
+    virtual ~LockableProxy() {}
+
+    virtual void lock() {
+        lockReference->lock();
+    }
+    virtual bool tryLock() {
+        return lockReference->tryLock();
+    }
+    virtual void unlock() {
+        lockReference->unlock();
+    }
+
+    virtual void *getAddress() const { lockReference->getAddress(); }
+
+    *
+     * These four methods allow a reference Lockable to act as
+     * this object's lockable by proxy.
+     *
+    virtual LockablePtr getLockablePtr() {
+        return lockReference;
+    }
+    virtual ConstLockablePtr getLockablePtr() const {
+        return lockReference;
+    }
+    virtual Lockable& getLockable() {
+        return *lockReference;
+    }
+    virtual const Lockable& getLockable() const {
+        return *lockReference;
+    }
+};
+*/
 
 /**
  * Extends the Lockable abstract class to include read (shared)
@@ -447,6 +483,10 @@ public:
 		lockReference->unlockShared();
 	}
 
+	virtual void *getAddress() const {
+	    return lockReference->getAddress();
+	}
+
 	/**
 	 * These four methods allow a reference Lockable to act as
 	 * this object's lockable by proxy.
@@ -464,6 +504,79 @@ public:
 		return *lockReference;
 	}
 };
+
+/**
+ * Compares two mutexes and returns an indicator for which
+ * mutex should be locked first.
+ * A positive value indicates that the first mutex should
+ * be locked first, a negative that it should be locked second.
+ * The comparison function is deterministic and unchanging
+ * between call on the same mutexes
+ *
+ * @param firstPriority The priority of the first mutex over the second.
+ * @param secondPriority The priority of the first mutex over the second.
+ * @return A positive value if the first mutex is considered 'greater'
+ *         than the second mutex. Priority overrides the standard comparison
+ *         metrics.
+ */
+template<typename FirstMutex, typename SecondMutex>
+static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
+                          int firstPriority = 0, int secondPriority = 0) {
+    if (firstPriority == secondPriority) {
+        if ((&first) - (&second) > 0) return 1;
+        else if ((&first) - (&second) < 0) return -1;
+    } else {
+        return firstPriority - secondPriority;
+    }
+    return 0;
+}
+template<typename FirstMutex>
+static int compareMutexes(const FirstMutex& first, const Lockable& second,
+                          int firstPriority = 0, int secondPriority = 0) {
+    if (firstPriority == secondPriority) {
+        if ((&first) - second.getAddress() > 0) return 1;
+        else if ((&first) - second.getAddress() < 0) return -1;
+    } else {
+        return firstPriority - secondPriority;
+    }
+    return 0;
+}
+template<typename FirstMutex>
+static int compareMutexes(const FirstMutex& first, const LockablePtr second,
+                          int firstPriority = 0, int secondPriority = 0) {
+    return compareMutexes(first, *second, firstPriority, secondPriority);
+}
+template<typename SecondMutex>
+static int compareMutexes(const Lockable& first, const SecondMutex& second,
+                          int firstPriority = 0, int secondPriority = 0) {
+    if (firstPriority == secondPriority) {
+        if (first.getAddress() - (&second) > 0) return 1;
+        else if (first.getAddress() - (&second) < 0) return -1;
+    } else {
+        return firstPriority - secondPriority;
+    }
+    return 0;
+}
+template<typename SecondMutex>
+static int compareMutexes(const LockablePtr first, const SecondMutex& second,
+                          int firstPriority = 0, int secondPriority = 0) {
+    return compareMutexes(*first, second, firstPriority, secondPriority);
+}
+static int compareMutexes(const Lockable& first, const Lockable& second,
+                          int firstPriority = 0, int secondPriority = 0) {
+    if (firstPriority == secondPriority) {
+        // Cast away from void* because you can't add/subtract from void*
+        if ((char *)first.getAddress() - (char *)second.getAddress() > 0) return 1;
+        else if ((char *)first.getAddress() - (char *)second.getAddress()) return -1;
+    } else {
+        return firstPriority - secondPriority;
+    }
+    return 0;
+}
+static int compareMutexes(const LockablePtr first, const LockablePtr second,
+                          int firstPriority = 0, int secondPriority = 0) {
+    return compareMutexes(*first, *second, firstPriority, secondPriority);
+}
 
 /**
  * Locks two lockable objects in the correct order. The lockables can
@@ -486,15 +599,16 @@ static void lockMutexes(T& first, U& second,
 	}
 }
 template <typename T, typename U>
-static void lockMutexes(T& first, boost::shared_ptr<U> second) {
+static void lockMutexes(T& first, typename pointers::smart<U>::SharedPtr second) {
 	lockMutexes(first, *second);
 }
 template <typename T, typename U>
-static void lockMutexes(boost::shared_ptr<T> first, U& second) {
+static void lockMutexes(typename pointers::smart<T>::SharedPtr first, U& second) {
 	lockMutexes(*first, second);
 }
 template <typename T, typename U>
-static void lockMutexes(boost::shared_ptr<T> first, boost::shared_ptr<U> second) {
+static void lockMutexes(typename pointers::smart<T>::SharedPtr first,
+                        typename pointers::smart<U>::SharedPtr second) {
 	lockMutexes(*first, *second);
 }
 
@@ -514,15 +628,16 @@ static void unlockMutexes(T& first, U& second,
 	}
 }
 template <typename T, typename U>
-static void unlockMutexes(T& first, boost::shared_ptr<U> second) {
+static void unlockMutexes(T& first, typename pointers::smart<U>::SharedPtr second) {
 	unlockMutexes(first, *second);
 }
 template <typename T, typename U>
-static void unlockMutexes(boost::shared_ptr<T> first, U& second) {
+static void unlockMutexes(typename pointers::smart<T>::SharedPtr first, U& second) {
 	unlockMutexes(*first, second);
 }
 template <typename T, typename U>
-static void unlockMutexes(boost::shared_ptr<T> first, boost::shared_ptr<U> second) {
+static void unlockMutexes(typename pointers::smart<T>::SharedPtr first,
+                          typename pointers::smart<U>::SharedPtr second) {
 	unlockMutexes(*first, *second);
 }
 
