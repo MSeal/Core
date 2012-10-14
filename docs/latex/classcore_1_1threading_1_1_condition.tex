@@ -1,0 +1,78 @@
+\hypertarget{classcore_1_1threading_1_1_condition}{\section{core\-:\-:threading\-:\-:Condition Class Reference}
+\label{classcore_1_1threading_1_1_condition}\index{core\-::threading\-::\-Condition@{core\-::threading\-::\-Condition}}
+}
+Inheritance diagram for core\-:\-:threading\-:\-:Condition\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.390720cm]{classcore_1_1threading_1_1_condition}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a073a0b111fa5762dbfe3993cf2af40dc}{virtual Condition\-Variable \& {\bfseries get\-Condition\-Variable} ()=0}\label{classcore_1_1threading_1_1_condition_a073a0b111fa5762dbfe3993cf2af40dc}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_add5e0330004de9c05a86ccc11ddf268d}{void {\bfseries notify\-One} ()}\label{classcore_1_1threading_1_1_condition_add5e0330004de9c05a86ccc11ddf268d}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a057883ea17c87352d75cd75af5046622}{void {\bfseries notify\-All} ()}\label{classcore_1_1threading_1_1_condition_a057883ea17c87352d75cd75af5046622}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a57f15cfb2da071d4d673294c5ccce164}{void {\bfseries wait} ()}\label{classcore_1_1threading_1_1_condition_a57f15cfb2da071d4d673294c5ccce164}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a957e1f54b0e98980a9d777934bc08c57}{{\footnotesize template$<$typename predicate\-\_\-type $>$ }\\void {\bfseries wait} (predicate\-\_\-type predicate)}\label{classcore_1_1threading_1_1_condition_a957e1f54b0e98980a9d777934bc08c57}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a8ab9c35ba488d9bc743d03692cee17c0}{bool {\bfseries timed\-Wait} (boost\-::system\-\_\-time const \&abs\-\_\-time)}\label{classcore_1_1threading_1_1_condition_a8ab9c35ba488d9bc743d03692cee17c0}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a4e37a0fc868c0d92615c1abe480a82fc}{{\footnotesize template$<$typename duration\-\_\-type $>$ }\\bool {\bfseries timed\-Wait} (duration\-\_\-type const \&rel\-\_\-time)}\label{classcore_1_1threading_1_1_condition_a4e37a0fc868c0d92615c1abe480a82fc}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_af228703cb4e03b19fd6bbc7ba274d1f3}{{\footnotesize template$<$typename predicate\-\_\-type $>$ }\\bool {\bfseries timed\-Wait} (boost\-::system\-\_\-time const \&abs\-\_\-time, predicate\-\_\-type predicate)}\label{classcore_1_1threading_1_1_condition_af228703cb4e03b19fd6bbc7ba274d1f3}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a3863d0dbb2cf1508668e8c627ec642ac}{{\footnotesize template$<$typename duration\-\_\-type , typename predicate\-\_\-type $>$ }\\bool {\bfseries timed\-Wait} (duration\-\_\-type const \&rel\-\_\-time, predicate\-\_\-type predicate)}\label{classcore_1_1threading_1_1_condition_a3863d0dbb2cf1508668e8c627ec642ac}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a7a5c4e47f11eaf495160be7813e64cde}{bool {\bfseries timed\-Wait} (boost\-::xtime const \&abs\-\_\-time)}\label{classcore_1_1threading_1_1_condition_a7a5c4e47f11eaf495160be7813e64cde}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a816a417886d207e9ff775b561d33d439}{{\footnotesize template$<$typename predicate\-\_\-type $>$ }\\bool {\bfseries timed\-Wait} (boost\-::xtime const \&abs\-\_\-time, predicate\-\_\-type predicate)}\label{classcore_1_1threading_1_1_condition_a816a417886d207e9ff775b561d33d439}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a4671fdd1ca1492168b652aafc3d57824}{typedef \\*
+boost\-::condition\-\_\-variable\-\_\-any {\bfseries Condition\-Variable}}\label{classcore_1_1threading_1_1_condition_a4671fdd1ca1492168b652aafc3d57824}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a263c53c23f71204a68e5e442b723c149}{virtual void {\bfseries lock} ()=0}\label{classcore_1_1threading_1_1_condition_a263c53c23f71204a68e5e442b723c149}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a4e23bba87819bfe72486ba82cf487f13}{virtual bool {\bfseries try\-Lock} ()=0}\label{classcore_1_1threading_1_1_condition_a4e23bba87819bfe72486ba82cf487f13}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a65b2596f964e2353182818f2a5fd1e0c}{virtual void {\bfseries unlock} ()=0}\label{classcore_1_1threading_1_1_condition_a65b2596f964e2353182818f2a5fd1e0c}
+
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_a960b4d1074af5f7c817e06fe4edf74be}{class {\bfseries boost\-::detail\-::basic\-\_\-condition\-\_\-variable}}\label{classcore_1_1threading_1_1_condition_a960b4d1074af5f7c817e06fe4edf74be}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_condition_aabf62dfc5fab1b22d10aa7e4d69c59a0}{class {\bfseries boost\-::condition\-\_\-variable\-\_\-any}}\label{classcore_1_1threading_1_1_condition_aabf62dfc5fab1b22d10aa7e4d69c59a0}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+include/threading/condition\-Lockable.\-hpp\end{DoxyCompactItemize}

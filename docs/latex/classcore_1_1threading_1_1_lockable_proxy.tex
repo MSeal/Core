@@ -1,0 +1,55 @@
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy}{\section{core\-:\-:threading\-:\-:Lockable\-Proxy Class Reference}
+\label{classcore_1_1threading_1_1_lockable_proxy}\index{core\-::threading\-::\-Lockable\-Proxy@{core\-::threading\-::\-Lockable\-Proxy}}
+}
+
+
+{\ttfamily \#include $<$lockable.\-hpp$>$}
+
+Inheritance diagram for core\-:\-:threading\-:\-:Lockable\-Proxy\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.025641cm]{classcore_1_1threading_1_1_lockable_proxy}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_a1b094fd270476942586424d0e05926b9}{{\bfseries Lockable\-Proxy} (Lockable\-Ptr l\-Reference)}\label{classcore_1_1threading_1_1_lockable_proxy_a1b094fd270476942586424d0e05926b9}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_a5e2568379e7f307d3dd5487d4eecf0ad}{virtual void {\bfseries lock} ()}\label{classcore_1_1threading_1_1_lockable_proxy_a5e2568379e7f307d3dd5487d4eecf0ad}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_a61b2ff8037fa96e8636eb7594214097b}{virtual bool {\bfseries try\-Lock} ()}\label{classcore_1_1threading_1_1_lockable_proxy_a61b2ff8037fa96e8636eb7594214097b}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_acb267ce5725011cd729eaf300ea0a82c}{virtual void {\bfseries unlock} ()}\label{classcore_1_1threading_1_1_lockable_proxy_acb267ce5725011cd729eaf300ea0a82c}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_a6c2725f84357c795694c026f30a593a0}{virtual Lockable\-Ptr {\bfseries get\-Lockable\-Ptr} ()}\label{classcore_1_1threading_1_1_lockable_proxy_a6c2725f84357c795694c026f30a593a0}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_a9e759252b36c8ac5e9ad97d1d95d26e8}{virtual Const\-Lockable\-Ptr {\bfseries get\-Lockable\-Ptr} () const }\label{classcore_1_1threading_1_1_lockable_proxy_a9e759252b36c8ac5e9ad97d1d95d26e8}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_a6f02484bc12697f14eb445061db78588}{virtual \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} \& {\bfseries get\-Lockable} ()}\label{classcore_1_1threading_1_1_lockable_proxy_a6f02484bc12697f14eb445061db78588}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_ae5d10745bb00e1bb653948c8c0047c2c}{virtual const \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} \& {\bfseries get\-Lockable} () const }\label{classcore_1_1threading_1_1_lockable_proxy_ae5d10745bb00e1bb653948c8c0047c2c}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_proxy_afd06fd17e000e9aba3d1fc66ca6b82e8}{Lockable\-Ptr {\bfseries lock\-Reference}}\label{classcore_1_1threading_1_1_lockable_proxy_afd06fd17e000e9aba3d1fc66ca6b82e8}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Acts as a \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} by proxy reference. Any \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} calls get forwarded to the proxy instead, so the \hyperlink{classcore_1_1threading_1_1_lockable_proxy}{Lockable\-Proxy} appears as a \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} without needing to implement it's locking protocol. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+include/threading/lockable.\-hpp\end{DoxyCompactItemize}

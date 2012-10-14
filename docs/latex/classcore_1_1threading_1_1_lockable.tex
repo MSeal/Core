@@ -1,0 +1,106 @@
+\hypertarget{classcore_1_1threading_1_1_lockable}{\section{core\-:\-:threading\-:\-:Lockable Class Reference}
+\label{classcore_1_1threading_1_1_lockable}\index{core\-::threading\-::\-Lockable@{core\-::threading\-::\-Lockable}}
+}
+
+
+{\ttfamily \#include $<$lockable.\-hpp$>$}
+
+Inheritance diagram for core\-:\-:threading\-:\-:Lockable\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.683761cm]{classcore_1_1threading_1_1_lockable}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a8d45d53deea8bbda7748ce15c4aabdd1}{{\bfseries Lockable} (int priority=0, bool read\-Lock=false)}\label{classcore_1_1threading_1_1_lockable_a8d45d53deea8bbda7748ce15c4aabdd1}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a98ec4e38056bb634961b45e159dd7068}{virtual void {\bfseries lock} ()=0}\label{classcore_1_1threading_1_1_lockable_a98ec4e38056bb634961b45e159dd7068}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a7da90cecb5680fa5575b6dc415919740}{virtual bool {\bfseries try\-Lock} ()=0}\label{classcore_1_1threading_1_1_lockable_a7da90cecb5680fa5575b6dc415919740}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a344cac44e798886eaccdb0f276a5ebf9}{virtual void {\bfseries unlock} ()=0}\label{classcore_1_1threading_1_1_lockable_a344cac44e798886eaccdb0f276a5ebf9}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_aa87f2d65702ed4866c844cf27a91a190}{virtual void {\bfseries lock\-Shared\-If\-Possible} ()}\label{classcore_1_1threading_1_1_lockable_aa87f2d65702ed4866c844cf27a91a190}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a138d8875e6003cf6492f845fb79b0137}{virtual bool {\bfseries try\-Lock\-Shared\-If\-Possible} ()}\label{classcore_1_1threading_1_1_lockable_a138d8875e6003cf6492f845fb79b0137}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a8cbde0c6ad2cdb1f109530d7d3acba22}{virtual void {\bfseries unlock\-Shared\-If\-Possible} ()}\label{classcore_1_1threading_1_1_lockable_a8cbde0c6ad2cdb1f109530d7d3acba22}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a1212e53abe74b938c199d4357ea2a8c8}{virtual bool {\bfseries is\-Read\-Lockable} () const }\label{classcore_1_1threading_1_1_lockable_a1212e53abe74b938c199d4357ea2a8c8}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a891e7d6e8c9d55a9afa2ef83e3d807c5}{virtual int {\bfseries get\-Priority} () const }\label{classcore_1_1threading_1_1_lockable_a891e7d6e8c9d55a9afa2ef83e3d807c5}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a60e7b7a71c0fb390cb74cdab738a59d2}{virtual Lockable\-Ptr {\bfseries get\-Lockable\-Ptr} ()}\label{classcore_1_1threading_1_1_lockable_a60e7b7a71c0fb390cb74cdab738a59d2}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_aa585f68f6488aad1a47191b49d1d9222}{virtual Const\-Lockable\-Ptr {\bfseries get\-Lockable\-Ptr} () const }\label{classcore_1_1threading_1_1_lockable_aa585f68f6488aad1a47191b49d1d9222}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_ad9f77c5b9c78f0f16f429eb04a0da573}{virtual \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} \& {\bfseries get\-Lockable} ()}\label{classcore_1_1threading_1_1_lockable_ad9f77c5b9c78f0f16f429eb04a0da573}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a2fcd49537a849815bc8498e7f2b8f240}{virtual const \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} \& {\bfseries get\-Lockable} () const }\label{classcore_1_1threading_1_1_lockable_a2fcd49537a849815bc8498e7f2b8f240}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_ab74f89144d345c1adaaa4425bfdd2247}{{\footnotesize template$<$typename Lock\-Type $>$ }\\\hyperlink{structcore_1_1pointers_1_1smart}{pointers\-::smart}$<$ Lock\-Type $>$\\*
+\-::Shared\-Ptr {\bfseries cast\-Lock} ()}\label{classcore_1_1threading_1_1_lockable_ab74f89144d345c1adaaa4425bfdd2247}
+
+\item 
+{\footnotesize template$<$typename T $>$ }\\int \hyperlink{classcore_1_1threading_1_1_lockable_a1c5c202187fe528a7be37920b1bc94ba}{compare\-Lockables} (const T \&other) const 
+\item 
+int \hyperlink{classcore_1_1threading_1_1_lockable_ac31c612e403fb7c6db340322ddbaf2df}{compare\-Lockables} (const \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} \&other) const 
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_afc937b17bd1498b44efe1fadeb8424eb}{{\footnotesize template$<$typename T $>$ }\\bool {\bfseries operator$<$} (const T \&other) const }\label{classcore_1_1threading_1_1_lockable_afc937b17bd1498b44efe1fadeb8424eb}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a3643d77959d3e49e0cf45c1161ad9e51}{{\footnotesize template$<$typename T $>$ }\\bool {\bfseries operator$<$=} (const T \&other) const }\label{classcore_1_1threading_1_1_lockable_a3643d77959d3e49e0cf45c1161ad9e51}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_aa13cc2103cede7fcd671b9b702128948}{{\footnotesize template$<$typename T $>$ }\\bool {\bfseries operator$>$} (const T \&other) const }\label{classcore_1_1threading_1_1_lockable_aa13cc2103cede7fcd671b9b702128948}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_a5941b90a5f3ea21ee315ffe006024435}{{\footnotesize template$<$typename T $>$ }\\bool {\bfseries operator$>$=} (const T \&other) const }\label{classcore_1_1threading_1_1_lockable_a5941b90a5f3ea21ee315ffe006024435}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_lockable_ab1dd110ed8b173cb8748507e096d6e3a}{{\footnotesize template$<$typename Ref $>$ }\\\hyperlink{classcore_1_1threading_1_1_locked_reference_ptr}{Locked\-Reference\-Ptr}$<$ Ref $>$ {\bfseries generate\-Locked\-Reference} (typename \hyperlink{structcore_1_1pointers_1_1smart}{pointers\-::smart}$<$ Ref $>$\-::Shared\-Ptr reference)}\label{classcore_1_1threading_1_1_lockable_ab1dd110ed8b173cb8748507e096d6e3a}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+An abstract class for lockable objects, this provides certain interfacing guarantees for lock management classes. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classcore_1_1threading_1_1_lockable_a1c5c202187fe528a7be37920b1bc94ba}{\index{core\-::threading\-::\-Lockable@{core\-::threading\-::\-Lockable}!compare\-Lockables@{compare\-Lockables}}
+\index{compare\-Lockables@{compare\-Lockables}!core::threading::Lockable@{core\-::threading\-::\-Lockable}}
+\subsubsection[{compare\-Lockables}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ int core\-::threading\-::\-Lockable\-::compare\-Lockables (
+\begin{DoxyParamCaption}
+\item[{const T \&}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcore_1_1threading_1_1_lockable_a1c5c202187fe528a7be37920b1bc94ba}
+Non-\/blocking comparison between a lockable and a(any) mutex to determine the locking order. \hypertarget{classcore_1_1threading_1_1_lockable_ac31c612e403fb7c6db340322ddbaf2df}{\index{core\-::threading\-::\-Lockable@{core\-::threading\-::\-Lockable}!compare\-Lockables@{compare\-Lockables}}
+\index{compare\-Lockables@{compare\-Lockables}!core::threading::Lockable@{core\-::threading\-::\-Lockable}}
+\subsubsection[{compare\-Lockables}]{\setlength{\rightskip}{0pt plus 5cm}int core\-::threading\-::\-Lockable\-::compare\-Lockables (
+\begin{DoxyParamCaption}
+\item[{const {\bf Lockable} \&}]{other}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{classcore_1_1threading_1_1_lockable_ac31c612e403fb7c6db340322ddbaf2df}
+Non-\/blocking comparison between two lockables to determine the locking order. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+include/threading/lockable.\-hpp\end{DoxyCompactItemize}

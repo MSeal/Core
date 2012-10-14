@@ -37,7 +37,7 @@ protected:
 	 * The only part of Lockable that required is these three methods.
 	 */
 	virtual void lock() = 0;
-	virtual bool try_lock() = 0;
+	virtual bool tryLock() = 0;
 	virtual void unlock() = 0;
 
 public:
@@ -54,10 +54,10 @@ public:
 	 * written into each method. This prevents accidental mismatches
 	 * between what's locked and what' being conditioned on.
 	 */
-	void notify_one() {
+	void notifyOne() {
 		getConditionVariable().notify_one();
 	}
-	void notify_all() {
+	void notifyAll() {
 		getConditionVariable().notify_all();
 	}
 
@@ -70,32 +70,32 @@ public:
 		getConditionVariable().wait(*this, predicate);
 	}
 
-	bool timed_wait(boost::system_time const& abs_time) {
+	bool timedWait(boost::system_time const& abs_time) {
 		return getConditionVariable().timed_wait(*this, abs_time);
 	}
 
 	template<typename duration_type>
-	bool timed_wait(duration_type const& rel_time) {
+	bool timedWait(duration_type const& rel_time) {
 		return getConditionVariable().timed_wait(*this, rel_time);
 	}
 
 	template<typename predicate_type>
-	bool timed_wait(boost::system_time const& abs_time,predicate_type predicate) {
+	bool timedWait(boost::system_time const& abs_time,predicate_type predicate) {
 		return getConditionVariable().timed_wait(*this, abs_time, predicate);
 	}
 
 	template<typename duration_type,typename predicate_type>
-	bool timed_wait(duration_type const& rel_time, predicate_type predicate) {
+	bool timedWait(duration_type const& rel_time, predicate_type predicate) {
 		return getConditionVariable().timed_wait(*this, rel_time, predicate);
 	}
 
 	// backwards compatibility
-	bool timed_wait(boost::xtime const& abs_time) {
+	bool timedWait(boost::xtime const& abs_time) {
 		return getConditionVariable().timed_wait(*this, abs_time);
 	}
 
 	template<typename predicate_type>
-	bool timed_wait(boost::xtime const& abs_time,predicate_type predicate) {
+	bool timedWait(boost::xtime const& abs_time,predicate_type predicate) {
 		return getConditionVariable().timed_wait(*this, abs_time, predicate);
 	}
 };
@@ -182,7 +182,7 @@ public:
 	virtual ~ConditionLock() {}
 
 	void lock() { WriteLock::lock(); }
-	bool try_lock() { return WriteLock::try_lock(); }
+	bool tryLock() { return WriteLock::tryLock(); }
 	void unlock() { WriteLock::unlock(); }
 };
 
@@ -217,7 +217,7 @@ public:
 	virtual ~ConditionLockProxy() {}
 
 	void lock() { LockableProxy::lock(); }
-	bool try_lock() { return LockableProxy::try_lock(); }
+	bool tryLock() { return LockableProxy::tryLock(); }
 	void unlock() { LockableProxy::unlock(); }
 };
 
@@ -253,7 +253,7 @@ public:
 	virtual ~ReadWriteConditionLock() {}
 
 	void lock() { ReadWriteLock::lock(); }
-	bool try_lock() { return ReadWriteLock::try_lock(); }
+	bool tryLock() { return ReadWriteLock::tryLock(); }
 	void unlock() { ReadWriteLock::unlock(); }
 };
 
@@ -288,7 +288,7 @@ public:
 	virtual ~ReadWriteConditionLockProxy() {}
 
 	void lock() { ReadWriteLockableProxy::lock(); }
-	bool try_lock() { return ReadWriteLockableProxy::try_lock(); }
+	bool tryLock() { return ReadWriteLockableProxy::tryLock(); }
 	void unlock() { ReadWriteLockableProxy::unlock(); }
 };
 

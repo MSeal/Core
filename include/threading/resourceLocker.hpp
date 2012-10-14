@@ -1,5 +1,6 @@
-/*
+/**
  * resourceLocker.h
+ *
  * Defines a resource which can be incrementally locked
  * and unlocked. This is useful for abstracting a resource
  * in multi-threaded environment.
@@ -17,7 +18,7 @@
 
 namespace core { namespace threading {
 
-/*
+/**
  * The resource locker object defines a set of locks
  * which are all associated with a particular resource.
  * This can aid in abstracting resource management in
@@ -44,7 +45,7 @@ private:
 		WRITE_LOCKED
 	};
 
-	/*
+	/**
 	 * Nested class used for tracking locks and their
 	 * current settings/configurations.
 	 */
@@ -111,11 +112,11 @@ private:
 	std::vector<LockableReference> locks;
 	long nextLockIndex;
 
-	/*
+	/**
 	 * Used for sorting and comparing lockable references.
 	 */
-	static bool LockableLargestFirstCompare(const LockableReference& first,
-			const LockableReference& second) {
+	static bool lockableLargestFirstCompare(const LockableReference& first,
+			                                const LockableReference& second) {
 		return (first > second);
 	}
 
@@ -126,7 +127,7 @@ private:
 
 	void readLockMutex(LockableReference& mutref) {
 		if (mutref.lockable->isReadLockable()) {
-			((ReadWriteLockable *)mutref.lockable.get())->lock_shared();
+			((ReadWriteLockable *)mutref.lockable.get())->lockShared();
 			mutref.setting = READ_LOCKED;
 		} else {
 			writeLockMutex(mutref);
@@ -159,7 +160,7 @@ private:
 			mutref.lockable->unlock();
 		} else if (mutref.setting == READ_LOCKED) {
 			mutref.setting = UNLOCKED;
-			((ReadWriteLockable *)mutref.lockable.get())->unlock_shared();
+			((ReadWriteLockable *)mutref.lockable.get())->unlockShared();
 		}
 		// Otherwise do nothing
 	}
@@ -192,7 +193,7 @@ private:
 	 * Sorts the locks such that they lock in the correct ordering
 	 */
 	void sortLocks() {
-		std::sort(locks.begin(), locks.end(), LockableLargestFirstCompare);
+		std::sort(locks.begin(), locks.end(), lockableLargestFirstCompare);
 	}
 
 public:
@@ -384,7 +385,7 @@ public:
 		if (lock) {
 			LockableReference lockRef(lock, defaultAsReadLock);
 			bool needSorting = false;
-			if (!locks.empty() && LockableLargestFirstCompare(lockRef, locks[locks.size()-1])) {
+			if (!locks.empty() && lockableLargestFirstCompare(lockRef, locks[locks.size()-1])) {
 				needSorting = true;
 			}
 			// Unlock all locks

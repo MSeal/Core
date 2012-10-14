@@ -1,0 +1,88 @@
+\hypertarget{classcore_1_1threading_1_1_resource_locker}{\section{core\-:\-:threading\-:\-:Resource\-Locker Class Reference}
+\label{classcore_1_1threading_1_1_resource_locker}\index{core\-::threading\-::\-Resource\-Locker@{core\-::threading\-::\-Resource\-Locker}}
+}
+
+
+{\ttfamily \#include $<$resource\-Locker.\-hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a05521e49024dec23a87f74b055f7dcf8}{long {\bfseries get\-Num\-Locks} () const }\label{classcore_1_1threading_1_1_resource_locker_a05521e49024dec23a87f74b055f7dcf8}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a4bd3613bea4f088813c529874adb976f}{long {\bfseries get\-Lock\-Position} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ lock)}\label{classcore_1_1threading_1_1_resource_locker_a4bd3613bea4f088813c529874adb976f}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a2281c2e9f44ba1c29463782fa4483835}{bool {\bfseries contains\-Lock} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ lock)}\label{classcore_1_1threading_1_1_resource_locker_a2281c2e9f44ba1c29463782fa4483835}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a8a45936b5991981118ed2282f2fb0ea1}{boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ {\bfseries get\-Lock} (long position) const }\label{classcore_1_1threading_1_1_resource_locker_a8a45936b5991981118ed2282f2fb0ea1}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a015ffc9146ac201291ddedb3b63cfb41}{bool {\bfseries has\-Active\-Lock} () const }\label{classcore_1_1threading_1_1_resource_locker_a015ffc9146ac201291ddedb3b63cfb41}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a9d4ef138ebf407381a6d7cc40af4b523}{int {\bfseries get\-Current\-Lock\-Position} () const }\label{classcore_1_1threading_1_1_resource_locker_a9d4ef138ebf407381a6d7cc40af4b523}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_ae18476af96f344df61a40e306db75ae8}{bool {\bfseries is\-Locked} (long position)}\label{classcore_1_1threading_1_1_resource_locker_ae18476af96f344df61a40e306db75ae8}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a6a166b10c93cba313837f760cd41a969}{bool {\bfseries is\-Locked} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ lock)}\label{classcore_1_1threading_1_1_resource_locker_a6a166b10c93cba313837f760cd41a969}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a269c4a880b48a768c3d9748f02d1e940}{bool {\bfseries all\-Locked} ()}\label{classcore_1_1threading_1_1_resource_locker_a269c4a880b48a768c3d9748f02d1e940}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a0153850743757bdb6fa875856764ffed}{bool {\bfseries none\-Locked} ()}\label{classcore_1_1threading_1_1_resource_locker_a0153850743757bdb6fa875856764ffed}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a59411ae3e38b757af9cf6ba40fcaf543}{void {\bfseries lock} (long position=-\/1, tribool as\-Read\-Lock\-If\-Possible=tribool\-::indeterminate\-\_\-value)}\label{classcore_1_1threading_1_1_resource_locker_a59411ae3e38b757af9cf6ba40fcaf543}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a35f2abef8afa49dd6f90e8754e132f6b}{void {\bfseries lock} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ lock, tribool as\-Read\-Lock\-If\-Possible=tribool\-::indeterminate\-\_\-value)}\label{classcore_1_1threading_1_1_resource_locker_a35f2abef8afa49dd6f90e8754e132f6b}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a74516cb932cf997e7350081970697500}{void {\bfseries unlock} (long position=0)}\label{classcore_1_1threading_1_1_resource_locker_a74516cb932cf997e7350081970697500}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a9464386fc7233fbe830e49c4c0647afe}{void {\bfseries unlock} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ lock)}\label{classcore_1_1threading_1_1_resource_locker_a9464386fc7233fbe830e49c4c0647afe}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_ab740d66b331ea3f19bdf6187a281ae8c}{void {\bfseries relock\-All\-Reads\-As\-Writes} ()}\label{classcore_1_1threading_1_1_resource_locker_ab740d66b331ea3f19bdf6187a281ae8c}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a36cd91f3f36167989267598df4e2ded8}{void {\bfseries set\-Lock\-Default\-Type} (long position, tribool read\-Lock\-By\-Default=tribool\-::indeterminate\-\_\-value)}\label{classcore_1_1threading_1_1_resource_locker_a36cd91f3f36167989267598df4e2ded8}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_acbbef3762d503d361d9693e6c74c302a}{void {\bfseries set\-Lock\-Default\-Type} (boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ lock, tribool read\-Lock\-By\-Default=tribool\-::indeterminate\-\_\-value)}\label{classcore_1_1threading_1_1_resource_locker_acbbef3762d503d361d9693e6c74c302a}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_ac2f676b46042839d02da3258d07daa0c}{void {\bfseries set\-All\-Lock\-Default\-Types} (tribool read\-Lock\-By\-Default=tribool\-::indeterminate\-\_\-value)}\label{classcore_1_1threading_1_1_resource_locker_ac2f676b46042839d02da3258d07daa0c}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_aefa94ca874239c39797c16413b0f280f}{void {\bfseries add\-Lockable} (const boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ lock, tribool default\-As\-Read\-Lock=tribool\-::indeterminate\-\_\-value)}\label{classcore_1_1threading_1_1_resource_locker_aefa94ca874239c39797c16413b0f280f}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a66362025f4f0dacdd00c078a8d3bea18}{void {\bfseries add\-Resource\-Lockable} (const \hyperlink{classcore_1_1threading_1_1_resource_locker}{Resource\-Locker} \&other)}\label{classcore_1_1threading_1_1_resource_locker_a66362025f4f0dacdd00c078a8d3bea18}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a5720cd1e4fd0171fb0c2e69b742a6121}{{\bfseries Resource\-Locker} (std\-::vector$<$ boost\-::shared\-\_\-ptr$<$ \hyperlink{classcore_1_1threading_1_1_lockable}{Lockable} $>$ $>$ \&lock\-Vect)}\label{classcore_1_1threading_1_1_resource_locker_a5720cd1e4fd0171fb0c2e69b742a6121}
+
+\item 
+\hypertarget{classcore_1_1threading_1_1_resource_locker_a616014044522d39c3997533bd089199e}{{\bfseries Resource\-Locker} (const \hyperlink{classcore_1_1threading_1_1_resource_locker}{Resource\-Locker} \&other)}\label{classcore_1_1threading_1_1_resource_locker_a616014044522d39c3997533bd089199e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The resource locker object defines a set of locks which are all associated with a particular resource. This can aid in abstracting resource management in multi-\/threaded environments. The most common methods to be used are lock and unlock, which will lock all lockable objects required to avoid deadlocks on the resource.
+
+Resource lockers are not inherently threadsafe and should be used on a one per thread basis. There is a provided constructor to allow for such copying.
+
+Note too that the locks are re-\/entrant, so multiple attempts to lock the same lock will not result in crashes or deadlocks. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+include/threading/resource\-Locker.\-hpp\end{DoxyCompactItemize}
