@@ -1,0 +1,1096 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows Platform &laquo; the seeker&#8217;s quill</title>
+
+	<link rel="stylesheet" href="http://s2.wp.com/wp-content/themes/pub/neat/style.css?m=1342105898g&amp;1" type="text/css" media="screen" />
+	<link rel="pingback" href="http://theseekersquill.wordpress.com/xmlrpc.php" />
+
+	<link rel="alternate" type="application/rss+xml" title="the seeker&#039;s quill &raquo; Feed" href="http://theseekersquill.wordpress.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="the seeker&#039;s quill &raquo; Comments Feed" href="http://theseekersquill.wordpress.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="the seeker&#039;s quill &raquo; How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform Comments Feed" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/feed/" />
+<script type="text/javascript">
+/* <![CDATA[ */
+function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!='function'){window.onload=func;}else{window.onload=function(){oldonload();func();}}}
+/* ]]> */
+</script>
+<link rel='stylesheet' id='all-css-0' href='http://s2.wp.com/_static/??/wp-content/blog-plugins/loggedout-follow/widget.css,/wp-content/mu-plugins/infinity/themes/pub/neat.css,/wp-content/mu-plugins/post-flair/style.css,/wp-content/mu-plugins/post-flair/sharing/sharing.css,/wp-content/themes/h4/global.css,/wp-content/mu-plugins/widgets/css/widget-grid-and-list.css?m=1345177132j' type='text/css' media='all' />
+<link rel='stylesheet' id='print-css-0' href='http://s0.wp.com/wp-content/mu-plugins/global-print/global-print.css?m=1335386953g' type='text/css' media='print' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, please try again with a valid email address."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://s0.wp.com/_static/??/wp-includes/js/jquery/jquery.js,/wp-content/blog-plugins/loggedout-follow/widget.js,/wp-includes/js/comment-reply.js,/wp-content/mu-plugins/widgets/js/widget-bump-view.js?m=1342269540j'></script>
+<link rel='stylesheet' id='all-css-0' href='http://s1.wp.com/wp-content/mu-plugins/highlander-comments/style.css?m=1343991657g' type='text/css' media='all' />
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='http://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1307172283g&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://theseekersquill.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://theseekersquill.wordpress.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)' href='http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/' />
+<meta name="generator" content="WordPress.com" />
+<link rel='canonical' href='http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/' />
+<link rel='shortlink' href='http://wp.me/pepCi-7x' />
+<link rel="alternate" type="application/json+oembed" href="http://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=http%3A%2F%2Ftheseekersquill.wordpress.com%2F2010%2F08%2F24%2Fhowto-boost-mingw%2F&amp;for=wpcom-auto-discovery" /><link rel="alternate" type="application/xml+oembed" href="http://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=http%3A%2F%2Ftheseekersquill.wordpress.com%2F2010%2F08%2F24%2Fhowto-boost-mingw%2F&amp;for=wpcom-auto-discovery" /><meta property="og:type" content="article" />
+<meta property="og:title" content="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform" />
+<meta property="og:url" content="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/" />
+<meta property="og:description" content="This article outlines how to install, build and use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows platform.  The article will cover all steps in..." />
+<meta property="og:site_name" content="the seeker&#039;s quill" />
+<meta property="og:image" content="http://theseekersquill.files.wordpress.com/2010/08/guesstoolkitprocedure1.png?w=200" />
+<meta property="og:image" content="http://theseekersquill.files.wordpress.com/2010/08/eclipse_mingw_installation.png?w=200" />
+<meta property="og:image" content="http://theseekersquill.files.wordpress.com/2010/08/boostbinarylibraryfolder.png?w=200" />
+<meta property="og:image" content="http://theseekersquill.files.wordpress.com/2010/08/boostlamdarunconfig.png?w=200" />
+<meta property="og:image" content="http://theseekersquill.files.wordpress.com/2010/08/eclipseboostincludepath.png?w=200" />
+<meta name="twitter:image" content="http://theseekersquill.files.wordpress.com/2010/08/guesstoolkitprocedure1.png" />
+<meta name="twitter:card" content="summary" />
+<meta property="fb:app_id" content="249643311490" />
+<link rel="shortcut icon" type="image/x-icon" href="http://s2.wp.com/i/favicon.ico?m=1311976023g" sizes="16x16 24x24 32x32 48x48" />
+<link rel="icon" type="image/x-icon" href="http://s2.wp.com/i/favicon.ico?m=1311976023g" sizes="16x16 24x24 32x32 48x48" />
+<link rel="apple-touch-icon-precomposed" href="http://s0.wp.com/i/webclip.png?m=1311618091g" />
+<link rel='openid.server' href='http://theseekersquill.wordpress.com/?openidserver=1' />
+<link rel='openid.delegate' href='http://theseekersquill.wordpress.com/' />
+<link rel="search" type="application/opensearchdescription+xml" href="http://theseekersquill.wordpress.com/osd.xml" title="the seeker&#039;s quill" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://wordpress.com/opensearch.xml" title="WordPress.com" />
+		<style>
+		/* <![CDATA[ */
+		/* Block: reblog */
+		
+		.reblog-from img                   { margin: 0 10px 0 0; vertical-align: middle; padding: 0; border: 0; }
+		.reblogger-note img.avatar         { float: left; padding: 0; border: 0; }
+		.reblogger-note-content            { margin: 0 0 20px; }
+		.reblog-post .wpcom-enhanced-excerpt-content { border-left: 3px solid #eee; padding-left: 15px; }
+		.reblog-post ul.thumb-list         { display: block; list-style: none; margin: 2px 0; padding: 0; clear: both; }
+		.reblog-post ul.thumb-list li      { display: inline; margin: 0; padding: 0 1px; border: 0; }
+		.reblog-post ul.thumb-list li a    { margin: 0; padding: 0; border: 0; }
+		.reblog-post ul.thumb-list li img  { margin: 0; padding: 0; border: 0; }
+		
+		.reblog-post .wpcom-enhanced-excerpt { clear: both; }
+		
+		.reblog-post .wpcom-enhanced-excerpt address,
+		.reblog-post .wpcom-enhanced-excerpt li,
+		.reblog-post .wpcom-enhanced-excerpt h1,
+		.reblog-post .wpcom-enhanced-excerpt h2,
+		.reblog-post .wpcom-enhanced-excerpt h3,
+		.reblog-post .wpcom-enhanced-excerpt h4,
+		.reblog-post .wpcom-enhanced-excerpt h5,
+		.reblog-post .wpcom-enhanced-excerpt h6,
+		.reblog-post .wpcom-enhanced-excerpt p { font-size: 100% !important; }
+		
+		.reblog-post .wpcom-enhanced-excerpt blockquote,
+		.reblog-post .wpcom-enhanced-excerpt pre,
+		.reblog-post .wpcom-enhanced-excerpt code,
+		.reblog-post .wpcom-enhanced-excerpt q { font-size: 98% !important; }
+		
+
+		/* ]]> */		
+		</style>
+		<style type="text/css">.recentcomments a{display:inline !important;padding: 0 !important;margin: 0 !important;}</style>
+<meta name="application-name" content="the seeker&#039;s quill" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-task" content="name=Subscribe;action-uri=http://theseekersquill.wordpress.com/feed/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="title" content="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform | the seeker&#039;s quill on WordPress.com" />
+<meta name="description" content="This article outlines how to install, build and use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows platform.  The article will cover all steps including: Downloading and installing the Eclipse C++ IDE. Downloading and installing the MinGW (GCC, G++, GDB, etc) compiler toolchain. Downloading and installing&hellip;" />
+
+<style type='text/css'>
+table.recentcommentsavatar img.avatar {border: 0px; margin:0;}
+table.recentcommentsavatar a {border: 0px !important;background-color: transparent !important}
+td.recentcommentsavatartop {padding:0px 0px 1px 0px;margin:0px; }
+td.recentcommentsavatarend {padding:0px 0px 1px 0px;margin:0px; }
+td.recentcommentstexttop { border: none !important;padding:0px 0px 0px 10px;}
+td.recentcommentstextend { border: none !important;padding:0px 0px 2px 10px;}
+</style><style type="text/css">
+#header {
+	font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+	text-align: left;
+	background: url(http://theseekersquill.files.wordpress.com/2009/02/700x200_header_theseekersquill.jpg);
+ 	width: 700px;
+ 	height: 200px;
+	margin: 0px;
+}
+#header * {
+	display: none;
+}
+</style>
+</head>
+<body class="single single-post postid-467 single-format-standard highlander-enabled highlander-light">
+<br /><br /><br />
+<div id="page">
+
+<div id="header" onclick="location.href='http://theseekersquill.wordpress.com';" style="cursor: pointer;">
+    <h1><a href="http://theseekersquill.wordpress.com/">the seeker&#8217;s quill</a></h1>
+    <div class="description"></div>
+</div>
+
+	<div id="content">
+
+  
+		<div class="navigation">
+			<div class="alignleft">&laquo; <a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)</a></div>
+			<div class="alignright"></div>
+		</div>
+
+		<div class="post-467 post type-post status-publish format-standard hentry category-boost category-c category-computer category-development category-eclipse-ide category-mingw category-programming category-windows tag-boost tag-c-2 tag-development-2 tag-eclipse tag-gcc tag-ide tag-mingw-2 tag-programming-2 tag-windows">
+			<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/h1.gif?m=1158640643g" class="lefth2img" alt="h1" /><h2 id="post-467">How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform</h2>
+            <small>August 24, 2010 <!-- by theseekersquill --></small>
+
+			<div class="entrytext">
+				<p style="text-align:center;"><img class="aligncenter size-full wp-image-512" title="boost" src="http://theseekersquill.files.wordpress.com/2010/08/boost.png?w=450" alt=""   /></p>
+<p>This article outlines how to install, build and use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows platform.  The article will cover all steps including:</p>
+<ul>
+<li>Downloading and installing the Eclipse C++ IDE.</li>
+<li>Downloading and installing the MinGW (GCC, G++, GDB, etc) compiler toolchain.</li>
+<li>Downloading and installing the Boost library sources.</li>
+<li>Compiling and running a simple program that uses the Boost header files only.</li>
+<li>How to build the complete set of Boost binary libraries.</li>
+<li>How to configure a C++ project in Eclipse IDE to include and link the Boost C++ binary libraries.</li>
+<li>Finally, we will compile and run a simple program to verify the Boost libraries are correctly installed, built and can be used by your C++ projects.</li>
+</ul>
+<h3>Overview</h3>
+<p>We begin by providing a brief overview of the various software components we use in this article.  All of the software components mentioned in this article are free to use for opensource and commercial development.  There are some excellent resources and tutorials included in the references section at the end of this article.  In particular, I have provided references to free online tutorials for C++ programming, and cookbook recipes for C++ and the Boost Libraries.  A cookbook is a collection of hundreds of practical solutions (recipes) to problems that programmers face, with the goal of demonstrating a language&#8217;s capabilities and the relative simplicity of implementing them.</p>
+<p><strong>What are the Boost C++ libraries?</strong></p>
+<p>The Boost C++ Libraries are a collection of free libraries that extend the functionality of <a title="What is C++" href="http://en.wikipedia.org/wiki/C%2B%2B" target="_blank">C++</a>.  The current Boost release contains over 80 individual libraries (an overview of the libraries are provided <a title="Boost C++ Libraries overview" href="http://en.wikipedia.org/wiki/Boost_C%2B%2B_Libraries" target="_blank">here</a>).</p>
+<p>Why should a developer/organization use the Boost Libraries?</p>
+<ul>
+<li>In a word, Productivity. High-quality libraries like Boost    speeds initial development, results in   fewer bugs, reduces    reinvention-of-the-wheel, and cuts   long-term maintenance costs.</li>
+<li>The Boost C++ libraries are open-source and peer-reviewed.</li>
+<li>The Boost C++ libraries are platform independent and work on almost any modern operating system, including UNIX and Windows variants.</li>
+<li>The Boost C++ libraries complements the Standard Template Library (STL) rather than replaces it.</li>
+<li>The Boost C++ libraries are well documented.</li>
+<li>Most of the Boost libraries are licensed under the <a title="Boost Software License" href="http://en.wikipedia.org/wiki/Boost_Software_License" target="_blank">Boost Software License</a>, designed to allow Boost to be used with both free and proprietary software projects.</li>
+</ul>
+<p><strong>What is the Eclipse C++ IDE?</strong></p>
+<p style="padding-left:30px;">The Eclipse CDT Project provides a fully functional C and C++ Integrated  Development Environment based on the Eclipse platform. Features include:  support for project creation and managed build for various toolchains,  standard make build, source navigation, various source knowledge tools,  such as type hierarchy, call graph, include browser, macro definition  browser, code editor with syntax highlighting, folding and hyperlink  navigation, source code refactoring and code generation, visual  debugging tools, including memory, registers, and disassembly viewers.</p>
+<p><strong>What is MinGW?</strong></p>
+<p style="padding-left:30px;"><a title="Minimalist GNU for Windows" href="http://mingw.org/" target="_blank"><strong>MinGW</strong></a>, a contraction of &#8220;Minimalist GNU for Windows&#8221;,  is a port of the <a title="GNU Compiler Collection" href="http://gcc.gnu.org/" target="_blank">GNU Compiler Collection (GCC)</a>, and <a title="GNU Binutils" href="http://en.wikipedia.org/wiki/GNU_Binutils" target="_blank">GNU Binutils</a>, for  use in the development of native Microsoft Windows applications. Offered  in easily installed binary package format, for native deployment on  MS-Windows, or user-built from source, for cross-hosted use on Unix or  GNU/Linux, the suite exploits Microsoft&#8217;s standard system DLLs to  provide the C-Runtime and Windows API.</p>
+<h3>1.  Installation of the Eclipse IDE</h3>
+<p>Download and install the Eclipse for C++ (CDT) IDE.</p>
+<ol>
+<li>Ensure you have the <a title="Jave SE JRE Runtime Download" href="http://java.sun.com/javase/downloads/index.jsp" target="_blank">Java SE Runtime Environment (JRE)</a> installed.  The Eclipse IDE requires that the Java JRE or JDK be installed in order to run.</li>
+<li>Download the <a title="Eclipse CDT IDE" href="http://www.eclipse.org/cdt/" target="_blank">Eclipse CDT IDE</a>.  The downloaded file will have a name similar to: <code>eclipse-cpp-helios-win32.zip</code></li>
+<li>Extract the downloaded file to the following folder:  <code>c:\software</code></li>
+<li>Thus, the full path to the eclipse installation should be: <code>c:\software\eclipse </code></li>
+<li>The Eclipse IDE has an extensive inbuilt help menu with detailed user guides and tutorials.</li>
+</ol>
+<h3>2.  Installation of the MinGW Compiler Toolchain</h3>
+<p>Download and install the MinGW Compiler toolchain.  Previously, the various components of the GNU toolchain had to be installed individually and manually.  More recently, we can install the entire MinGW toolchain  in one operation from within the Eclipse IDE.</p>
+<ol>
+<li>Within the Eclipse IDE, from the menubar, select:  Help | Install New Software.</li>
+<li>Enter in the Wascana repository URL (the latest version may be obtained from <a title="Wascana MinGW Packages" href="http://code.google.com/a/eclipselabs.org/p/wascana/" target="_blank">here</a>) :   <code>http://svn.codespot.com/a/eclipselabs.org/wascana/repo</code></li>
+<li> Select the packages that appear and follow the on-screen prompts until the installation is complete.  The package displayed may be: <code>Wascana C/C++ Developer for Windows</code></li>
+<li>The MinGW toolchain will be installed at the following location: <code>c:\software\eclipse\mingw</code>Step 2.1 of this article is illustrated in the following figure:<br />
+<a href="http://theseekersquill.files.wordpress.com/2010/08/eclipse_mingw_installation.png" target="_blank"><img class="aligncenter size-medium wp-image-550" title="MinGW Toolchain Installation (Wascana)" src="http://theseekersquill.files.wordpress.com/2010/08/eclipse_mingw_installation.png?w=300&h=297" alt="MinGW Toolchain Installation (Wascana)" width="300" height="297" /></a></li>
+<li>Verify the Eclipse C++ IDE and MinGW toolchain are correct installed and configured by following the simple tutorial from the Eclipse IDE Welcome page.
+<ol>
+<li>Within the Eclipse IDE, from the menubar, select: Help | Welcome.</li>
+<li>Select: Overview | C/C++ Development | C/C++ Development User Guide | Getting Started | Create a simple Application.</li>
+<li>Ensure you can complete the tutorial successfully, before proceeding on (Ensure you can successfully build and run the HelloWorld application).</li>
+</ol>
+</li>
+</ol>
+<h3>3.  Installation of the Boost C++ Library Sources</h3>
+<p>Install the Boost C++ Library sources and header files.  The most important reference for the remainder of this article  is the Boost <a title="Boost C++ Getting Starting on Windows" href="http://www.boost.org/doc/libs/release/more/getting_started/index.html" target="_blank"><em>Getting Started on Windows</em></a> guide.  You should read the guide in parallel with this article.  However, the guide is written with Visual Studio developers in mind.  In this article, we outline the steps for users of the Eclipse IDE with the MinGW compiler toolchain.  At the time of writing, the current version of the Boost C++ library is 1.44.0.  You should always choose to install the latest version.</p>
+<ol>
+<li><a title="Download the Boost C++ Libraries" href="http://www.boost.org/users/download/" target="_blank">Download</a> the latest version of the Boost C++ Libraries.</li>
+<li>Extract the zip file to the folder:  <code>c:\software</code></li>
+<li>Thus, the full path to the Boost C++ Library installation folder is:  <code>c:\software\boost_1_44_0</code></li>
+</ol>
+<h3>4.  Configure the Eclipse C++ projects to use the Boost C++ Library Headers</h3>
+<p>All Eclipse C++ projects using the Boost libraries must include the Boost C++ Library installation folder in the <em>include</em> paths.</p>
+<p>Using the <a title="Boost C++ Getting Starting on Windows" href="http://www.boost.org/doc/libs/release/more/getting_started/index.html" target="_blank"><em>Getting Started on Windows</em></a> guide, follow the tutorial <em>Build a Simple Program Using Boost</em>.  The example will use a header-only library.  The simple program reads a sequence of integers from standard input, uses Boost.Lambda to multiply each number by three, and writes them to standard output.</p>
+<ol>
+<li>Create a new project as previously illustrated in the HelloWorld Tutorial (suggested new project name is BoostLamdaExample1).</li>
+<li>Then create a new source file called <em><a>example.cpp</a></em> and cut-and-paste the sample source code from the section <em>Build a Simple Program Using Boost </em>of the guide.</li>
+<li>Include the Boost C++ Library installation folder in the <em>include</em> paths of the <em>BoostLamdaExample1</em> project.
+<ol>
+<li>Within the Eclipse IDE, within the project explorer on the left-hand-side, select the C++ project using the Boost libraries.</li>
+<li>Right-click over the C++ project and select <em>properties</em> from the context menu.</li>
+<li>From within the Properties dialog box, insert the full path of the boost C++ Library installation folder into the following:
+<ol>
+<li>C/C++ Build | Settings | GCC C++ Compiler | Includes</li>
+</ol>
+<ol>
+<li>C/C++ Build | Settings | GCC G Compiler | Includes<br />
+Step 4.3 of this article is illustrated in the following figure:<br />
+<a href="http://theseekersquill.files.wordpress.com/2010/08/eclipseboostincludepath.png" target="_blank"><img class="aligncenter size-medium wp-image-545" title="Eclipse IDE Boost Include Path" src="http://theseekersquill.files.wordpress.com/2010/08/eclipseboostincludepath.png?w=300&h=243" alt="Eclipse IDE Boost Include Path" width="300" height="243" /></a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Build the project <em>BoostLamdaExample1. </em>(Ctrl-B)</li>
+<li>Verify the Run Configuration is correct.
+<ol>
+<li>From the menubar, select Run | Run Configurations.</li>
+<li>Select the <em>BoostLamdaExample1 </em>application.</li>
+<li>Verify all the parameters appear correct.<br />
+The Run Configuration is illustrated in the following figure:<br />
+<a href="http://theseekersquill.files.wordpress.com/2010/08/boostlamdarunconfig.png" target="_blank"><img class="aligncenter size-medium wp-image-547" title="BoostLamdaExample1 Run Configuration" src="http://theseekersquill.files.wordpress.com/2010/08/boostlamdarunconfig.png?w=300&h=217" alt="BoostLamdaExample1 Run Configuration" width="300" height="217" /></a></li>
+</ol>
+</li>
+<li>Run the project <em>BoostLamdaExample1</em>.</li>
+<li>Enter the input data in the console tab: <code>1 2 3</code></li>
+<li>Input <em>z </em>to exit the program.</li>
+<li>If you are able to run the program successfully, then you have built and run a C++ application using a Boost header library.</li>
+</ol>
+<h3>5.  Compile and build the Boost C++ Binary Libraries</h3>
+<p>The Boost C++ Libraries come as source code.  Most of the Boost libraries are header-only libraries.  They consist of header files containing templates and inline functions and do not require separately compiled binary libraries or special treatment when linking.  Although most of the libraries  consist solely of header files, there are some important binary libraries required and thus, they must be built.</p>
+<p>There are prebuilt binaries of the Boost C++ library for Visual Studio (and only Visual Studio) available for free and may be downloaded from:  <a title="BoostPro Visual Studio binary Libraries" href="http://www.boostpro.com/download/" target="_blank">BoostPro</a></p>
+<p>We are using the Eclipse C++ IDE with MinGW and so we must compile and build the Boost C++ binary libraries ourselves. We will use <em>Bjam</em>.  <em>Bjam </em>is the command-line tool that drives the Boost Build system. To  build Boost binaries, we invoke <em>bjam </em>from the Boost C++ Library installation folder.  We will first update two batch files to ensure the build process will proceed smoothly.</p>
+<ol>
+<li>Set the toolset to GCC.
+<ol>
+<li>Edit the file:  <code>c:\software\boost_1_44_0\bootstrap.bat</code></li>
+<li>Replace the following line:<br />
+<code>set toolset=msvc</code> with the line:  <code>set toolset=gcc</code></li>
+<li>Save and exit the file.</li>
+</ol>
+</li>
+<li>Update the build batch file with the correct location of the MinGW toolchain (compiler and linker).
+<ol>
+<li>Edit the file: <code>c:\software\boost_1_44_0\tools\jam\src\build.bat</code></li>
+<li>Under the procedure <em>:Guess_toolset</em>, update the MinGW entry to point to the correct folder:<br />
+<code>call :Clear_Error<br />
+if EXIST "C:\software\eclipse\mingw\bin\gcc.exe" (<br />
+set "BOOST_JAM_TOOLSET=mingw"<br />
+set "BOOST_JAM_TOOLSET_ROOT=C:\software\eclipse\mingw\"<br />
+goto :eof)</code></li>
+<li>Optionally, remove all other blocks of code similar to the above codeblock from the procedure <em>:Guess_toolset</em>.<em> </em>This is advisable because you may find that the build procedure quickly exits with the error message saying it cannot find the compiler.  Removing all other codeblocks will ensure the compiler and toolset are set correctly.<br />
+The following figure illustrates the complete <em>:Guess_toolset </em>procedure in my version of build.bat.<br />
+<a href="http://theseekersquill.files.wordpress.com/2010/08/guesstoolkitprocedure1.png" target="_blank"><img class="aligncenter size-medium wp-image-555" title="GuessToolkit Procedure" src="http://theseekersquill.files.wordpress.com/2010/08/guesstoolkitprocedure1.png?w=300&h=201" alt="GuessToolkit Procedure" width="300" height="201" /></a></li>
+</ol>
+</li>
+<li>Compile and Build the Boost C++ Library binaries from the command prompt.
+<ol>
+<li>Open up a command prompt at:   <code>c:\software\boost_1_44_0</code></li>
+<li>Add the MinGW bin folder to the PATH.<code><br />
+set PATH=c:\software\eclipse\mingw\bin;%PATH%</code></li>
+<li>Optionally, add python to the end of the PATH.  (Obviously, you may need to download and install it).<code><br />
+set PATH=%PATH%;c:\python27;</code></li>
+<li>Enter the command:<code><br />
+booststrap</code><br />
+This should successfully build the executable <em>Bjam</em>.  If not, please review steps 5.1, 5.2 and 5.3.</li>
+<li>Build the Boost Library binaries by issuing the following command (This may take over 2hrs to complete):<br />
+<code>bjam --toolset=gcc  --build-dir=c:\software\boost_1_44_0\build  --build-type=complete  stage</code></p>
+<ol>
+<li> The newly built Boost C++ Binary Libraries are generated in the folder: <code>c:\software\boost_1_44_0\stage\lib</code></li>
+<li>The option: <code>--build-type=complete</code> will generate both debug and release builds of the Boost C++ libraries.  This is suitable for developers.</li>
+<li>The option: <code>--build-type=minimal </code>will generate release builds only of the Boost C++ libraries.   This may become an issue for developers who want to create debug builds of their projects.  Since the compiler automatically try to link against the debug builds of the Boost C++ Libraries, an error message is displayed.</li>
+<li>The declaration of <em>stage</em> or <em>install </em>specifies whether the Boost C++ Libraries are installed in a subfolder named <em>stage</em> or system-wide. The meaning of system-wide depends on the operating system. In Windows, the target directory is <em>c:\boost</em>,  in Linux it is <em>/usr/local. </em>The target directory can also be explicitly specified using the <em>&#8211;prefix</em> option.</li>
+<li>The intermediate files are generated in the build folder: <code>c:\software\boost_1_44_0\build</code> You may delete the build folder when the entire build process has completed.</li>
+<li>If you have a multi-core processor, you can accelerate the build process.  The option: <code>-j N</code> will run up to <em>n</em> shell commands concurrently. The default is 1.  I have an Extreme Quad-Core processor, and adding the option <em>-j 4</em> reduced the build time from just over 2hrs to just under 40 minutes.</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3>6.  Configure the Eclipse C++ projects to use the Boost C++ Binary Libraries</h3>
+<ol>
+<li>All Eclipse C++ project using the Boost C++ binary libraries must include the Boost Binary Library folder in the <em>Libraries (-L) </em>settings.
+<ol>
+<li>From with the Eclipse IDE, right-click on the selected project and select <em>Properties</em>.</li>
+<li>Place the Boost Binary Library folder path  <em>c:\software\boost_1_44_0\stage\lib </em>in the following location:<br />
+C/C++ Build | Settings | MinGW C++ Linker | Libraries | Library search path (-L).</li>
+</ol>
+</li>
+<li>All Eclipse C++ projects using a specific Boost C++ binary library must include the specific binary library in the Libraries (-l) settings.
+<ol>
+<li>From with the Eclipse IDE, right-click on the selected project and select <em>Properties</em>.</li>
+<li>Place the name of the specific binary library in the following location:<br />
+C/C++ Build | Settings | MinGW C++ Linker | Libraries | Libraries (-l).</li>
+<li><strong>IMPORTANT: </strong>To link a Boost C++ Binary library, e.g.: <code>libboost_regex-mgw44-1_44.a</code> the command line option should be: <code>-lboost_regex-mgw44-1_44</code> (i.e.: Remove the prefix <em>lib</em> and the postfix <em>.a</em>)<em>.</em></li>
+</ol>
+</li>
+<li>Step 6 in this article is illustrated in the following figure:<br />
+<a href="http://theseekersquill.files.wordpress.com/2010/08/boostbinarylibraryfolder.png" target="_blank"><img class="aligncenter size-medium wp-image-549" title="Boost Binary Library Folder Configuration" src="http://theseekersquill.files.wordpress.com/2010/08/boostbinarylibraryfolder.png?w=300&h=247" alt="Boost Binary Library Folder Configuration" width="300" height="247" /></a></li>
+</ol>
+<h3>7.  Final step &#8211; Verify we can use the Boost C++ Binary Libraries from a sample application.</h3>
+<ol>
+<li>Using the <a title="Boost C++ Getting Starting on Windows" href="http://www.boost.org/doc/libs/release/more/getting_started/index.html" target="_blank"><em>Getting Started on Windows</em></a> guide, follow the example<em> Link Your Program to a Boost Library</em>.  To demonstrate linking with a Boost binary library, the sample program extracts the subject lines from emails.  It uses the <a title="Boost Regex Library" href="http://www.boost.org/doc/libs/1_44_0/libs/regex/index.html" target="_blank">Boost.Regex</a> library, which has a separately-compiled binary component.</li>
+<li>Create a new C++ project in Eclipse called <em>BoostRegexExample1 </em>and create a new source file called <em>regex.cpp.</em></li>
+<li>Cut-and-paste the sample code from the section <em>Link Your Program to a Boost Library </em>of the guide into <em>regex.cpp</em>.</li>
+<li>Add the Boost installation folder to the Include Path of the <em>BoostRegexExample1 </em>project as indicated in step 4.3 of this article.</li>
+<li>Add the Boost Library binary folder to the Library (-L) Path of the <em>BoostRegexExample1 </em>project as indicated in step 6.1 of this article.</li>
+<li>Add the specific Boost Regex Binary Library <em>boost_regex-mgw44-1_44</em> to the library (-l) settings as indicated in step 6.2 of this article.
+<ol>
+<li>To find the name of a specific library, please browse the Boost Library binary folder, and select the library filename such that it is the shortest filename with the prefix <em>libboost_regex. </em>The similar looking filenames refer to the same library compiled with different options (statically linked, dynamically link, release-build, debug-build, and so on).</li>
+</ol>
+</li>
+<li>Compile and build (Ctrl-B) the project:  <em>BoostRegexExample1.</em></li>
+<li>Verify the Run Configuration parameters are correct:
+<ol>
+<li>From the Eclipse IDE menubar, select Run | Run Configurations.</li>
+<li>Ensure the <em>BoostRegexExample1 </em>C++ application is selected.</li>
+<li>Ensure the Build configuration is set to Debug.</li>
+<li>Click <em>Run</em>.</li>
+</ol>
+</li>
+<li>Cut-and-paste the following sample email into the console as input:<br />
+<code>To: Bob<br />
+From: Mary<br />
+Subject: The test is successful<br />
+Body: Great news, Boost Library integration works.</code></li>
+<li>If the following message is printed out, then the program ran successfully (using the Boost Binary Library Regex).<br />
+<code>The test is successful</code></li>
+<li>To exit the program, input <em>Ctrl-Z</em> to the console.</li>
+<li>Congratulations! You may now use the Boost Libraries in your C++ application from the Eclipse CDT IDE using the MinGW toolchain.</li>
+</ol>
+<h3>References</h3>
+<ul>
+<li><a href="http://www.uvnc.com/" target="_blank"></a><a title="Eclipse C++ IDE" href="http://www.eclipse.org/cdt/" target="_blank">Eclipse C++ IDE</a> &#8211; Free fully functional C and C++ Integrated Development Environment.</li>
+<li><a title="Boost C++ Libraries" href="http://www.boost.org/" target="_blank">Boost C++ Libraries</a> &#8211; Free peer-reviewed portable C++ source                   libraries.</li>
+<li><a title="MinGW.org" href="http://www.mingw.org/" target="_blank">MinGW </a>-  Free port of the GNU Compiler Collection (GCC), and GNU Binutils, for use in  the development of native Microsoft Windows applications.</li>
+<li><a title="Wascana Eclipse Labs homepage" href="http://code.google.com/a/eclipselabs.org/p/wascana/" target="_blank">Wascana </a>- Wascana is the Eclipse C/C++ IDE for the Windows along with the MinGW GNU toolchain.</li>
+<li><a title="LearnCPP.com" href="http://www.learncpp.com/" target="_blank">LearnCpp.com</a> &#8211; Free website devoted to teaching you to program in C++.</li>
+<li><a title="Online C++ Cookbook" href="http://www.java2s.com/Tutorial/Cpp/CatalogCpp.htm" target="_blank">Online C++ Cookbook</a>. &#8211; Excellent resource for Java, C++, C#, Oracle and SQL developers.</li>
+<li><a title="Online Boost C++ Library Book" href="http://en.highscore.de/cpp/boost/" target="_blank">The Boost C++ Libraries Book</a> &#8211; An online book providing an overview on using the Boost C++ libraries.  The book is released under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">Creative Commons License</a>.</li>
+<li><a title="The project leader of the Eclipse CDT project" href="http://cdtdoug.blogspot.com" target="_blank">cdtdoug.blogspot.com</a> &#8211; Personal blog of the Eclipse CDT project  leader providing insights into his mind and the future directions of the project.</li>
+</ul>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-stumbleupon"><a rel="nofollow" class="share-stumbleupon sd-button share-icon" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?share=stumbleupon" title="Click to share on StumbleUpon"><span>StumbleUpon</span></a></li><li class="share-digg"><a rel="nofollow" class="share-digg sd-button share-icon" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?share=digg" title="Click to Digg this post"><span>Digg</span></a></li><li class="share-reddit"><a rel="nofollow" class="share-reddit sd-button share-icon" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?share=reddit" title="Click to share on Reddit"><span>Reddit</span></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div></div></div><div class="wpl-likebox sd-block sd-like"><h3 class="sd-title">Like this:</h3><div class="sd-content"><div id="like-467" class="wpl-button "><a href='http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?like=1&amp;_wpnonce=4b4642de45' title='I like this.' class='like needs-login sd-button' rel='nofollow'><span>Like</span></a></div><div class="wpl-count sd-like-count">One blogger likes this.</div><ul class="wpl-avatars sd-like-gravatars"><li><a href="http://gravatar.com/oliversampson" title="Oliver" class="wpl-liker" rel="nofollow"><img src='http://0.gravatar.com/avatar/91baaba62648a9da63f5e6faad51f8e3?s=30&amp;d=identicon&amp;r=G' class='avatar avatar-30' alt='Oliver' width='30' height='30' /></a></li></ul></div></div></div>
+							</div>
+			<p class="postmetadata">Posted in <a href="http://theseekersquill.wordpress.com/category/computer/boost/" title="View all posts in Boost" rel="category tag">Boost</a>, <a href="http://theseekersquill.wordpress.com/category/computer/c/" title="View all posts in C++" rel="category tag">C++</a>, <a href="http://theseekersquill.wordpress.com/category/computer/" title="View all posts in Computer" rel="category tag">Computer</a>, <a href="http://theseekersquill.wordpress.com/category/computer/development/" title="View all posts in Development" rel="category tag">Development</a>, <a href="http://theseekersquill.wordpress.com/category/computer/eclipse-ide/" title="View all posts in Eclipse IDE" rel="category tag">Eclipse IDE</a>, <a href="http://theseekersquill.wordpress.com/category/computer/mingw/" title="View all posts in MinGW" rel="category tag">MinGW</a>, <a href="http://theseekersquill.wordpress.com/category/computer/programming/" title="View all posts in Programming" rel="category tag">Programming</a>, <a href="http://theseekersquill.wordpress.com/category/computer/windows/" title="View all posts in Windows" rel="category tag">Windows</a> <strong>|</strong> Tagged <a href="http://theseekersquill.wordpress.com/tag/boost/" rel="tag">Boost</a>, <a href="http://theseekersquill.wordpress.com/tag/c-2/" rel="tag">c++</a>, <a href="http://theseekersquill.wordpress.com/tag/development-2/" rel="tag">development</a>, <a href="http://theseekersquill.wordpress.com/tag/eclipse/" rel="tag">Eclipse</a>, <a href="http://theseekersquill.wordpress.com/tag/gcc/" rel="tag">gcc</a>, <a href="http://theseekersquill.wordpress.com/tag/ide/" rel="tag">IDE</a>, <a href="http://theseekersquill.wordpress.com/tag/mingw-2/" rel="tag">mingw</a>, <a href="http://theseekersquill.wordpress.com/tag/programming-2/" rel="tag">programming</a>, <a href="http://theseekersquill.wordpress.com/tag/windows/" rel="tag">Windows</a> <strong>|</strong> </p>
+		</div>
+
+		<h3 id="comments">9 comments</h3>
+
+	<ol class="commentlist">
+	
+<li class="comment even thread-even depth-1 highlander-comment" id="comment-106">
+<div id="div-comment-106">
+	<div class="comment-author vcard">
+	<img alt='' src='http://1.gravatar.com/avatar/7c7a972ac7ccf99619c4ef156010c769?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>I seemed to be aware about this previously, nevertheless there was clearly a few helpful bits that concluded the picture for me personally, thank you so much!</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-106" title="">by</a>
+						<cite class="fn"><a href='http://satellitedirectlyonyourcomputer.com/tag/technology' rel='external nofollow' class='url'>Candice Pulanco</a></cite>
+			 February 13, 2011 at 2:02 am						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=106#respond' onclick='return addComment.moveForm("div-comment-106", "106", "respond", "467")'>Reply</a>	</div>
+</div>
+</li>
+
+<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="comment-108">
+<div id="div-comment-108">
+	<div class="comment-author vcard">
+	<img alt='' src='http://2.gravatar.com/avatar/e091bba2ec34513f01b75235bc2ced9c?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Section 5.2.1 for Boost 1.46: &#8220;C:\software\boost_1_46_0\tools\build\v2\engine\src\build.bat&#8221;.<br />
+Great article! Thanks a lot.</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-108" title="">by</a>
+						<cite class="fn">Adriano</cite>
+			 February 27, 2011 at 4:11 pm						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=108#respond' onclick='return addComment.moveForm("div-comment-108", "108", "respond", "467")'>Reply</a>	</div>
+</div>
+</li>
+
+<li class="comment byuser comment-author-oliversampson even thread-even depth-1 parent highlander-comment" id="comment-120">
+<div id="div-comment-120">
+	<div class="comment-author vcard">
+	<img alt='' src='http://0.gravatar.com/avatar/91baaba62648a9da63f5e6faad51f8e3?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thanks for this article! I&#8217;m trying to do this for the Boost_1_46_1 build, and when I run the bootstrap batch file (which ran dandily building the Visual C libraries!) I get a &#8220;This program can&#8217;t start because mspdb100.dll is missing from your computer. Try reinstalling the program to fix this problem.&#8221; Joy! (Any tips?) And as Adriano writes, the build.bat file has moved.</p>
+<p>I&#8217;ve just subscribed to the Boost.Build mailing list to see if I can start hunting down this problem.</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-120" title="">by</a>
+						<cite class="fn"><a href='http://oliversampson.wordpress.com' rel='external nofollow' class='url'>Oliver</a></cite>
+			 March 21, 2011 at 1:04 am						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=120#respond' onclick='return addComment.moveForm("div-comment-120", "120", "respond", "467")'>Reply</a>	</div>
+</div>
+<ul class='children'>
+
+<li class="comment odd alt depth-2 highlander-comment" id="comment-149">
+<div id="div-comment-149">
+	<div class="comment-author vcard">
+	<img alt='' src='http://2.gravatar.com/avatar/58c498841c8a36f1d74146fea48f4464?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thanks a lot, helped me after hours of futile attempts linking against boost.</p>
+<p># IMPORTANT: To link a Boost C++ Binary library, e.g.: libboost_regex-mgw44-1_44.a the command line option should be: -lboost_regex-mgw44-1_44 (i.e.: Remove the prefix lib and the postfix .a).</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-149" title="">by</a>
+						<cite class="fn">S.</cite>
+			 May 23, 2011 at 1:54 pm						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=149#respond' onclick='return addComment.moveForm("div-comment-149", "149", "respond", "467")'>Reply</a>	</div>
+</div>
+</li>
+</ul>
+</li>
+
+<li class="comment even thread-odd thread-alt depth-1 parent highlander-comment" id="comment-227">
+<div id="div-comment-227">
+	<div class="comment-author vcard">
+	<img alt='' src='http://1.gravatar.com/avatar/d6b37696693ffe2b4281edfecebec701?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thanks in advance,</p>
+<p>I found the problem that I can not input into the console at the step 7.8. Could you please help me one more.</p>
+<p>Thanks.</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-227" title="">by</a>
+						<cite class="fn">Vinh Vo</cite>
+			 September 14, 2011 at 8:53 am						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=227#respond' onclick='return addComment.moveForm("div-comment-227", "227", "respond", "467")'>Reply</a>	</div>
+</div>
+<ul class='children'>
+
+<li class="comment odd alt depth-2 highlander-comment" id="comment-235">
+<div id="div-comment-235">
+	<div class="comment-author vcard">
+	<img alt='' src='http://s0.wp.com/imgpress?url=http%3A%2F%2Fgraph.facebook.com%2F516028927%2Fpicture%3Ftype%3Dlarge%26_md5%3D784037c2d22edc2bf4d46731c6da8ee1&#038;resize=32%2C32' class='avatar avatar-32' height='32' width='32' />	<p><a href="http://stackoverflow.com/questions/3443254/eclipse-cdt-using-mingw-does-not-output-in-console" rel="nofollow">http://stackoverflow.com/questions/3443254/eclipse-cdt-using-mingw-does-not-output-in-console</a></p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-235" title="">by</a>
+						<cite class="fn"><a href='http://www.facebook.com/abhaybhaskar' rel='external nofollow' class='url'>Abhay Bhaskar</a></cite>
+			 October 8, 2011 at 4:44 pm						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=235#respond' onclick='return addComment.moveForm("div-comment-235", "235", "respond", "467")'>Reply</a>	</div>
+</div>
+</li>
+</ul>
+</li>
+
+<li class="comment even thread-even depth-1 highlander-comment" id="comment-262">
+<div id="div-comment-262">
+	<div class="comment-author vcard">
+	<img alt='' src='http://2.gravatar.com/avatar/e958d52cac56772f11bd9f2971fc4d44?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>I just installed Boost 1.48, and I found this guide invaluable (had to make a few minor tweaks).  I followed from step 4.<br />
+Step 5.1 (edit bootstrap.bat):  I also had to add the argument &#8220;mingw&#8221; after &#8220;call.\build.bat&#8221;<br />
+Step 5.2 (edit build.bat):  It is now in \tools\build\v2\engine.<br />
+Step 5.3.5 (build binaries):  The bootstrap told me to type &#8220;.\b2&#8243; and this seemed to suffice; I did not do the line command shown here but it all seems to work (took about 15 minutes).<br />
+Many thanks!</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-262" title="">by</a>
+						<cite class="fn">Karin J</cite>
+			 December 27, 2011 at 6:52 pm						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=262#respond' onclick='return addComment.moveForm("div-comment-262", "262", "respond", "467")'>Reply</a>	</div>
+</div>
+</li>
+
+<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="comment-264">
+<div id="div-comment-264">
+	<div class="comment-author vcard">
+	<img alt='' src='http://0.gravatar.com/avatar/0eac0c4d775fbfe2fd17e934802561ee?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thank You! You save me lot&#8217;s of time!<br />
+Don&#8217;t you want to do the same to POCO C++; ITK and VTK <img src='http://s0.wp.com/wp-includes/images/smilies/icon_smile.gif?m=1129645325g' alt=':)' class='wp-smiley' /> </p>
+<p>Great Job and Thank You Again!</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-264" title="">by</a>
+						<cite class="fn"><a href='http://blog.danielcosta.pt' rel='external nofollow' class='url'>Daniel Costa</a></cite>
+			 January 3, 2012 at 4:36 pm						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=264#respond' onclick='return addComment.moveForm("div-comment-264", "264", "respond", "467")'>Reply</a>	</div>
+</div>
+</li>
+
+<li class="comment even thread-even depth-1 highlander-comment" id="comment-276">
+<div id="div-comment-276">
+	<div class="comment-author vcard">
+	<img alt='' src='http://1.gravatar.com/avatar/d1c066320e8b1e62a95aa1cfd840769c?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thank you so much for this explanation.i followed it to install and build boost 1.48.0 .i had the problem that eclipse was terminated once i run the program.i fixed this problem by putting the directory of the binary libraries in my system environment variables.</p>
+	<small class="comment-meta commentmetadata">
+						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-276" title="">by</a>
+						<cite class="fn">aiman</cite>
+			 February 28, 2012 at 8:18 am						 						 </small><br />
+	</div>
+	<div class="reply">
+	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=276#respond' onclick='return addComment.moveForm("div-comment-276", "276", "respond", "467")'>Reply</a>	</div>
+</div>
+</li>
+	</ol>
+
+	<div class="navigation">
+		<div class="alignleft"></div>
+		<div class="alignright"></div>
+	</div>
+	<br />
+
+  
+
+
+								<div id="respond">
+				<h3 id="reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2010/08/24/howto-boost-mingw/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://theseekersquill.wordpress.com/wp-comments-post.php" method="post" id="commentform">
+																										
+
+
+												
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
+
+<div class="comment-form-field comment-textarea">
+	<label for="comment">Enter your comment here...</label>
+	<div id="comment-form-comment"><textarea id="comment" name="comment"></textarea></div>
+</div>
+
+<div id="comment-form-identity">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&forcedefault=y&d=identicon" alt="Gravatar" width="25" class="no-grav" />
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="text" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="text" value="" /></div>
+				</div> 
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="http://s2.wp.com/wp-content/mu-plugins/highlander-comments/images/wplogo.png?m=1289230950g" alt="WordPress.com Logo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="http://1.gravatar.com/avatar/d8ce4866b7a36ec5a18e4f64b93cd3a4?s=25" />
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="38122359" />
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="86037db90bde5110b64530de6d567dc857845d3e" />
+				<p class="comment-form-posting-as pa-wordpress"><strong>pyrce:</strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon" alt="Twitter picture" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon" alt="Facebook photo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+	
+	
+</div>
+
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+});
+</script>
+
+<div id="comment-form-subscribe"> 
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" tabindex="6"/> <label class="subscribe-label" id="subscribe-label" for="subscribe">Notify me of follow-up comments via email.</label></p></div>
+
+												<p class="form-submit">
+							<input name="submit" type="submit" id="comment-submit" value="Post Comment" />
+							<input type='hidden' name='comment_post_ID' value='467' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						
+<input type="hidden" name="genseq" value="1345406142" />
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="78ff072c5a" /></p><script type='text/javascript' src='http://s2.wp.com/wp-content/mu-plugins/akismet-2.5/form.js?m=1308783962g'></script>
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="85"/></p>					</form>
+							</div><!-- #respond -->
+			<div style="clear: both"></div>			
+
+	
+	</div>
+
+	<div id="sidebar">
+		<ul>
+			<li>
+						</li>
+<li id="search-2" class="widget widget_search"><form method="get" id="searchform" action="http://theseekersquill.wordpress.com/">
+<div><input type="text" value="search archives" name="s" id="s" onblur="if (this.value == '') {this.value = 'search archives';}" onfocus="if (this.value == 'search archives') {this.value = '';}" />
+<input type="submit" id="searchsubmit" />
+</div>
+</form>
+</li>
+<li id="wp_tag_cloud" class="widget wp_widget_tag_cloud"><h2 class="widgettitle">Tag Cloud</h2>
+<div style="overflow:hidden"><a href='http://theseekersquill.wordpress.com/tag/10-04/' class='tag-link-21459063' title='2 topics' style='font-size: 12.2pt;'>10.04</a>
+<a href='http://theseekersquill.wordpress.com/tag/64-bit/' class='tag-link-248861' title='1 topic' style='font-size: 8pt;'>64-bit</a>
+<a href='http://theseekersquill.wordpress.com/tag/applications/' class='tag-link-357' title='1 topic' style='font-size: 8pt;'>applications</a>
+<a href='http://theseekersquill.wordpress.com/tag/boost/' class='tag-link-214632' title='1 topic' style='font-size: 8pt;'>Boost</a>
+<a href='http://theseekersquill.wordpress.com/tag/c-2/' class='tag-link-1634593' title='1 topic' style='font-size: 8pt;'>c++</a>
+<a href='http://theseekersquill.wordpress.com/tag/canon/' class='tag-link-16479' title='1 topic' style='font-size: 8pt;'>Canon</a>
+<a href='http://theseekersquill.wordpress.com/tag/citation/' class='tag-link-141391' title='1 topic' style='font-size: 8pt;'>citation</a>
+<a href='http://theseekersquill.wordpress.com/tag/computer/' class='tag-link-258' title='5 topics' style='font-size: 19.2pt;'>Computer</a>
+<a href='http://theseekersquill.wordpress.com/tag/development-2/' class='tag-link-22974853' title='1 topic' style='font-size: 8pt;'>development</a>
+<a href='http://theseekersquill.wordpress.com/tag/driver/' class='tag-link-129841' title='1 topic' style='font-size: 8pt;'>driver</a>
+<a href='http://theseekersquill.wordpress.com/tag/dvcs/' class='tag-link-2291152' title='1 topic' style='font-size: 8pt;'>DVCS</a>
+<a href='http://theseekersquill.wordpress.com/tag/eclipse/' class='tag-link-18466' title='1 topic' style='font-size: 8pt;'>Eclipse</a>
+<a href='http://theseekersquill.wordpress.com/tag/firefox/' class='tag-link-45' title='1 topic' style='font-size: 8pt;'>Firefox</a>
+<a href='http://theseekersquill.wordpress.com/tag/git/' class='tag-link-209196' title='1 topic' style='font-size: 8pt;'>Git</a>
+<a href='http://theseekersquill.wordpress.com/tag/gitextensions/' class='tag-link-29990908' title='1 topic' style='font-size: 8pt;'>GitExtensions</a>
+<a href='http://theseekersquill.wordpress.com/tag/handbrake/' class='tag-link-1133648' title='1 topic' style='font-size: 8pt;'>handbrake</a>
+<a href='http://theseekersquill.wordpress.com/tag/harvard/' class='tag-link-33865' title='1 topic' style='font-size: 8pt;'>harvard</a>
+<a href='http://theseekersquill.wordpress.com/tag/howto/' class='tag-link-1921' title='7 topics' style='font-size: 22pt;'>Howto</a>
+<a href='http://theseekersquill.wordpress.com/tag/latex/' class='tag-link-8800' title='2 topics' style='font-size: 12.2pt;'>LaTeX</a>
+<a href='http://theseekersquill.wordpress.com/tag/life/' class='tag-link-124' title='1 topic' style='font-size: 8pt;'>Life</a>
+<a href='http://theseekersquill.wordpress.com/tag/linux/' class='tag-link-610' title='3 topics' style='font-size: 15pt;'>Linux</a>
+<a href='http://theseekersquill.wordpress.com/tag/lucid/' class='tag-link-316925' title='1 topic' style='font-size: 8pt;'>lucid</a>
+<a href='http://theseekersquill.wordpress.com/tag/lucid-lynx/' class='tag-link-25436207' title='1 topic' style='font-size: 8pt;'>Lucid Lynx</a>
+<a href='http://theseekersquill.wordpress.com/tag/meaning/' class='tag-link-5366' title='1 topic' style='font-size: 8pt;'>meaning</a>
+<a href='http://theseekersquill.wordpress.com/tag/miktex/' class='tag-link-834578' title='1 topic' style='font-size: 8pt;'>MiKTeX</a>
+<a href='http://theseekersquill.wordpress.com/tag/mingw-2/' class='tag-link-41177547' title='1 topic' style='font-size: 8pt;'>mingw</a>
+<a href='http://theseekersquill.wordpress.com/tag/mp610/' class='tag-link-4790091' title='1 topic' style='font-size: 8pt;'>MP610</a>
+<a href='http://theseekersquill.wordpress.com/tag/philosophy/' class='tag-link-1868' title='1 topic' style='font-size: 8pt;'>Philosophy</a>
+<a href='http://theseekersquill.wordpress.com/tag/printer/' class='tag-link-68962' title='1 topic' style='font-size: 8pt;'>printer</a>
+<a href='http://theseekersquill.wordpress.com/tag/programming-2/' class='tag-link-24194809' title='1 topic' style='font-size: 8pt;'>programming</a>
+<a href='http://theseekersquill.wordpress.com/tag/remote-desktop/' class='tag-link-97227' title='1 topic' style='font-size: 8pt;'>Remote Desktop</a>
+<a href='http://theseekersquill.wordpress.com/tag/snapshot/' class='tag-link-8155' title='1 topic' style='font-size: 8pt;'>snapshot</a>
+<a href='http://theseekersquill.wordpress.com/tag/source-control/' class='tag-link-53511' title='1 topic' style='font-size: 8pt;'>Source Control</a>
+<a href='http://theseekersquill.wordpress.com/tag/sumatrapdf/' class='tag-link-7780023' title='1 topic' style='font-size: 8pt;'>SumatraPDF</a>
+<a href='http://theseekersquill.wordpress.com/tag/texniccenter/' class='tag-link-834581' title='1 topic' style='font-size: 8pt;'>TeXnicCenter</a>
+<a href='http://theseekersquill.wordpress.com/tag/themes/' class='tag-link-540' title='2 topics' style='font-size: 12.2pt;'>Themes</a>
+<a href='http://theseekersquill.wordpress.com/tag/thoughts/' class='tag-link-563' title='1 topic' style='font-size: 8pt;'>thoughts</a>
+<a href='http://theseekersquill.wordpress.com/tag/tightvnc/' class='tag-link-1952944' title='1 topic' style='font-size: 8pt;'>tightvnc</a>
+<a href='http://theseekersquill.wordpress.com/tag/transcoder/' class='tag-link-2608891' title='1 topic' style='font-size: 8pt;'>transcoder</a>
+<a href='http://theseekersquill.wordpress.com/tag/ubuntu/' class='tag-link-255' title='5 topics' style='font-size: 19.2pt;'>Ubuntu</a>
+<a href='http://theseekersquill.wordpress.com/tag/url/' class='tag-link-10797' title='1 topic' style='font-size: 8pt;'>url</a>
+<a href='http://theseekersquill.wordpress.com/tag/usb/' class='tag-link-57231' title='1 topic' style='font-size: 8pt;'>USB</a>
+<a href='http://theseekersquill.wordpress.com/tag/vnc/' class='tag-link-111142' title='1 topic' style='font-size: 8pt;'>vnc</a>
+<a href='http://theseekersquill.wordpress.com/tag/vncserver/' class='tag-link-8826851' title='1 topic' style='font-size: 8pt;'>vncserver</a>
+<a href='http://theseekersquill.wordpress.com/tag/windows/' class='tag-link-800' title='2 topics' style='font-size: 12.2pt;'>Windows</a></div></li>
+<li id="archives-2" class="widget widget_archive"><h2 class="widgettitle">Archives</h2>
+		<ul>
+			<li><a href='http://theseekersquill.wordpress.com/2010/08/' title='August 2010'>August 2010</a>&nbsp;(1)</li>
+	<li><a href='http://theseekersquill.wordpress.com/2010/05/' title='May 2010'>May 2010</a>&nbsp;(1)</li>
+	<li><a href='http://theseekersquill.wordpress.com/2010/04/' title='April 2010'>April 2010</a>&nbsp;(2)</li>
+	<li><a href='http://theseekersquill.wordpress.com/2010/03/' title='March 2010'>March 2010</a>&nbsp;(4)</li>
+	<li><a href='http://theseekersquill.wordpress.com/2010/02/' title='February 2010'>February 2010</a>&nbsp;(1)</li>
+	<li><a href='http://theseekersquill.wordpress.com/2009/07/' title='July 2009'>July 2009</a>&nbsp;(2)</li>
+	<li><a href='http://theseekersquill.wordpress.com/2008/04/' title='April 2008'>April 2008</a>&nbsp;(1)</li>
+		</ul>
+</li>
+<li id="calendar-2" class="widget widget_calendar"><h2 class="widgettitle">&nbsp;</h2>
+<div id="calendar_wrap"><table id="wp-calendar">
+	<caption>August 2010</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="Monday">M</th>
+		<th scope="col" title="Tuesday">T</th>
+		<th scope="col" title="Wednesday">W</th>
+		<th scope="col" title="Thursday">T</th>
+		<th scope="col" title="Friday">F</th>
+		<th scope="col" title="Saturday">S</th>
+		<th scope="col" title="Sunday">S</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="http://theseekersquill.wordpress.com/2010/05/" title="View posts for May 2010">&laquo; May</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next" class="pad">&nbsp;</td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr>
+		<td colspan="6" class="pad">&nbsp;</td><td>1</td>
+	</tr>
+	<tr>
+		<td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td>
+	</tr>
+	<tr>
+		<td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>
+	</tr>
+	<tr>
+		<td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td>
+	</tr>
+	<tr>
+		<td>23</td><td><a href="http://theseekersquill.wordpress.com/2010/08/24/" title="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform">24</a></td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td>
+	</tr>
+	<tr>
+		<td>30</td><td>31</td>
+		<td class="pad" colspan="5">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></li>
+	<li id="recent-comments" class="widget widget_recent_comments">		<h2 class="widgettitle">Recent Comments</h2>
+		<table class='recentcommentsavatar' cellspacing='0' cellpadding='0' border='0'><tr><td title="Carlos" class="recentcommentsavatartop" style="height:48px; width:48px"><img alt='' src='http://2.gravatar.com/avatar/56f63aa778164e05a0b3d65d737ad751?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstexttop">Carlos on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-299">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr><tr><td title="BK" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://1.gravatar.com/avatar/7de705dcd9e93de44886e896fd407abf?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">BK on <a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/#comment-294">How to Install a Full MiKTeX L&hellip;</a></td></tr><tr><td title="sharkllama" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://0.gravatar.com/avatar/071d9179bef9b50c7a36d23f2f5c8a58?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">sharkllama on <a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/#comment-287">How to Install a Full MiKTeX L&hellip;</a></td></tr><tr><td title="theseekersquill" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://2.gravatar.com/avatar/82df8be80e0c8504956dfffdde9b96de?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">theseekersquill on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-285">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr><tr><td title="Jean-Pierre" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://1.gravatar.com/avatar/1580ebbdf3e98bb4f8602a51608b41cc?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">Jean-Pierre on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-284">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr></table>
+	</li>
+		<li id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widgettitle">Recent Posts</h2>
+		<ul>
+				<li><a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/" title="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform">How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform</a></li>
+				<li><a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/" title="How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)</a></li>
+				<li><a href="http://theseekersquill.wordpress.com/2010/04/30/howto-install-handbrake-snapshot/" title="How to easily and simply download, install and run the latest Handbrake development snapshot on Ubuntu Lucid Lynx&nbsp;10.04">How to easily and simply download, install and run the latest Handbrake development snapshot on Ubuntu Lucid Lynx&nbsp;10.04</a></li>
+				<li><a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/" title="LaTeX &#8211; Getting the Harvard Citation Style to work &#8211; Cite URLs&nbsp;properly.">LaTeX &#8211; Getting the Harvard Citation Style to work &#8211; Cite URLs&nbsp;properly.</a></li>
+				<li><a href="http://theseekersquill.wordpress.com/2010/03/16/vnc-server-ubuntu-windows/" title="How to install VNC server on an Ubuntu PC and remote connect to it from a Windows&nbsp;PC">How to install VNC server on an Ubuntu PC and remote connect to it from a Windows&nbsp;PC</a></li>
+				</ul>
+		</li>
+<li id="top-posts-2" class="widget widget_top-posts"><h2 class="widgettitle">Top Posts</h2>
+<ul><li><a href="http://theseekersquill.wordpress.com/2010/03/16/vnc-server-ubuntu-windows/" class="bump-view" data-bump-view="tp">How to install VNC server on an Ubuntu PC and remote connect to it from a Windows PC</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/" class="bump-view" data-bump-view="tp">How to Install a Full MiKTeX LaTeX Installation and configure TeXnicCenter on Windows XP, Windows Vista and Windows 7</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/" class="bump-view" data-bump-view="tp">How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows Platform</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/" class="bump-view" data-bump-view="tp">LaTeX - Getting the Harvard Citation Style to work - Cite URLs properly.</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2009/07/18/linux-manage-usbpendrive/" class="bump-view" data-bump-view="tp">How to Backup and Restore a USB pendrive (stick) in Ubuntu Linux</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2009/07/19/customize-ubuntu-904/" class="bump-view" data-bump-view="tp">Ubuntu 9.04 (Jaunty Jackalope) - How to Customize Themes and Appearance after a New Installation</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2010/03/07/starting-with-git/" class="bump-view" data-bump-view="tp">How to Install and Get Up and Running Quickly with GIT - a Fast, Distributed Version Control System.</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2010/04/30/howto-install-handbrake-snapshot/" class="bump-view" data-bump-view="tp">How to easily and simply download, install and run the latest Handbrake development snapshot on Ubuntu Lucid Lynx 10.04</a></li>
+<li><a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/" class="bump-view" data-bump-view="tp">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04 (Amd64)</a></li>
+</ul></li>
+<li id="pages-2" class="widget widget_pages"><h2 class="widgettitle">Pages</h2>
+		<ul>
+			<li class="page_item page-item-2"><a href="http://theseekersquill.wordpress.com/about/">About</a></li>
+		</ul>
+		</li>
+<li id="meta-3" class="widget widget_meta"><h2 class="widgettitle">Meta</h2>
+			<ul>
+			<li><a href="http://theseekersquill.wordpress.com/wp-login.php?action=register">Register</a></li>			<li><a href="http://theseekersquill.wordpress.com/wp-login.php">Log in</a></li>
+			<li><a href="http://theseekersquill.wordpress.com/feed/" title="Syndicate this site using RSS 2.0">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://theseekersquill.wordpress.com/comments/feed/" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="http://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>
+						</ul>
+</li>
+		<li id="blog-stats" class="widget widget_statscounter">			<h2 class="widgettitle">Blog Stats</h2>
+			<ul>
+			<li>178,071 hits</li>
+			</ul>
+		</li>
+<li id="text-2" class="widget widget_text">			<div class="textwidget"><a title="wordpress blog stats" href="http://www.statcounter.com/wordpress.com/" target="_blank"><img src="http://c.statcounter.com/4923521/0/1da4eda3/1/" alt="wordpress blog stats" border="0"></a></div>
+		</li>
+<li id="categories-2" class="widget widget_categories"><h2 class="widgettitle">Categories</h2>
+<select name='cat' id='cat' class='postform' >
+	<option value='-1'>Select Category</option>
+	<option class="level-0" value="357">applications&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="214632">Boost&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="2426">C++&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="258">Computer&nbsp;&nbsp;(11)</option>
+	<option class="level-0" value="1117716">Customizations&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="780">Development&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="1008475">Eclipse IDE&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="209196">Git&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="8800">LaTeX&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="124">Life&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="610">Linux&nbsp;&nbsp;(7)</option>
+	<option class="level-0" value="190609">MinGW&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="1868">Philosophy&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="196">Programming&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="97227">Remote Desktop&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="7579659">Ubuntu&nbsp;&nbsp;(4)</option>
+	<option class="level-0" value="1">Uncategorized&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="57231">USB&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="800">Windows&nbsp;&nbsp;(4)</option>
+</select>
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+	var dropdown = document.getElementById("cat");
+	function onCatChange() {
+		if ( dropdown.options[dropdown.selectedIndex].value > 0 ) {
+			location.href = "http://theseekersquill.wordpress.com/?cat="+dropdown.options[dropdown.selectedIndex].value;
+		}
+	}
+	dropdown.onchange = onCatChange;
+/* ]]> */
+</script>
+
+</li>
+		</ul>
+	</div>
+
+<div id="footer">
+	<p>
+	<a href="http://wordpress.com/?ref=footer" rel="generator">Blog at WordPress.com</a>.
+		<br />Theme: <a href="http://theme.wordpress.com/themes/neat/" title="Learn more about this theme">Neat!</a>.		<a href="http://theseekersquill.wordpress.com/feed/">Entries (RSS)</a>
+		and <a href="http://theseekersquill.wordpress.com/comments/feed/">Comments (RSS)</a>.
+	</p>
+</div>
+
+</div>
+		
+<script type="text/javascript">
+var _qevents = _qevents || [], wpcomQuantcastData = {"qacct":"p-18-mFEk4J448M","labels":",language.en,type.wpcom,posttag.boost,posttag.c-2,posttag.development-2,posttag.eclipse,posttag.gcc,posttag.ide,posttag.mingw-2,posttag.programming-2,posttag.windows"};
+function wpcomQuantcastPixel( labels, options ) {
+	var i, defaults = wpcomQuantcastData, data = { event: 'ajax' };
+
+	labels  = labels  || '';
+	options = options || {};
+
+	if ( typeof labels != 'string' )
+		options = labels;
+
+	for ( i in defaults ) {
+		data[i] = defaults[i];
+	}
+
+	for ( i in options ) {
+		data[i] = options[i];
+	}
+
+	if ( data.labels ) {
+		data.labels += ',' + labels;
+	} else {
+		data.labels = labels;
+	}
+
+	_qevents.push( data );
+};
+(function() {var elem = document.createElement('script');elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";elem.async = true;elem.type = "text/javascript";var scpt = document.getElementsByTagName('script')[0];scpt.parentNode.insertBefore(elem, scpt);  })();
+_qevents.push( wpcomQuantcastData );
+</script>
+<noscript><div style="display: none;"><img src="//pixel.quantserve.com/pixel/p-18-mFEk4J448M.gif?labels=%2Clanguage.en%2Ctype.wpcom%2Cposttag.boost%2Cposttag.c-2%2Cposttag.development-2%2Cposttag.eclipse%2Cposttag.gcc%2Cposttag.ide%2Cposttag.mingw-2%2Cposttag.programming-2%2Cposttag.windows" height="1" width="1" alt="" /></div></noscript>
+
+
+	<script type="text/javascript">
+	/* <![CDATA[ */
+	(function($){
+		$(document).on( 'ready post-load', function() {
+
+			// Remove the login box when clicking the page
+			$( document ).mousedown( function( e ) {
+				if ( null == $( e.target ).closest( '#wpl-mustlogin' ).get( 0 ) ) {
+					$( '#wpl-mustlogin' ).remove();
+				}
+			});
+
+			// Handle clicking the like button itself
+			$('.wpl-button > a.like').click( function(e) {
+				e.preventDefault();
+
+				var postid = $(this).parent().attr('id').split('like-')[1];
+				$.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
+					'action': 'wpl_record_stat',
+					'stat_name': 'loggedout_like_click'
+				} );
+
+				var tenMins = new Date();
+				tenMins.setTime( tenMins.getTime() + 600000 );
+				document.cookie = 'wpl_rand=4051ea3181; expires=' + tenMins.toGMTString() + '; domain=wordpress.com; path=/;';
+
+				$(this).parent().siblings('.wpl-count').after( '\
+					<div id="wpl-mustlogin"> \
+						<form action="https://theseekersquill.wordpress.com/wp-login.php" method="post"> \
+							<p>Just one more step to like this:</p> \
+							<label><span>Username</span> <input type="text" name="log" id="user_login" class="input" value="" size="20" tabindex="80" /></label> \
+							<label><span>Password</span> <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="81" /></label> \
+							<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="82" /> \
+							<input type="hidden" name="postid" value="' + postid + '" /> \
+							<input type="hidden" name="redirect_to" value="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw?year=2010&#038;monthnum=08&#038;day=24&#038;name=howto-boost-mingw&#038;like=1" /> \
+							<input type="hidden" name="wpl_rand" value="4051ea3181" /> \
+							<p>Not a member yet? <a href="http://wordpress.com/signup/?ref=likebox" id="wpl-signup-link">Sign up with WordPress.com</a></p> \
+						</form> \
+					</div> \
+				');
+
+				$('#wpl-mustlogin').hide().slideDown('fast');
+			} );
+
+			$('#wpl-mustlogin input.input').live( 'focus', function() {
+				$(this).prev().hide();
+			}).live( 'blur', function() {
+				if ( $(this).val() == '' ) {
+					$(this).prev().show();
+				}
+			});
+
+			$('#wpl-mustlogin input#wp-submit').live( 'click', function(e) {
+				e.preventDefault();
+
+				$.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
+					'action': 'wpl_record_stat',
+					'stat_name': 'loggedout_login_submit'
+				}, function() {
+					$('#wpl-mustlogin form').submit();
+				} );
+			});
+
+			$('#wpl-mustlogin a#wpl-signup-link').live( 'click', function(e) {
+				e.preventDefault();
+
+				var link = $(this).attr('href');
+
+				$.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
+					'action': 'wpl_record_stat',
+					'stat_name': 'loggedout_signup_click'
+				}, function() {
+					location.href = link;
+				} );
+			});
+		})
+	})(jQuery);
+	/* ]]> */
+	</script>
+<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=201233aa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://s1.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1318621548g'></script>
+<script>jQuery(document).ready(function($){ Gravatar.profile_cb = function( h, d ) { WPGroHo.syncProfileData( h, d );	}; Gravatar.my_hash = WPGroHo.my_hash; Gravatar.init( 'body', '#wp-admin-bar-my-account' ); });</script>	<div style="display:none">
+	<div class="grofile-hash-map-7c7a972ac7ccf99619c4ef156010c769">
+	</div>
+	<div class="grofile-hash-map-e091bba2ec34513f01b75235bc2ced9c">
+	</div>
+	<div class="grofile-hash-map-91baaba62648a9da63f5e6faad51f8e3">
+	</div>
+	<div class="grofile-hash-map-58c498841c8a36f1d74146fea48f4464">
+	</div>
+	<div class="grofile-hash-map-d6b37696693ffe2b4281edfecebec701">
+	</div>
+	<div class="grofile-hash-map-29cf2c00bc24947f95fc2329458b71d5">
+	</div>
+	<div class="grofile-hash-map-e958d52cac56772f11bd9f2971fc4d44">
+	</div>
+	<div class="grofile-hash-map-0eac0c4d775fbfe2fd17e934802561ee">
+	</div>
+	<div class="grofile-hash-map-d1c066320e8b1e62a95aa1cfd840769c">
+	</div>
+	<div class="grofile-hash-map-56f63aa778164e05a0b3d65d737ad751">
+	</div>
+	<div class="grofile-hash-map-7de705dcd9e93de44886e896fd407abf">
+	</div>
+	<div class="grofile-hash-map-071d9179bef9b50c7a36d23f2f5c8a58">
+	</div>
+	<div class="grofile-hash-map-82df8be80e0c8504956dfffdde9b96de">
+	</div>
+	<div class="grofile-hash-map-1580ebbdf3e98bb4f8602a51608b41cc">
+	</div>
+	</div>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"http:\/\/theseekersquill.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"http:\/\/theseekersquill.wordpress.com\/wp-login.php?action=logout&_wpnonce=f71b3675d6","homeURL":"http:\/\/theseekersquill.wordpress.com\/","postID":"467","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"","userIsLoggedIn":"","isJetpack":"0"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/mu-plugins/highlander-comments/script.js?m=1342824083g'></script>
+	
+	<div id="bit" class="loggedout-follow-normal">
+		<a class="bsub" href="javascript:void(0)"><span id='bsub-text'>Follow</span></a>
+		<div id="bitsubscribe">
+			
+					<h3><label for="loggedout-follow-field">Follow &ldquo;the seeker's quill&rdquo;</label></h3>
+		
+			<form action="https://subscribe.wordpress.com" method="post" accept-charset="utf-8" id="loggedout-follow">
+			<p>Get every new post delivered to your Inbox.</p>
+			
+			<p id="loggedout-follow-error" style="display: none;"></p>
+
+					
+			
+			<p><input type="email" name="email" style="width: 95%; padding: 1px 2px" value="Enter your email address" onfocus='this.value=(this.value=="Enter your email address") ? "" : this.value;' onblur='this.value=(this.value=="") ? "Enter email address" : this.value;'  id="loggedout-follow-field"/></p>
+
+			<input type="hidden" name="action" value="subscribe"/>
+			<input type="hidden" name="blog_id" value="3435066"/>
+			<input type="hidden" name="source" value="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/"/>
+			<input type="hidden" name="sub-type" value="loggedout-follow"/>
+
+			<input type="hidden" id="_wpnonce" name="_wpnonce" value="67276bf76e" /><input type="hidden" name="_wp_http_referer" value="/2010/08/24/howto-boost-mingw/" />
+			<p id='bsub-subscribe-button'><input type="submit" value="Sign me up" /></p>
+			</form>
+					<div id='bsub-credit'><a href="http://wordpress.com/signup/?ref=lof">Powered by WordPress.com</a></div>
+		</div><!-- #bitsubscribe -->
+	</div><!-- #bit -->
+<script type='text/javascript' src='http://s0.wp.com/wp-content/mu-plugins/post-flair/sharing/sharing.js?m=1345189394g'></script>
+<script type="text/javascript" src="http://b.scorecardresearch.com/beacon.js"></script><script type="text/javascript">try{COMSCORE.beacon({c1:2,c2:7518284});}catch(e){}</script><noscript><p class="robots-nocontent"><img src="http://b.scorecardresearch.com/p?cj=1c1=2&#038;c2=7518284" alt="" style="display:none" width="1" height="1" /></p></noscript><script type='text/javascript' src='http://s1.wp.com/wp-content/js/devicepx.js?m=1345254346g'></script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script><script src="http://s.stats.wordpress.com/w.js?21" type="text/javascript"></script>
+<script type="text/javascript">
+st_go({'blog':'3435066','v':'wpcom','user_id':'0','post':'467','subd':'theseekersquill'});
+ex_go({'crypt':'UE40eW5QN0p8M2Y/RE1zNDZ8S252Wis9XUQyb3YrcUVIU2R0VH5TdWI5d350TFdaeXR4OFRqWXZaZ1hnb1h3JURUYWlRSi1rLXpjJXU4TzRtQk8sJlltaTNaQnxmcTUxZ1ExTmcrRn5aTSV4UVRNM0s/S0F8OFtzUk5+eis0cSVzYmllZGFhU1t3K01RWGZuZkZYX3g0YUx8WlhxV1Yzck90TkY9QXQzRmpGV0JFSndyVHYuR1NyekJ8RSwtNF1LZS49Tk5LeXBtUWpfU2F3WTBLd0lMaG16YU1VNGMlUVk5M2IsdkYzWiZNJjdVdWZYLzNoM2o1Z0JxaThGQiUyNjQlTmo1ZlpWTFkmN0htYXA2UWwwUTNITjdDd0ZsRzVkRWVrcmlxSkVFR3dU'});
+addLoadEvent(function(){linktracker_init('3435066',467);});
+	</script>
+<noscript><img src="http://stats.wordpress.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+<br /><br /><br />
+</body>
+</html>
