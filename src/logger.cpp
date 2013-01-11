@@ -62,10 +62,18 @@ bool TSQueueSink::processQueue() {
 	return true;
 }
 
+/*
+ * Helper function for sinkWorker. This ensures that the
+ * weak pointer releases control inside the while-live loop.
+ */
+bool appThreadsQuitting(ApplicationWPtr app) {
+    return app.lock()->checkThreadsQuiting();
+}
+
 void TSQueueSink::sinkWorker() {
 	bool healthy = true;
 	// Keep working until the program quits
-	while(!application->checkThreadsQuiting() && healthy) {
+	while(!appThreadsQuitting(application) && healthy) {
 		healthy = processQueue();
 		// TODO sleep on msgQueue
 	}
@@ -74,9 +82,9 @@ void TSQueueSink::sinkWorker() {
 	    processQueue();
 	} else {
 		// If unhealthy, quit the entire program (if not already quiting)
-	    application->allThreadsQuit();
+	    application.lock()->allThreadsQuit();
 	}
-	application->stopTrackingThread();
+	application.lock()->stopTrackingThread();
 }
 
 }

@@ -19,6 +19,8 @@ namespace core {
 
 // Forward delcaration
 class Application;
+typedef pointers::smart<Application>::SharedPtr ApplicationPtr;
+typedef pointers::smart<Application>::WeakPtr ApplicationWPtr;
 
 namespace threading {
 
@@ -53,11 +55,11 @@ private:
 	volatile boost::uint32_t curThreadCount;
 	volatile boost::uint32_t quitIndicator;
 
-	core::Application *const application;
+	ApplicationWPtr application;
 
 protected:
 	/* Singleton constructor */
-	ThreadManager(Application *app);
+	ThreadManager(ApplicationWPtr app);
 
 public:
 	~ThreadManager() {}

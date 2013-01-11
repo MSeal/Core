@@ -37,6 +37,9 @@
 
 namespace core { namespace pointers {
 
+// Forward declaration
+namespace detail { template<typename T> class UntrackedPtr; }
+
 /*
  * This allows for remapping the names of pointers as well
  * as give unique_ptr a default deleter. C++ doesn't allow
@@ -50,19 +53,23 @@ namespace core { namespace pointers {
 template<typename T, typename UniqueDeleter=detail::DefaultDeleter<T> >
 struct smart {
     //typedef boost::shared_ptr<T> SharedPtr;
-    typedef typename detail::smart_boost<T>::SharedPtr SharedPtr;
+    typedef typename detail::smartBoost<T>::SharedPtr SharedPtr;
+    //typedef boost::enable_shared_from_this<T> Sharable;
+    typedef typename detail::Sharable<T> Sharable;
     //typedef boost::weak_ptr<T> WeakPtr;
-    typedef typename detail::smart_boost<T>::WeakPtr WeakPtr;
+    typedef typename detail::smartBoost<T>::WeakPtr WeakPtr;
     //typedef boost::intrusive_ptr<T> IntrusivePtr;
-    typedef typename detail::smart_boost<T>::IntrusivePtr IntrusivePtr;
+    typedef typename detail::smartBoost<T>::IntrusivePtr IntrusivePtr;
     //typedef boost::scoped_ptr<T> ScopedPtr;
-    typedef typename detail::smart_boost<T>::ScopedPtr ScopedPtr;
+    typedef typename detail::smartBoost<T>::ScopedPtr ScopedPtr;
     // Not using std::unique_ptr because many platforms
     // don't support std::move yet -- aka any older macs.
     //typedef boost::interprocess::unique_ptr<T, UniqueDeleter> UniquePtr;
-    typedef typename detail::smart_boost<T, UniqueDeleter>::UniquePtr UniquePtr;
+    typedef typename detail::smartBoost<T, UniqueDeleter>::UniquePtr UniquePtr;
     //typedef std::auto_ptr<T> AutoPtr;
-    typedef typename detail::smart_boost<T>::AutoPtr AutoPtr;
+    typedef typename detail::smartBoost<T>::AutoPtr AutoPtr;
+    // typedef here for the sake of same syntax capabilities
+    typedef typename detail::UntrackedPtr<T> UntrackedPtr;
 };
 
 /*
@@ -74,11 +81,11 @@ template<typename T,
          typename Allocator=std::allocator<void*> >
 struct lists {
     //typedef boost::ptr_vector<T, CloneAllocator, Allocator> PtrVector;
-    typedef typename detail::lists_boost<T, CloneAllocator, Allocator>::PtrVector PtrVector;
+    typedef typename detail::listsBoost<T, CloneAllocator, Allocator>::PtrVector PtrVector;
     //typedef boost::ptr_list<T, CloneAllocator, Allocator> PtrList;
-    typedef typename detail::lists_boost<T, CloneAllocator, Allocator>::PtrList PtrList;
+    typedef typename detail::listsBoost<T, CloneAllocator, Allocator>::PtrList PtrList;
     //typedef boost::ptr_deque<T, CloneAllocator, Allocator> PtrDeque;
-    typedef typename detail::lists_boost<T, CloneAllocator, Allocator>::PtrDeque PtrDeque;
+    typedef typename detail::listsBoost<T, CloneAllocator, Allocator>::PtrDeque PtrDeque;
 
     // Use our UniquePtrList
     typedef container::UniquePtrList<T, CloneAllocator, Allocator> UniquePtrList;
@@ -94,7 +101,7 @@ template<typename T,
          typename Allocator=std::allocator<void*> >
 struct arrays {
     //typedef boost::ptr_array<T, ArraySize, CloneAllocator> PtrArray;
-    typedef typename detail::arrays_boost<T, ArraySize, CloneAllocator, Allocator>::PtrArray PtrArray;
+    typedef typename detail::arraysBoost<T, ArraySize, CloneAllocator, Allocator>::PtrArray PtrArray;
 };
 
 /*
@@ -107,9 +114,9 @@ template<typename Key,
          typename Allocator=std::allocator<void*> >
 struct sets {
     //typedef boost::ptr_set<Key, Compare, CloneAllocator, Allocator> PtrSet;
-    typedef typename detail::sets_boost<Key, Compare, CloneAllocator, Allocator>::PtrSet PtrSet;
+    typedef typename detail::setsBoost<Key, Compare, CloneAllocator, Allocator>::PtrSet PtrSet;
     //typedef boost::ptr_multiset<Key, Compare, CloneAllocator, Allocator> PtrMultiSet;
-    typedef typename detail::sets_boost<Key, Compare, CloneAllocator, Allocator>::PtrMultiSet PtrMultiSet;
+    typedef typename detail::setsBoost<Key, Compare, CloneAllocator, Allocator>::PtrMultiSet PtrMultiSet;
 };
 
 /*
@@ -123,10 +130,51 @@ template<typename Key,
          typename Allocator=std::allocator<void*> >
 struct maps {
     //typedef boost::ptr_map<Key, T, Compare, CloneAllocator, Allocator> PtrMap;
-    typedef typename detail::maps_boost<Key, T, Compare, CloneAllocator, Allocator>::PtrMap PtrMap;
+    typedef typename detail::mapsBoost<Key, T, Compare, CloneAllocator, Allocator>::PtrMap PtrMap;
     //typedef boost::ptr_multimap<Key, T, Compare, CloneAllocator, Allocator> PtrMultiMap;
-    typedef typename detail::maps_boost<Key, T, Compare, CloneAllocator, Allocator>::PtrMultiMap PtrMultiMap;
+    typedef typename detail::mapsBoost<Key, T, Compare, CloneAllocator, Allocator>::PtrMultiMap PtrMultiMap;
 };
+
+namespace detail {
+/*
+ * A pointer which is owned elsewhere and used as a reference. Since this wraps
+ * a pointer it can be NULL -- unlike a reference -- but is not tracked in anyway.
+ * The obfuscation also makes deleting the underlying pointer accidentally
+ * impossible.
+ */
+template<typename T>
+class UntrackedPtr {
+private:
+    T *uptr;
+public:
+    UntrackedPtr(T *ptr) : uptr(ptr) {}
+    UntrackedPtr(const UntrackedPtr<T>& other) : uptr(other.uptr) {}
+
+    void swap(UntrackedPtr& other) {
+        T *tmp = uptr;
+        other.uptr = uptr;
+        uptr = tmp;
+    }
+
+    UntrackedPtr& operator=(const UntrackedPtr<T>& other) {
+        uptr = other.uptr;
+        return *this;
+    }
+
+    T* operator->() const { return uptr; }
+    T& operator*() const { return *uptr; }
+
+    T *get() const { return uptr; }
+
+    operator bool() const { return uptr; }
+    bool operator !() const { return !uptr; }
+
+    template<typename S>
+    bool operator ==(S other) const { return uptr == other; }
+    template<typename S>
+    bool operator !=(S other) const { return uptr != other; }
+};
+}
 
 }}
 #endif /* POINTERS_H_ */

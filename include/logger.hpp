@@ -25,6 +25,8 @@
 namespace core {
 // Forward declarations
 class Application;
+typedef pointers::smart<Application>::SharedPtr ApplicationPtr;
+typedef pointers::smart<Application>::WeakPtr ApplicationWPtr;
 class LoggingFactory;
 
 /*
@@ -82,12 +84,12 @@ protected:
     boost::ptr_vector<LoggingSink> sinks;
 
 	// Only a factory can produce a Logger
-	Logger(const std::string& logname, Application *const app) :
+	Logger(const std::string& logname, ApplicationWPtr app) :
 	    sinks(), name(logname), application(app) {}
 
 public:
 	const std::string name;
-    Application *const application;
+	ApplicationWPtr application;
 
 	~Logger() {}
 	// Forces the log worker to wake up and process anything in
@@ -164,14 +166,11 @@ namespace detail {
  */
 class LoggerBuilder {
 public:
-    Application *application;
-
-    // Called by TrackedFactory
-    LoggerBuilder() : application(NULL) {}
-    explicit LoggerBuilder(Application *app) : application(app) {}
+    ApplicationWPtr application;
+    explicit LoggerBuilder(ApplicationWPtr app) : application(app) {}
 
     Logger *build(const std::string& key) {
-        if (application == NULL) {
+        if (!application.lock()) {
             throwNullPointerException("Logger Builder given NULL pointer for application");
         }
         return new Logger(key, application);
@@ -187,10 +186,8 @@ protected:
     // Hide the parent getOrProduce
     Logger& getOrProduce(const std::string& key);
 
-    LoggingFactory(Application *app) {
-        // builder isn't in the initialization list -- so add app here
-        this->builder = detail::LoggerBuilder(app);
-    }
+    explicit LoggingFactory(ApplicationWPtr app) :
+            TrackedFactory(detail::LoggerBuilder(app)) {}
 };
 
 
@@ -221,7 +218,7 @@ class TSQueueSink : LoggingSink {
 protected:
     typedef core::threading::container::TSQueue<TSLevelString> MessageQueue;
     MessageQueue msgQueue;
-    Application *const application;
+    ApplicationWPtr application;
 
     typedef threading::container::TSWrapper<bool> ConditionLockable;
     ConditionLockable condLock;
@@ -230,7 +227,7 @@ protected:
     bool processQueue();
 
 public:
-    TSQueueSink(Application *const app) :
+    TSQueueSink(ApplicationWPtr app) :
         msgQueue(), application(app) {
         //TODO create thread from application's thread factory
     }

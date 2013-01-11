@@ -7,8 +7,8 @@ namespace core { namespace threading {
 namespace atomic = boost::interprocess::ipcdetail;
 
 /* Private constructor */
-ThreadManager::ThreadManager(Application *app) : threads(), curThreadCount(0),
-                                                 quitIndicator(0), application(app) {}
+ThreadManager::ThreadManager(ApplicationWPtr app) : threads(), curThreadCount(0),
+                                                    quitIndicator(0), application(app) {}
 
 /*
  * Start tracking a given thread
