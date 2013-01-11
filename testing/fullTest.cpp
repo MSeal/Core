@@ -6,4 +6,5 @@
 #include <stdio.h>
 #include "testNumUtil.hpp"
 #include "testTSQueue.hpp"
+#include "testSmartPointer.hpp"
 
