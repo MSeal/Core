@@ -21,7 +21,7 @@
  * Thus instead of:
  *  typedef core::pointers::smart::SharedPtr<MyType> MyTypePtr;
  * The compiler expects:
- *  typedef typename core::pointers::smart::SharedPtr<MyType> MyTypePtr;
+ *  typedef typename core::pointers::smart<MyType>::SharedPtr MyTypePtr;
  *
  * Also note that many of the definitions for the pointer types are hidden in
  * 'detail/boostPointers.hpp'. This is to avoid circular dependency issues.

@@ -23,6 +23,7 @@ CDT Console Output:
 	
 Windows Thread Fixes:
 	Ticket #4878
+	boost/thread/detail/config.hpp
 	For MinGW (tested on gcc 4.6 with boost 1.50):
 		line 153: #   if defined(BOOST_THREAD_PLATFORM_WIN32)
 		line 154: #       if defined(BOOST_MSVC) || defined(BOOST_INTEL_WIN)
