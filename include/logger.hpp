@@ -1,9 +1,6 @@
 /* 
  * logger.h
  * Handles all logging calls used by the program.
- *
- * Note that the #defines for logging values are listed in
- * prelaodEnums.h
  */
 
 #ifndef LOGGING_UTIL_H_
