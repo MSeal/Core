@@ -179,18 +179,12 @@ public:
 }
 
 class LoggingFactory : public TrackedFactory<const std::string, Logger, detail::LoggerBuilder> {
-    // To allow our protected constructor to be called
-    friend class Application;
-
-protected:
-    // Hide the parent getOrProduce
-    Logger& getOrProduce(const std::string& key);
-
+public:
     explicit LoggingFactory(ApplicationWPtr app) :
             TrackedFactory(detail::LoggerBuilder(app)) {}
 };
-
-
+// For easy reference elsewhere
+typedef LoggingFactory::TPtr LoggerPtr;
 
 /*
  * Timestamped message template

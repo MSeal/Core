@@ -42,9 +42,8 @@ typedef boost::shared_ptr<ThreadTracker> ThreadTrackerPtr;
  * to easily check if the program is quitting.
  */
 class ThreadManager {
-	/* To allow our protected constructor to be called */
-	friend class core::Application;
 private:
+	// Yes, this will be expensive to operate on -- but we need shared semantics
 	typedef container::TSVector<ThreadTrackerPtr> ThreadVector;
 	typedef boost::shared_ptr<ThreadVector> ThreadVectorPtr;
 	typedef ThreadVector::WrapperType ThreadVectorType;
@@ -57,11 +56,12 @@ private:
 
 	ApplicationWPtr application;
 
-protected:
-	/* Singleton constructor */
-	ThreadManager(ApplicationWPtr app);
+	// Helper function, need the declaration in header...
+	ThreadTrackerPtr stopTrackingThreadImpl(
+	        boost::function<bool(ThreadTrackerPtr)> checkFound);
 
 public:
+	ThreadManager(ApplicationWPtr app);
 	~ThreadManager() {}
 
 	/*
@@ -90,18 +90,19 @@ public:
 	 * ThreadTracker (or an empty pointer if the object didn't exist)
 	 */
 	ThreadTrackerPtr stopTrackingThread(const std::string& name);
-	ThreadTrackerPtr stopTrackingThread(const boost::thread::id id = boost::this_thread::get_id());
+	ThreadTrackerPtr stopTrackingThread(
+	        const boost::thread::id id = boost::this_thread::get_id());
 
 	/*
 	 * Tells all threads that listen to the tracker that the
 	 * program is ending
 	 */
-	void quit();
+	void quitThreads();
 
 	/*
 	 * A check for if the program is ending (used by threads)
 	 */
-	bool quiting();
+	bool checkQuiting();
 };
 
 }}

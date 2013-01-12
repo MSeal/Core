@@ -99,7 +99,7 @@ public:
         if (it == tracker.end()) {
             throw throwAttributeException("Key not found in Factory");
         }
-        return TPtr(&(*it));
+        return TPtr(it->second);
     }
 
     TPtr tryGet(const Key& key) {
@@ -107,16 +107,16 @@ public:
         if (it == tracker.end()) {
             return TPtr(NULL);
         } else {
-            return TPtr(&(*it));
+            return TPtr(it->second);
         }
     }
 
     TPtr getOrProduce(const Key& key) {
-        T *elem = tryGet(key);
-        if (elem == NULL) {
+        TPtr elem = tryGet(key);
+        if (!elem) {
             return produce(key);
         }
-        return TPtr(elem);
+        return elem;
     }
 
     /*
