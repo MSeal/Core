@@ -13,11 +13,14 @@ TODO
 * boost_system (required by thread)
 * boost_chrono (required by thread)
 * boost_unit_test_framework (for test exe's)
+
 ####Preprocessor:
 * BOOST_THREAD_NO_LIB (for static thread library inclusion)
 * CORE_DEBUG (to activate debug mode)
+
 ####CDT Console Output:
 * Add mingw/bin and mingw/msys/bin directories to PATH environment variable
+
 ### Fixes
 ####Boost Build:
 * Fix MinGW directory names in build.bat to true locations
@@ -37,16 +40,16 @@ TODO
 ### include
 All header hpp files.  
 * container  
-Custom containers and wrappers on existing containers. These do NOT include threadsafe 
-containers (look in 'threading/container').  
+	Custom containers and wrappers on existing containers. These do NOT include threadsafe 
+	containers (look in 'threading/container').  
 * detail  
-Hidden headers used for internal hacks/ugly configurations that the average user should
-never need to see.  
+	Hidden headers used for internal hacks/ugly configurations that the average user should
+	never need to see.  
 * threading  
-All thread related objects and functions. These include locks, threads, trackers, managers, 
-etc...  
-* container  
-Containers which are threadsafe or thread aware.  
+	All thread related objects and functions. These include locks, threads, trackers, managers, 
+	etc...  
+	* container  
+		Containers which are threadsafe or thread aware.  
 ### src
 All source cpp files. The subdirectory hierarchy follows the include folder hierarchy.
 ### testing
