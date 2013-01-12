@@ -19,6 +19,8 @@ namespace core {
 
 // Forward delcaration
 class Application;
+typedef pointers::smart<Application>::SharedPtr ApplicationPtr;
+typedef pointers::smart<Application>::WeakPtr ApplicationWPtr;
 
 namespace threading {
 
@@ -27,9 +29,11 @@ public:
 	const std::string name;
 	const boost::uint32_t number;
 	const ThreadPtr thread;
+	const ApplicationWPtr application;
 
-	ThreadTracker(const std::string& thrdName, boost::uint32_t thrdNumber, ThreadPtr thrd) :
-		name(thrdName), number(thrdNumber), thread(thrd) {}
+	ThreadTracker(const std::string& thrdName, boost::uint32_t thrdNumber,
+	        ThreadPtr thrd, ApplicationWPtr app) :
+		name(thrdName), number(thrdNumber), thread(thrd), application(app) {}
 };
 typedef boost::shared_ptr<ThreadTracker> ThreadTrackerPtr;
 
@@ -40,9 +44,8 @@ typedef boost::shared_ptr<ThreadTracker> ThreadTrackerPtr;
  * to easily check if the program is quitting.
  */
 class ThreadManager {
-	/* To allow our protected constructor to be called */
-	friend class core::Application;
 private:
+	// Yes, this will be expensive to operate on -- but we need shared semantics
 	typedef container::TSVector<ThreadTrackerPtr> ThreadVector;
 	typedef boost::shared_ptr<ThreadVector> ThreadVectorPtr;
 	typedef ThreadVector::WrapperType ThreadVectorType;
@@ -53,13 +56,14 @@ private:
 	volatile boost::uint32_t curThreadCount;
 	volatile boost::uint32_t quitIndicator;
 
-	core::Application *const application;
+	ApplicationWPtr application;
 
-protected:
-	/* Singleton constructor */
-	ThreadManager(Application *app);
+	// Helper function, need the declaration in header...
+	ThreadTrackerPtr stopTrackingThreadImpl(
+	        boost::function<bool(ThreadTrackerPtr)> checkFound);
 
 public:
+	ThreadManager(ApplicationWPtr app);
 	~ThreadManager() {}
 
 	/*
@@ -75,7 +79,8 @@ public:
 	ThreadTrackerPtr spawnThread(const std::string& name, boost::function<void()> worker);
 
 	/*
-	 * Functions that provide various ways of retrieving thread objects
+	 * Functions that provide various ways of retrieving thread objects.
+	 * Returns the first thread which matches.
 	 */
 	ThreadTrackerPtr getThread(const std::string & name);
 	ThreadTrackerPtr getThread(const boost::thread::id id);
@@ -88,18 +93,19 @@ public:
 	 * ThreadTracker (or an empty pointer if the object didn't exist)
 	 */
 	ThreadTrackerPtr stopTrackingThread(const std::string& name);
-	ThreadTrackerPtr stopTrackingThread(const boost::thread::id id = boost::this_thread::get_id());
+	ThreadTrackerPtr stopTrackingThread(
+	        const boost::thread::id id = boost::this_thread::get_id());
 
 	/*
 	 * Tells all threads that listen to the tracker that the
 	 * program is ending
 	 */
-	void quit();
+	void quitThreads();
 
 	/*
 	 * A check for if the program is ending (used by threads)
 	 */
-	bool quiting();
+	bool checkQuiting();
 };
 
 }}

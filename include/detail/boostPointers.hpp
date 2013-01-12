@@ -31,7 +31,7 @@ template<typename T> struct DefaultDeleter {
  * core::pointers::smart<T>::SharedPtr
  */
 template<typename T, typename UniqueDeleter=detail::DefaultDeleter<T> >
-struct smart_boost {
+struct smartBoost {
     typedef boost::shared_ptr<T> SharedPtr;
     typedef boost::weak_ptr<T> WeakPtr;
     typedef boost::intrusive_ptr<T> IntrusivePtr;
@@ -44,13 +44,28 @@ struct smart_boost {
 };
 
 /*
+ * Name wrapper on enable_shared_from_this with additional weak
+ * pointer capabilities.
+ */
+template<typename T>
+class Sharable : public boost::enable_shared_from_this<T> {
+public:
+    typename smartBoost<T>::SharedPtr sharedFromThis() {
+        return this->shared_from_this();
+    }
+    typename smartBoost<T>::WeakPtr weakFromThis() {
+        return typename smartBoost<T>::WeakPtr(sharedFromThis());
+    }
+};
+
+/*
  * Simple renaming of boost pointer lists. These are here simply to
  * consolidate the location of each, and to provide a consistent interface.
  */
 template<typename T,
          typename CloneAllocator=boost::heap_clone_allocator,
          typename Allocator=std::allocator<void*> >
-struct lists_boost {
+struct listsBoost {
     typedef boost::ptr_vector<T, CloneAllocator, Allocator> PtrVector;
     typedef boost::ptr_list<T, CloneAllocator, Allocator> PtrList;
     typedef boost::ptr_deque<T, CloneAllocator, Allocator> PtrDeque;
@@ -64,7 +79,7 @@ template<typename T,
          unsigned int ArraySize,
          typename CloneAllocator=boost::heap_clone_allocator,
          typename Allocator=std::allocator<void*> >
-struct arrays_boost {
+struct arraysBoost {
     typedef boost::ptr_array<T, ArraySize, CloneAllocator> PtrArray;
 };
 
@@ -76,7 +91,7 @@ template<typename Key,
          typename Compare=std::less<Key>,
          typename CloneAllocator=boost::heap_clone_allocator,
          typename Allocator=std::allocator<void*> >
-struct sets_boost {
+struct setsBoost {
     typedef boost::ptr_set<Key, Compare, CloneAllocator, Allocator> PtrSet;
     typedef boost::ptr_multiset<Key, Compare, CloneAllocator, Allocator> PtrMultiSet;
 };
@@ -90,7 +105,7 @@ template<typename Key,
          typename Compare=std::less<Key>,
          typename CloneAllocator=boost::heap_clone_allocator,
          typename Allocator=std::allocator<void*> >
-struct maps_boost {
+struct mapsBoost {
     typedef boost::ptr_map<Key, T, Compare, CloneAllocator, Allocator> PtrMap;
     typedef boost::ptr_multimap<Key, T, Compare, CloneAllocator, Allocator> PtrMultiMap;
 };

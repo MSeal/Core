@@ -1,5 +1,6 @@
 #include "logger.hpp"
 #include "application.hpp"
+#include "time.hpp"
 
 namespace core {
 /*
@@ -40,43 +41,70 @@ const std::string LOG_ERROR_PRE_FORMATING = "[%time%] ";
 const std::string LOG_DEBUG_PRE_FORMATING = "[%time%] (T%thread%) ";
 const std::string LOG_TIME_FORMAT = "[%yy%, %MM%, %dd%, %hh%:%mm%.%ss%]";
 
+// Converts a system time to a human readable string.
+std::string createTimeString(const boost::system_time& time) {
+    // TODO fill in (use FORMATING above)
+    return "";
+}
+
+// Converts a time stamped message to a human readable string.
+std::string formatMessage(TimeLevelString& msg) {
+    // TODO fill in (use create TimeString and FORMATING above)
+    return "";
+}
+
 /*
- * logging Worker
- * The logging worker is a thread function which processes and print all
- * queued logs.
- * These are filled by functions as they experience errors or wish to express
- * warnings/information.
+ * Checks if the application is alive still.
  */
-bool TSQueueSink::processQueue() {
-	unsigned int queued = 0;
-	try {
-        queued = 0;
-        MessageQueue::QListPtr messagesPtr = msgQueue.dequeueAll();
-        MessageQueue::QList& messages = *messagesPtr;
-        forEach(TSLevelString& msg, messages) {
+bool TSQueueSink::appLive() {
+    return !(application.lock()->checkThreadsQuiting());
+}
+
+void TSQueueSink::processQueue() {
+    // Process all messages that are available
+    while (!msgQueue.empty()) {
+        forEach(TimeLevelString& msg, *msgQueue.dequeueAll()) {
             processMessage(msg);
         }
-	} catch (...) {
-		return false;
-	}
-	return true;
+    }
 }
 
+
+/*
+ * Performs all of the work required to process msgQueues
+ * for incoming messages. Each such message is passed to
+ * processMessage for final processing. Sink workers check
+ * periodically to see if the app is still alive if no
+ * messages have arrived.
+ */
 void TSQueueSink::sinkWorker() {
-	bool healthy = true;
-	// Keep working until the program quits
-	while(!application->checkThreadsQuiting() && healthy) {
-		healthy = processQueue();
-		// TODO sleep on msgQueue
-	}
-	// If we had a health exit empty out all of our queues
-	if (healthy) {
-	    processQueue();
-	} else {
-		// If unhealthy, quit the entire program (if not already quiting)
-	    application->allThreadsQuit();
-	}
-	application->stopTrackingThread();
+    bool healthy = true;
+    while(appLive() && healthy) {
+        try {
+            processQueue();
+            // Sleep until our message queue is notified
+            // (or some time has passed)
+            condLock.timedWait(getFuture(200));
+        } catch (...) {
+            healthy = false;
+        }
+    }
+
+    // If we had a health exit empty out all of our queues
+    if (healthy) {
+        processQueue();
+    } else {
+        // If unhealthy, quit the entire program (if not already quitting)
+        application.lock()->allThreadsQuit();
+    }
+    application.lock()->threadManager.stopTrackingThread();
 }
 
+/*
+ * Initialized the sink thread for processing messages asynchronously.
+ */
+threading::ThreadTrackerPtr TSQueueSink::initSinkThread(const std::string sinkName) {
+    boost::function<void()> sinkFunc = boost::bind(&TSQueueSink::sinkWorker, this);
+    return application.lock()->threadManager.spawnThread(sinkName, sinkFunc);
+}
 }

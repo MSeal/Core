@@ -1,28 +1,47 @@
 /*
- * application.h
+ * application.hpp
  */
 
 #ifndef CORE_APPLICATION_H_
 #define CORE_APPLICATION_H_
 
+#include "pointers.hpp"
 #include "factory.hpp"
 #include "logger.hpp"
 #include "threading/threadTracker.hpp"
 
 namespace core {
-
-class Application {
-private:
+class Application : public pointers::smart<Application>::Sharable {
+public:
     LoggingFactory loggingFactory;
     threading::ThreadManager threadManager;
 
-public:
-    Application() : loggingFactory(this),  threadManager(this) {}
+    Application() : loggingFactory(weakFromThis()),
+                    threadManager(weakFromThis()) {}
 
-    // TODO update or remove these
-    bool checkThreadsQuiting() {return false;}
-    void allThreadsQuit() {}
-    void stopTrackingThread() {}
+    /*
+     * Retrieves or produces a logger by name. The returned pointer
+     * is effectively a raw pointer to the logger which should live
+     * for the duration of Application.
+     */
+    LoggerPtr getLogger(const std::string& name) {
+        return loggingFactory.getOrProduce(name);
+    }
+
+    /*
+     * Checks if the program is quitting and threads have been ordered
+     * to exit.
+     */
+    bool checkThreadsQuiting() {
+        return threadManager.checkQuiting();
+    }
+
+    /*
+     * Tells all threads/application to exit gracefully.
+     */
+    void allThreadsQuit() {
+        threadManager.quitThreads();
+    }
 };
 
 }

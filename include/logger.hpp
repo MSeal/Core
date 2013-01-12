@@ -1,9 +1,6 @@
 /* 
  * logger.h
  * Handles all logging calls used by the program.
- *
- * Note that the #defines for logging values are listed in
- * prelaodEnums.h
  */
 
 #ifndef LOGGING_UTIL_H_
@@ -15,6 +12,7 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "threading/container/tswrapper.hpp"
 #include "threading/container/tsqueue.hpp"
+#include "threading/threadTracker.hpp"
 #include "exceptions.hpp"
 #include "stringutil.hpp"
 #include "pointers.hpp"
@@ -25,12 +23,14 @@
 namespace core {
 // Forward declarations
 class Application;
+typedef pointers::smart<Application>::SharedPtr ApplicationPtr;
+typedef pointers::smart<Application>::WeakPtr ApplicationWPtr;
 class LoggingFactory;
 
 /*
  * Log severity
  *
- * Changes to this enumeration require changing:
+ * Additional changes to this enumeration require changing:
  *      LOG_..._STRING (in cpp)
  *      enumToValue<LogLevel, const std::string&> (in cpp)
  *      LOG_STRING_BIMAP (in cpp)
@@ -53,6 +53,23 @@ inline LogStringMap& enumMappings<LogLevel, std::string>() {
 template<>
 const std::string& enumToValue<LogLevel, const std::string&>(LogLevel eval);
 
+/*
+ * Timestamped message template
+ */
+template<typename T>
+class TimestampedLevelMessage {
+public:
+    LogLevel loglevel;
+    const T message;
+    const boost::system_time stamp;
+
+    explicit TimestampedLevelMessage(LogLevel level, const T& msg) :
+        loglevel(level),
+        message(msg),
+        stamp(boost::get_system_time()) {}
+};
+typedef TimestampedLevelMessage<std::string> TimeLevelString;
+typedef pointers::smart<TimeLevelString>::UniquePtr TimeLevelStringPtr;
 
 /*
  * Define the interface LoggingSink used by Loggers to
@@ -63,11 +80,80 @@ public:
     LoggingSink() {}
     virtual ~LoggingSink();
 
+    // Converts a system time to a human readable string.
+    std::string createTimeString(const boost::system_time& time);
+
+    // Converts a time stamped message to a human readable string.
+    std::string formatMessage(TimeLevelString& msg);
+
     // Allows the logger to flush all current sink requests.
-    // This defaults to doing nothing
+    // This defaults to doing nothing.
     virtual void flush() {}
 
-    virtual void sinkMessage(LogLevel level, const std::string& msg) = 0;
+    // Sinks are always defined by pushing the message into process
+    virtual void sinkMessage(LogLevel level, const std::string& msg) {
+        TimeLevelString stampedMessage(level, msg);
+        processMessage(stampedMessage);
+    }
+
+    virtual void processMessage(TimeLevelString& msg) = 0;
+};
+
+/*
+ * Defines a Thread Safe Queue sink which pushes all inputs
+ * through a queue and processes them on the other side
+ */
+class TSQueueSink : LoggingSink {
+protected:
+    typedef core::threading::container::TSQueue<TimeLevelString> MessageQueue;
+    ApplicationWPtr application;
+    MessageQueue msgQueue;
+    threading::ThreadTrackerPtr msgThread;
+
+    typedef threading::container::TSWrapper<bool> ConditionLockable;
+    ConditionLockable condLock;
+
+    /*
+     * Checks if the application is alive still.
+     */
+    bool appLive();
+
+    /*
+     * Performs all of the work required to process msgQueues
+     * for incoming messages. Each such message is passed to
+     * processMessage for final processing. Sink workers check
+     * periodically to see if the app is still alive if no
+     * messages have arrived.
+     */
+    void sinkWorker();
+    /*
+     * Pulls messages out of the msgQueue and passes them to
+     * processMessage.
+     */
+    void processQueue();
+
+    /*
+     * Initialized the sink thread for processing messages asynchronously.
+     */
+    threading::ThreadTrackerPtr initSinkThread(const std::string sinkName);
+
+public:
+    TSQueueSink(ApplicationWPtr app, const std::string sinkName = "TSLoggingSink") :
+        application(app), msgQueue(), msgThread(initSinkThread(sinkName)) {}
+    virtual ~TSQueueSink();
+
+    // Allows the logger to flush all current sink requests.
+    // This defaults to doing nothing.
+    virtual void flush() {}
+
+    // Sinks are always defined by pushing the message into process
+    void sinkMessage(LogLevel level, const std::string& msg) {
+        msgQueue.enqueue(new TimeLevelString(level, msg));
+        // Tell the sleeping thread to wake up
+        condLock.notifyOne();
+    }
+
+    virtual void processMessage(TimeLevelString& msg) = 0;
 };
 
 
@@ -82,12 +168,12 @@ protected:
     boost::ptr_vector<LoggingSink> sinks;
 
 	// Only a factory can produce a Logger
-	Logger(const std::string& logname, Application *const app) :
+	Logger(const std::string& logname, ApplicationWPtr app) :
 	    sinks(), name(logname), application(app) {}
 
 public:
 	const std::string name;
-    Application *const application;
+	ApplicationWPtr application;
 
 	~Logger() {}
 	// Forces the log worker to wake up and process anything in
@@ -164,14 +250,11 @@ namespace detail {
  */
 class LoggerBuilder {
 public:
-    Application *application;
-
-    // Called by TrackedFactory
-    LoggerBuilder() : application(NULL) {}
-    explicit LoggerBuilder(Application *app) : application(app) {}
+    ApplicationWPtr application;
+    explicit LoggerBuilder(ApplicationWPtr app) : application(app) {}
 
     Logger *build(const std::string& key) {
-        if (application == NULL) {
+        if (!application.lock()) {
             throwNullPointerException("Logger Builder given NULL pointer for application");
         }
         return new Logger(key, application);
@@ -180,71 +263,12 @@ public:
 }
 
 class LoggingFactory : public TrackedFactory<const std::string, Logger, detail::LoggerBuilder> {
-    // To allow our protected constructor to be called
-    friend class Application;
-
-protected:
-    // Hide the parent getOrProduce
-    Logger& getOrProduce(const std::string& key);
-
-    LoggingFactory(Application *app) {
-        // builder isn't in the initialization list -- so add app here
-        this->builder = detail::LoggerBuilder(app);
-    }
-};
-
-
-
-/*
- * Timestamped message template
- */
-template<typename T>
-class TimestampedLevelMessage {
 public:
-    LogLevel loglevel;
-    const T message;
-    const boost::system_time stamp;
-
-    explicit TimestampedLevelMessage(LogLevel level, const T& msg) :
-        loglevel(level),
-        message(msg),
-        stamp(boost::get_system_time()) {}
+    explicit LoggingFactory(ApplicationWPtr app) :
+            TrackedFactory(detail::LoggerBuilder(app)) {}
 };
-typedef TimestampedLevelMessage<std::string> TSLevelString;
-typedef pointers::smart<TSLevelString>::UniquePtr TSLevelStringPtr;
-
-/*
- * Defines a Thread Safe Queue sink which pushes all inputs
- * through a queue and processes them on the other side
- */
-class TSQueueSink : LoggingSink {
-protected:
-    typedef core::threading::container::TSQueue<TSLevelString> MessageQueue;
-    MessageQueue msgQueue;
-    Application *const application;
-
-    typedef threading::container::TSWrapper<bool> ConditionLockable;
-    ConditionLockable condLock;
-
-    void sinkWorker();
-    bool processQueue();
-
-public:
-    TSQueueSink(Application *const app) :
-        msgQueue(), application(app) {
-        //TODO create thread from application's thread factory
-    }
-    virtual ~TSQueueSink();
-
-    // Allows the logger to flush all current sink requests.
-    virtual void flush() {}
-
-    virtual void sinkMessage(LogLevel level, const std::string& msg) {
-        msgQueue.enqueue(new TSLevelString(level, msg));
-    }
-
-    virtual void processMessage(TSLevelString& msg) = 0;
-};
+// For easy reference elsewhere
+typedef LoggingFactory::TPtr LoggerPtr;
 
 }
 #endif

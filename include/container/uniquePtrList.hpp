@@ -1,5 +1,9 @@
 /*
  * uniquePtrList.h
+ * This defines an object which wraps boost::ptr_list but returns unique
+ * pointers on all retrieve requests. Since the functionality is so close
+ * to boost::ptr_list, the function names use boost's underscore naming
+ * conventions.
  */
 
 #ifndef UNIQUEPTRLIST_H_
@@ -20,11 +24,11 @@ template<class T,
 class UniquePtrList : public boost::ptr_list<T, CloneAllocator, Allocator> {
 protected:
     typedef UniquePtrList<T, CloneAllocator, Allocator> UPtrListType;
-    typedef typename pointers::detail::smart_boost<UPtrListType>::AutoPtr AutoPtrUniqueListType;
-    typedef typename pointers::detail::smart_boost<UPtrListType>::UniquePtr UniquePtrUniqueListType;
+    typedef typename pointers::detail::smartBoost<UPtrListType>::AutoPtr AutoPtrUniqueListType;
+    typedef typename pointers::detail::smartBoost<UPtrListType>::UniquePtr UniquePtrUniqueListType;
     typedef boost::ptr_list<T, CloneAllocator, Allocator> PtrListType;
-    typedef typename pointers::detail::smart_boost<PtrListType>::AutoPtr AutoPtrListType;
-    typedef typename pointers::detail::smart_boost<PtrListType>::UniquePtr UniquePtrListType;
+    typedef typename pointers::detail::smartBoost<PtrListType>::AutoPtr AutoPtrListType;
+    typedef typename pointers::detail::smartBoost<PtrListType>::UniquePtr UniquePtrListType;
 
     struct TDeleter {
         void operator()(T *p) { delete p; }
@@ -32,7 +36,7 @@ protected:
 
 public:
 
-    typedef typename ::core::pointers::detail::smart_boost<T>::UniquePtr UniquePtr;
+    typedef typename ::core::pointers::detail::smartBoost<T>::UniquePtr UniquePtr;
 
     UniquePtrList() {}
     explicit UniquePtrList(const Allocator& a) : PtrListType(a) {}

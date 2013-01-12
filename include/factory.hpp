@@ -40,6 +40,7 @@ protected:
 
 public:
     Factory() : builder() {}
+    Factory(Builder build) : builder(build) {}
     virtual ~Factory() {}
 
 	virtual PtrType produce() {
@@ -66,21 +67,25 @@ protected:
     Builder builder;
 
 public:
+    typedef typename pointers::smart<T>::UntrackedPtr TPtr;
     typedef Tracker MapType;
 
     TrackedFactory() : tracker(), builder() {}
+    TrackedFactory(Tracker track) : tracker(track), builder() {}
+    TrackedFactory(Builder build) : tracker(), builder(build) {}
+    TrackedFactory(Tracker track, Builder build) : tracker(track), builder(build) {}
     virtual ~TrackedFactory() {}
 
     /*
      * Throws ParameterException upon failure to insert.
      */
-    virtual T& produce(const Key& key) {
+    virtual TPtr produce(const Key& key) {
         T *elem = builder.build(key);
         std::pair<typename MapType::iterator, bool> result = tracker.insert(key, elem);
         if (!result.second) {
             throwInsertFailedException("Unable to insert element into tracker");
         }
-        return *elem;
+        return TPtr(elem);
     }
 
     /*
@@ -89,29 +94,29 @@ public:
      *
      * Throws ParameterException if the key is not in the tracker.
      */
-    T& get(const Key& key) {
+    TPtr get(const Key& key) {
         typename Tracker::iterator it = tracker.find(key);
         if (it == tracker.end()) {
             throw throwAttributeException("Key not found in Factory");
         }
-        return *it;
+        return TPtr(it->second);
     }
 
-    T *tryGet(const Key& key) {
+    TPtr tryGet(const Key& key) {
         typename Tracker::iterator it = tracker.find(key);
         if (it == tracker.end()) {
-            return NULL;
+            return TPtr(NULL);
         } else {
-            return &(*it);
+            return TPtr(it->second);
         }
     }
 
-    T& getOrProduce(const Key& key) {
-        T *elem = tryGet(key);
-        if (elem == NULL) {
+    TPtr getOrProduce(const Key& key) {
+        TPtr elem = tryGet(key);
+        if (!elem) {
             return produce(key);
         }
-        return *elem;
+        return elem;
     }
 
     /*

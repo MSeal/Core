@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include "testNumUtil.hpp"
+#include "testStringUtil.hpp"
 #include "testTSQueue.hpp"
 #include "testSmartPointer.hpp"
 
