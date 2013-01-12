@@ -53,6 +53,7 @@ extern const StrStarter strstart;
 
 // Do this as a macro so the __LINE__ matches where the error
 // occurred.
+// Not defined in exceptions to avoid circular include logic
 #define throwCastException(message, sourceType, destType) \
     throw ExceptionBasis(message, ::core::CAST_EXCEPTION, \
             ::core::EXCEP_SEVERITY_ERROR, ::core::Exception) \

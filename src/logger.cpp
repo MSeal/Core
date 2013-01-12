@@ -84,8 +84,7 @@ void TSQueueSink::sinkWorker() {
             processQueue();
             // Sleep until our message queue is notified
             // (or some time has passed)
-            const boost::system_time timeout = getFuture(200);
-            condLock.timedWait(timeout);
+            condLock.timedWait(getFuture(200));
         } catch (...) {
             healthy = false;
         }
