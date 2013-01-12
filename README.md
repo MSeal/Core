@@ -2,12 +2,50 @@
 An application framework for C++ build on Boost.
 
 ## Description
-TODO
+Core is a heavily tested application framework designed to give users a wide range of
+built in usable application components. These components include:
+
+* Logging
+	* Allows multiple loggers to be active at same time
+	* Logs selectable by name
+	* Implement single function of class to add new processing of log events
+* Threading Management
+	* What threads are active
+	* Thread naming
+	* Polite quit requests
+* Threadsafe objects/containers
+	* Flexible performance to match various use cases
+	* Handles the easy to forget threading mistakes
+	* Leaves complete control over event ordering/triggering
+	* Abstracts containers/collections to lockable objects
+	* Any object can be wrapped by lockwrap template
+	* Resource locks maintaining lock ordering for arbitrary sets of locks
+* Exceptions
+	* Automatic line/function/cause exception generation macros
+	* Treatable as boost exceptions or std exceptions
+	* String message convertable
+	* Coded by exception type/family
+* Factories
+	* Object generating factory templates
+	* Various build options/constructor wrappers
+	* Trackable object generation
+* Enumeration objects
+	* Extendible enumerations that can are bi-mapped to other objects
+	* Easy string/value representation of enumerated values
+* Loops
+	* Many style of for loops for convenience of code minimization
+	* Python style enumeration loops
+	* Callback loops
+* Utilities
+	* Various string and numerical common functions
 
 ## Dependencies
 * Boost (>= 1.50)
 
 ### Dependency Installation
+See mingwInstallNotes.htm for details about setting mingw up on Windows environments with
+Eclipse.
+
 #### Libraries:
 * boost_thread
 * boost_system (required by thread)
@@ -66,6 +104,7 @@ All unit tests for the repo.
 
 ## TODO
 * Add full wchar support for logger/toString
+* Change tracked factory to store shared pointers to objects
 
 ## Author
 Author(s): Matthew Seal
