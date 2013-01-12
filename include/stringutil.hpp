@@ -100,6 +100,36 @@ inline T stringToTypeNoThrow(const std::string& str) {
 
 
 /*
+ * Type: std::string
+ * For unknown type conversion when the type is in fact a string.
+ * Performs a copy, as the lifetime of castable is unclear.
+ */
+inline std::string toString(const std::string& castable) {
+    return castable;
+}
+inline std::string toStringNoThrow(const std::string& castable) {
+    return castable;
+}
+
+
+/*
+ * Type: std::wstring
+ * For unknown type conversion when the type is in fact a string.
+ * Performs a copy, as the lifetime of castable is unclear.
+ */
+inline std::string toString(const std::wstring& castable) {
+    return std::string(castable.begin(), castable.end());
+}
+inline std::string toStringNoThrow(const std::wstring& castable) {
+    try {
+        return std::string(castable.begin(), castable.end());
+    } catch (...) {
+        return std::string("");
+    }
+}
+
+
+/*
  * Type: char *
  * Unnecessary really, but here for convenience
  */
@@ -119,17 +149,24 @@ inline const char *stringToTypeNoThrow<const char *>(const std::string& str) {
 }
 
 
-
 /*
- * Type: std::string
- * For unknown type conversion when the type is in fact a string.
- * Performs a copy, as the lifetime of castable is unclear.
+ * Type: wchar *
  */
-inline std::string toString(const std::string& castable) {
-    return castable;
+inline std::string toString(const wchar_t *castable) {
+    std::wstring wcastable(castable);
+    return toString(wcastable);
 }
-inline std::string toStringNoThrow(const std::string& castable) {
-    return castable;
+inline std::string toStringNoThrow(const wchar_t *castable) {
+    std::wstring wcastable(castable);
+    return toStringNoThrow(wcastable);
+}
+template<>
+inline const wchar_t *stringToType<const wchar_t *>(const std::string& str) {
+    return std::wstring(str.begin(), str.end()).c_str();
+}
+template<>
+inline const wchar_t *stringToTypeNoThrow<const wchar_t *>(const std::string& str) {
+    return std::wstring(str.begin(), str.end()).c_str();
 }
 
 
