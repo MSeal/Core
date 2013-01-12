@@ -38,20 +38,17 @@ TODO
 		
 ## Repository Hierarchy
 ### include
-All header hpp files.
-#### container  
+* container
 Custom containers and wrappers on existing containers. These do NOT include threadsafe 
 containers (look in 'threading/container').
-
-#### detail  
+* detail
 Hidden headers used for internal hacks/ugly configurations that the average user should 
 never need to see.
-
-#### threading  
+* threading
 All thread related objects and functions. These include locks, threads, trackers, managers, 
 etc...
-##### container  
-Containers which are threadsafe or thread aware.
+	* container
+	Containers which are threadsafe or thread aware.
 
 ### src
 All source cpp files. The subdirectory hierarchy follows the include folder hierarchy.
