@@ -41,6 +41,18 @@ const std::string LOG_ERROR_PRE_FORMATING = "[%time%] ";
 const std::string LOG_DEBUG_PRE_FORMATING = "[%time%] (T%thread%) ";
 const std::string LOG_TIME_FORMAT = "[%yy%, %MM%, %dd%, %hh%:%mm%.%ss%]";
 
+// Converts a system time to a human readable string.
+std::string createTimeString(const boost::system_time& time) {
+    // TODO fill in (use FORMATING above)
+    return "";
+}
+
+// Converts a time stamped message to a human readable string.
+std::string formatMessage(TimeLevelString& msg) {
+    // TODO fill in (use create TimeString and FORMATING above)
+    return "";
+}
+
 /*
  * Checks if the application is alive still.
  */
@@ -51,8 +63,7 @@ bool TSQueueSink::appLive() {
 void TSQueueSink::processQueue() {
     // Process all messages that are available
     while (!msgQueue.empty()) {
-        MessageQueue::QListPtr msgList = msgQueue.dequeueAll();
-        forEach(TSLevelString& msg, *msgList) {
+        forEach(TimeLevelString& msg, *msgQueue.dequeueAll()) {
             processMessage(msg);
         }
     }
