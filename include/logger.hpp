@@ -15,6 +15,7 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "threading/container/tswrapper.hpp"
 #include "threading/container/tsqueue.hpp"
+#include "threading/threadTracker.hpp"
 #include "exceptions.hpp"
 #include "stringutil.hpp"
 #include "pointers.hpp"
@@ -66,7 +67,7 @@ public:
     virtual ~LoggingSink();
 
     // Allows the logger to flush all current sink requests.
-    // This defaults to doing nothing
+    // This defaults to doing nothing.
     virtual void flush() {}
 
     virtual void sinkMessage(LogLevel level, const std::string& msg) = 0;
@@ -211,27 +212,50 @@ typedef pointers::smart<TSLevelString>::UniquePtr TSLevelStringPtr;
 class TSQueueSink : LoggingSink {
 protected:
     typedef core::threading::container::TSQueue<TSLevelString> MessageQueue;
-    MessageQueue msgQueue;
     ApplicationWPtr application;
+    MessageQueue msgQueue;
+    threading::ThreadTrackerPtr msgThread;
 
     typedef threading::container::TSWrapper<bool> ConditionLockable;
     ConditionLockable condLock;
 
+    /*
+     * Checks if the application is alive still.
+     */
+    bool appLive();
+
+    /*
+     * Performs all of the work required to process msgQueues
+     * for incoming messages. Each such message is passed to
+     * processMessage for final processing. Sink workers check
+     * periodically to see if the app is still alive if no
+     * messages have arrived.
+     */
     void sinkWorker();
-    bool processQueue();
+    /*
+     * Pulls messages out of the msgQueue and passes them to
+     * processMessage.
+     */
+    void processQueue();
+
+    /*
+     * Initialized the sink thread for processing messages asynchronously.
+     */
+    threading::ThreadTrackerPtr initSinkThread(const std::string sinkName);
 
 public:
-    TSQueueSink(ApplicationWPtr app) :
-        msgQueue(), application(app) {
-        //TODO create thread from application's thread factory
-    }
+    TSQueueSink(ApplicationWPtr app, const std::string sinkName = "TSLoggingSink") :
+        application(app), msgQueue(), msgThread(initSinkThread(sinkName)) {}
     virtual ~TSQueueSink();
 
     // Allows the logger to flush all current sink requests.
+    // This defaults to doing nothing.
     virtual void flush() {}
 
     virtual void sinkMessage(LogLevel level, const std::string& msg) {
         msgQueue.enqueue(new TSLevelString(level, msg));
+        // Tell the sleeping thread to wake up
+        condLock.notifyOne();
     }
 
     virtual void processMessage(TSLevelString& msg) = 0;

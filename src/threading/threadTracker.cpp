@@ -15,7 +15,8 @@ ThreadManager::ThreadManager(ApplicationWPtr app) : threads(), curThreadCount(0)
  */
 ThreadTrackerPtr ThreadManager::trackThread(const std::string& name, ThreadPtr thrd) {
 	ThreadTrackerPtr track = ThreadTrackerPtr
-		(new ThreadTracker(name, atomic::atomic_inc32(&curThreadCount), thrd));
+		(new ThreadTracker(name, atomic::atomic_inc32(&curThreadCount),
+		                   thrd, application));
 	threads.push_back(track);
 	return track;
 }

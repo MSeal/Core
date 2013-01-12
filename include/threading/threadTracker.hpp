@@ -29,9 +29,11 @@ public:
 	const std::string name;
 	const boost::uint32_t number;
 	const ThreadPtr thread;
+	const ApplicationWPtr application;
 
-	ThreadTracker(const std::string& thrdName, boost::uint32_t thrdNumber, ThreadPtr thrd) :
-		name(thrdName), number(thrdNumber), thread(thrd) {}
+	ThreadTracker(const std::string& thrdName, boost::uint32_t thrdNumber,
+	        ThreadPtr thrd, ApplicationWPtr app) :
+		name(thrdName), number(thrdNumber), thread(thrd), application(app) {}
 };
 typedef boost::shared_ptr<ThreadTracker> ThreadTrackerPtr;
 
@@ -77,7 +79,8 @@ public:
 	ThreadTrackerPtr spawnThread(const std::string& name, boost::function<void()> worker);
 
 	/*
-	 * Functions that provide various ways of retrieving thread objects
+	 * Functions that provide various ways of retrieving thread objects.
+	 * Returns the first thread which matches.
 	 */
 	ThreadTrackerPtr getThread(const std::string & name);
 	ThreadTrackerPtr getThread(const boost::thread::id id);

@@ -1,5 +1,9 @@
 /*
  * uniquePtrList.h
+ * This defines an object which wraps boost::ptr_list but returns unique
+ * pointers on all retrieve requests. Since the functionality is so close
+ * to boost::ptr_list, the function names use boost's underscore naming
+ * conventions.
  */
 
 #ifndef UNIQUEPTRLIST_H_

@@ -1,5 +1,5 @@
 /*
- * application.h
+ * application.hpp
  */
 
 #ifndef CORE_APPLICATION_H_
