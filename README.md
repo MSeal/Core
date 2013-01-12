@@ -8,30 +8,30 @@ TODO
 * Boost (>= 1.50)
 
 ### Dependency Installation
-*Libraries:
-    boost_thread
-    boost_system (required by thread)
-    boost_chrono (required by thread)
-    boost_unit_test_framework (for test exe's)
-*Preprocessor:
-    *BOOST_THREAD_NO_LIB (for static thread library inclusion)
-	*CORE_DEBUG (to activate debug mode)
-*CDT Console Output:
-	*Add mingw/bin and mingw/msys/bin directories to PATH environment variable
+####Libraries:
+*boost_thread
+*boost_system (required by thread)
+*boost_chrono (required by thread)
+*boost_unit_test_framework (for test exe's)
+####Preprocessor:
+*BOOST_THREAD_NO_LIB (for static thread library inclusion)
+*CORE_DEBUG (to activate debug mode)
+####CDT Console Output:
+*Add mingw/bin and mingw/msys/bin directories to PATH environment variable
 ### Fixes
-*Boost Build:
-	*Fix MinGW directory names in build.bat to true locations
-    *Change `set toolset=msvc` inf bootstrap.bat to `set toolset=gcc`
-    	bootstrap
-		b2 --threading=multi --with-thread --build-type=complete --link=static -j 4 stage
-*Windows Thread Fixes:
-	*Ticket #4878
-	boost/thread/detail/config.hpp
-	For MinGW (tested on gcc 4.6 with boost 1.50):
-		line 153: #   if defined(BOOST_THREAD_PLATFORM_WIN32)
-		line 154: #       if defined(BOOST_MSVC) || defined(BOOST_INTEL_WIN)
-	should be followed by:
-		|| defined(__MINGW32__) || defined(MINGW32) || defined(BOOST_MINGW32) // fix for mingw
+####Boost Build:
+*Fix MinGW directory names in build.bat to true locations
+*Change `set toolset=msvc` inf bootstrap.bat to `set toolset=gcc`  
+	bootstrap  
+	b2 --threading=multi --with-thread --build-type=complete --link=static -j 4 stage  
+####Windows Thread Fixes:
+Ticket #4878  
+boost/thread/detail/config.hpp  
+For MinGW (tested on gcc 4.6 with boost 1.50):  
+	line 153: #   if defined(BOOST_THREAD_PLATFORM_WIN32)  
+	line 154: #       if defined(BOOST_MSVC) || defined(BOOST_INTEL_WIN)  
+should be followed by:  
+	|| defined(__MINGW32__) || defined(MINGW32) || defined(BOOST_MINGW32) // fix for mingw  
 		
 ## Repository Hierarchy
 ### include
