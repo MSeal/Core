@@ -28,6 +28,7 @@ ServityStringMap EXCEP_SEVERITY_STRING_BIMAP =
         (EXCEP_SEVERITY_ERROR, EXCEP_SEVERITY_ERROR_STRING);
 
 const std::string EMPTY_EXCEPTION_STRING = "";
+const std::string GENERIC_EXCEPTION_STRING = "Generic Exception";
 const std::string UNKNOWN_EXCEPTION_STRING = "Unknown Exception";
 const std::string ASSERTION_EXCEPTION_STRING = "Assertion Failed Exception";
 const std::string NULL_POINTER_EXCEPTION_STRING = "NULL Pointer Exception";
@@ -42,11 +43,14 @@ const std::string INSERT_FAILED_EXCEPTION_STRING = "Insert Failed Exception";
 const std::string CONCURRENCY_EXCEPTION_STRING = "Concurrency Exception";
 const std::string RACE_CONDITION_EXCEPTION_STRING = "Concurrency Race Condition Exception";
 const std::string DEADLOCK_EXCEPTION_STRING = "Concurrency Deadlock Exception";
+const std::string MATH_EXCEPTION_STRING = "Math Exception";
+const std::string DIVIDE_BY_ZERO_EXCEPTION_STRING = "Divide By Zero Exception";
 
 // Optimization for const string&, which does no copying
 template<>
 const std::string& enumToValue<ExceptionCode, const std::string&>(ExceptionCode eval) {
     switch (eval) {
+    case GENERIC_EXCEPTION: return GENERIC_EXCEPTION_STRING;
     case UNKNOWN_EXCEPTION: return UNKNOWN_EXCEPTION_STRING;
     case ASSERTION_EXCEPTION: return ASSERTION_EXCEPTION_STRING;
     case NULL_POINTER_EXCEPTION: return NULL_POINTER_EXCEPTION_STRING;
@@ -61,12 +65,15 @@ const std::string& enumToValue<ExceptionCode, const std::string&>(ExceptionCode 
     case CONCURRENCY_EXCEPTION: return CONCURRENCY_EXCEPTION_STRING;
     case RACE_CONDITION_EXCEPTION: return RACE_CONDITION_EXCEPTION_STRING;
     case DEADLOCK_EXCEPTION: return DEADLOCK_EXCEPTION_STRING;
+    case MATH_EXCEPTION: return MATH_EXCEPTION_STRING;
+    case DIVIDE_BY_ZERO_EXCEPTION: return DIVIDE_BY_ZERO_EXCEPTION_STRING;
     default: return UNKNOWN_EXCEPTION_STRING;
     }
 }
 
 ExceptCodeStringMap EXCEP_CODE_STRING_BIMAP =
         BI_MAP_BUILDER(ExceptionCode, std::string)
+        (GENERIC_EXCEPTION, GENERIC_EXCEPTION_STRING)
         (UNKNOWN_EXCEPTION, UNKNOWN_EXCEPTION_STRING)
         (ASSERTION_EXCEPTION, ASSERTION_EXCEPTION_STRING)
         (NULL_POINTER_EXCEPTION, NULL_POINTER_EXCEPTION_STRING)
@@ -80,7 +87,9 @@ ExceptCodeStringMap EXCEP_CODE_STRING_BIMAP =
         (INSERT_FAILED_EXCEPTION, INSERT_FAILED_EXCEPTION_STRING)
         (CONCURRENCY_EXCEPTION, CONCURRENCY_EXCEPTION_STRING)
         (RACE_CONDITION_EXCEPTION, RACE_CONDITION_EXCEPTION_STRING)
-        (DEADLOCK_EXCEPTION, DEADLOCK_EXCEPTION_STRING);
+        (DEADLOCK_EXCEPTION, DEADLOCK_EXCEPTION_STRING)
+        (MATH_EXCEPTION, MATH_EXCEPTION_STRING)
+        (DIVIDE_BY_ZERO_EXCEPTION, DIVIDE_BY_ZERO_EXCEPTION_STRING);
 
 const std::string getExceptionMessage(const boost::exception & x) {
     const std::string *result = boost::get_error_info<ThrowErrorMessage>(x);

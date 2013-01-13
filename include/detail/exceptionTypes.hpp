@@ -7,7 +7,7 @@
 
 namespace core {
 /* Base exception struct */
-struct Exception: virtual std::exception, virtual boost::exception {};
+struct Exception: virtual std::exception, virtual boost::exception{};
 
 /*
  * Error severity
@@ -35,13 +35,17 @@ template<>
 const std::string& enumToValue<ExceptionSeverity, const std::string&>(ExceptionSeverity eval);
 
 /*
- * Defines a generic exception throw without defaulted code
- * and severity settings. This is used by the exception throws
- * below.
+ * Implementation is in stringUtil; forward declared here to
+ * avoid circular include
  */
 struct StrStarter;
 extern const StrStarter strstart;
 
+/*
+ * Defines a generic exception throwing without defaulted code
+ * and severity settings. This is used by the exception throws
+ * below.
+ */
 // Creates a core exception from meta data
 #define ExceptionBasis(message, code, severity, exceptionType) \
     exceptionType() \
@@ -69,20 +73,50 @@ extern const StrStarter strstart;
             ::core::Exception)
 
 /*
+ * Exception hierarchy -- for each ExceptionCode there is a struct
+ * representing that type of exception. These are used for catch
+ * statements to be able to capture groups or specific exception
+ * types.
+ */
+struct GenericException: virtual Exception{};
+struct UnknownException: virtual GenericException{};
+struct NullPointerException: virtual GenericException{};
+struct CastException: virtual GenericException{};
+struct InitializationException: virtual GenericException{};
+struct CallOnceException: virtual GenericException{};
+struct IOException: virtual Exception{};
+struct FileOpenException: virtual IOException{};
+struct ParameterException: virtual Exception{};
+struct AttributeException: virtual ParameterException{};
+struct InsertFailedException: virtual ParameterException{};
+struct ConcurrencyException: virtual Exception{};
+struct RaceConditionException: virtual ConcurrencyException{};
+struct DeadlockException: virtual ConcurrencyException{};
+struct MathException: virtual Exception{};
+struct DivideByZeroException: virtual MathException{};
+
+/*
  * Error codes -- These are all of the standard exception types
  *
  * Changes to this enumeration require changing:
  *      ..._EXCEPTION_STRING (in cpp)
  *      enumToValue<ExceptionCode, const std::string&> (in cpp)
  *      EXCEP_CODE_STRING_BIMAP (in cpp)
+ *      throw...Exception (in exceptions.hpp)
+ *
+ * Yes, this is several places to update but there is no way to
+ * easily macro this structured creation more and the utility of
+ * simple auto-conversions is good enough to justify the one
+ * time code cost.
  */
 enum ExceptionCode {
-    UNKNOWN_EXCEPTION           = 0,
-    ASSERTION_EXCEPTION         = 1,
-    NULL_POINTER_EXCEPTION      = 2,
-    CAST_EXCEPTION              = 3,
-    INITIALIZATION_EXCEPTION    = 4,
-    CALL_ONCE_EXCEPTION         = 5,
+    GENERIC_EXCEPTION           = 0,
+    UNKNOWN_EXCEPTION           = 1,
+    ASSERTION_EXCEPTION         = 2,
+    NULL_POINTER_EXCEPTION      = 3,
+    CAST_EXCEPTION              = 4,
+    INITIALIZATION_EXCEPTION    = 5,
+    CALL_ONCE_EXCEPTION         = 6,
     IO_EXCEPTION                = 10,
     FILE_OPEN_EXCEPTION         = 11,
     PARAMETER_EXCEPTION         = 20,
@@ -90,7 +124,9 @@ enum ExceptionCode {
     INSERT_FAILED_EXCEPTION     = 22,
     CONCURRENCY_EXCEPTION       = 30,
     RACE_CONDITION_EXCEPTION    = 31,
-    DEADLOCK_EXCEPTION          = 32
+    DEADLOCK_EXCEPTION          = 32,
+    MATH_EXCEPTION              = 40,
+    DIVIDE_BY_ZERO_EXCEPTION    = 41
 };
 
 typedef const boost::bimap<ExceptionCode, std::string> ExceptCodeStringMap;

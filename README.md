@@ -3,7 +3,7 @@ An application framework for C++ build on Boost.
 
 ## Description
 Core is a heavily tested application framework designed to give users a wide range of
-built in usable application components. These components include:
+built in usable platform independent application components. These components include:
 
 * Logging
 	* Allows multiple loggers to be active at same time
@@ -36,8 +36,11 @@ built in usable application components. These components include:
 	* Many style of for loops for convenience of code minimization
 	* Python style enumeration loops
 	* Callback loops
+* Strings
+	* Conversion functionality for all common types to/from strings
+	* UTF-8, UTF-16, and UTF-32 aware string conversion capabilities
 * Utilities
-	* Various string and numerical common functions
+	* Various other minor functions
 
 ## Dependencies
 * Boost (>= 1.50)
@@ -104,7 +107,7 @@ All unit tests for the repo.
 * Object Oriented (with a few exceptions)
 
 ## TODO
-* Add full wchar support for logger/toString
+* Add utf iterators which step by character instead of by byte
 * Change tracked factory to store shared pointers to objects
 
 ## Author

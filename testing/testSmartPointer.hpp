@@ -110,13 +110,13 @@ BOOST_AUTO_TEST_CASE(pointerCreation) {
     IntrusivePtr intruPtr(new IntrusiveCheck);
     intruPtr->set(1);
     std::size_t count = intruPtr->refCount();
-    BOOST_CHECK_EQUAL(count, 1);
+    BOOST_CHECK_EQUAL(count, (std::size_t)1);
     BOOST_CHECK_EQUAL(intruPtr->get(), 1);
 
     IntrusivePtr intruPtr2(intruPtr);
     intruPtr2->set(2);
     count = intruPtr2->refCount();
-    BOOST_CHECK_EQUAL(count, 2);
+    BOOST_CHECK_EQUAL(count, (std::size_t)2);
     BOOST_CHECK_EQUAL(intruPtr->get(), 2);
 
 }

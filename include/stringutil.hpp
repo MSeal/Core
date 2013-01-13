@@ -76,7 +76,7 @@ extern const StrStarter strstart;
 // Undefined at end of file.
 #define throwCastException(message, sourceType, destType) \
     throw ExceptionBasis(message, ::core::CAST_EXCEPTION, \
-            ::core::EXCEP_SEVERITY_ERROR, ::core::Exception) \
+            ::core::EXCEP_SEVERITY_ERROR, ::core::CastException) \
              << ::core::ThrowErrorCastSource(&sourceType) \
              << ::core::ThrowErrorCastDest(&destType)
 
@@ -136,22 +136,34 @@ inline std::string toStringNoThrow(const std::string& castable) {
  * Helper macros that automatically generate the error string,
  * templates, and type identifying for a locale string conversion.
  */
-#define LOCALE_CAST_QUOTE_START(incharstr)
-#define LOCALE_CAST_QUOTE_END(outstring) to outstring; invalid character found
 #define LOCALE_MACRO_EXPAND(tok) tok
 #define LOCALE_STR_MACRO_EXPAND(tok) #tok
 #define LOCALE_STR_MACRO(tok) LOCALE_STR_MACRO_EXPAND(tok)
+#define LOCALE_CAST_QUOTE(incharstr, outstring) \
+        Unable to convert LOCALE_MACRO_EXPAND(incharstr) to LOCALE_MACRO_EXPAND(outstring);
+#define LOCALE_CAST_QUOTE_ILLEGAL invalid character found
+#define LOCALE_CAST_QUOTE_CRASH unexpected exception occured (bad string pointer?)
 #define LOCALE_CAST_QUOTE_COMBINE(incharstr, outstring) \
-        Unable to convert LOCALE_MACRO_EXPAND(incharstr) to \
-        LOCALE_MACRO_EXPAND(outstring); invalid character found
+        LOCALE_CAST_QUOTE(incharstr, outstring) LOCALE_CAST_QUOTE_ILLEGAL
+#define LOCALE_CRASH_QUOTE_COMBINE(incharstr, outstring) \
+        LOCALE_CAST_QUOTE(incharstr, outstring) LOCALE_CAST_QUOTE_CRASH
 
-#define LOCALE_CONVERT_FILL(incharstr, inputname, outstring, outchar)                                  \
+#define LOCALE_CONVERT_FILL(incharstr, inputname, outstring, outchar)                           \
     try {                                                                                       \
         return boost::locale::conv::utf_to_utf<outchar>(inputname, boost::locale::conv::stop);  \
-    } catch (std::runtime_error e) {                                                            \
+    } catch (std::runtime_error re) {                                                           \
         /* Rethrow as cast exception type */                                                    \
         throwCastException(LOCALE_STR_MACRO(LOCALE_CAST_QUOTE_COMBINE(incharstr, outstring)),   \
                 typeid(incharstr), typeid(outstring));                                          \
+    } catch (...) {                                                                             \
+        throwCastException(LOCALE_STR_MACRO(LOCALE_CRASH_QUOTE_COMBINE(incharstr, outstring)),  \
+                typeid(incharstr), typeid(outstring));                                          \
+    }
+#define LOCALE_CONVERT_FILL_NO_THROW(inputname, outstring, outchar)                             \
+    try {                                                                                       \
+        return boost::locale::conv::utf_to_utf<outchar>(inputname, boost::locale::conv::skip);  \
+    } catch (...) {                                                                             \
+        return outstring();                                                                     \
     }
 
 /*
@@ -161,7 +173,7 @@ inline std::string toString(const std::wstring& castable) {
     LOCALE_CONVERT_FILL(std::wstring, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const std::wstring& castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 template<>
 inline std::wstring stringToType<std::wstring>(const std::string& str) {
@@ -169,7 +181,7 @@ inline std::wstring stringToType<std::wstring>(const std::string& str) {
 }
 template<>
 inline std::wstring stringToTypeNoThrow<std::wstring>(const std::string& str) {
-    return boost::locale::conv::utf_to_utf<wchar_t>(str, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(str, std::wstring, wchar_t);
 }
 
 
@@ -181,7 +193,7 @@ inline std::string toString(const u8string& castable) {
     LOCALE_CONVERT_FILL(u8string, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const u8string& castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 template<>
 inline u8string stringToType<u8string>(const std::string& str) {
@@ -189,7 +201,7 @@ inline u8string stringToType<u8string>(const std::string& str) {
 }
 template<>
 inline u8string stringToTypeNoThrow<u8string>(const std::string& str) {
-    return boost::locale::conv::utf_to_utf<UTF8>(str, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(str, u8string, UTF8);
 }
 #endif
 
@@ -202,7 +214,7 @@ inline std::string toString(const u16string& castable) {
     LOCALE_CONVERT_FILL(u16string, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const u16string& castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 template<>
 inline u16string stringToType<u16string>(const std::string& str) {
@@ -210,7 +222,7 @@ inline u16string stringToType<u16string>(const std::string& str) {
 }
 template<>
 inline u16string stringToTypeNoThrow<u16string>(const std::string& str) {
-    return boost::locale::conv::utf_to_utf<UTF16>(str, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(str, u16string, UTF16);
 }
 #endif
 
@@ -223,7 +235,7 @@ inline std::string toString(const u32string& castable) {
     LOCALE_CONVERT_FILL(u32string, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const u32string& castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 template<>
 inline u32string stringToType<u32string>(const std::string& str) {
@@ -231,7 +243,7 @@ inline u32string stringToType<u32string>(const std::string& str) {
 }
 template<>
 inline u32string stringToTypeNoThrow<u32string>(const std::string& str) {
-    return boost::locale::conv::utf_to_utf<UTF32>(str, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(str, u32string, UTF32);
 }
 #endif
 
@@ -255,7 +267,7 @@ inline std::string toString(const wchar_t *castable) {
     LOCALE_CONVERT_FILL(wchar_t*, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const wchar_t *castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 
 
@@ -267,7 +279,7 @@ inline std::string toString(const UTF8 *castable) {
     LOCALE_CONVERT_FILL(UTF8*, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const UTF8 *castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 #endif
 
@@ -280,7 +292,7 @@ inline std::string toString(const UTF16 *castable) {
     LOCALE_CONVERT_FILL(UTF16*, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const UTF16 *castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 #endif
 
@@ -293,94 +305,9 @@ inline std::string toString(const UTF32 *castable) {
     LOCALE_CONVERT_FILL(UTF32*, castable, std::string, char);
 }
 inline std::string toStringNoThrow(const UTF32 *castable) {
-    return boost::locale::conv::utf_to_utf<char>(castable, boost::locale::conv::skip);
+    LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
 }
 #endif
-
-
-/*
- * Conversion renaming for ease of use with UTF8.
- */
-inline u8string stringToUTF8(const std::string& str) {
-    return stringToType<u8string>(str);
-}
-inline u8string stringToUTF8NoThrow(const std::string& str) {
-    return stringToTypeNoThrow<u8string>(str);
-}
-inline u8string stringToUTF8(const char *str) {
-    return stringToType<u8string>(str);
-}
-inline u8string stringToUTF8NoThrow(const char *str) {
-    return stringToTypeNoThrow<u8string>(str);
-}
-inline u16string UTF8ToUTF16(const u8string& str) {
-    LOCALE_CONVERT_FILL(u8string, str, u16string, UTF16);
-}
-inline u16string UTF8ToUTF16NoThrow(const u8string& str) {
-    return boost::locale::conv::utf_to_utf<UTF16>(str, boost::locale::conv::skip);
-}
-inline u32string UTF8ToUTF32(const u8string& str) {
-    LOCALE_CONVERT_FILL(u8string, str, u32string, UTF32);
-}
-inline u32string UTF8ToUTF32NoThrow(const u8string& str) {
-    return boost::locale::conv::utf_to_utf<UTF32>(str, boost::locale::conv::skip);
-}
-
-/*
- * Conversion renaming for ease of use with UTF16.
- */
-inline u16string stringToUTF16(const std::string& str) {
-    return stringToType<u16string>(str);
-}
-inline u16string stringToUTF16NoThrow(const std::string& str) {
-    return stringToTypeNoThrow<u16string>(str);
-}
-inline u16string stringToUTF16(const char *str) {
-    return stringToType<u16string>(str);
-}
-inline u16string stringToUTF16NoThrow(const char *str) {
-    return stringToTypeNoThrow<u16string>(str);
-}
-inline u8string UTF16ToUTF8(const u16string& str) {
-    LOCALE_CONVERT_FILL(u16string, str, u8string, UTF8);
-}
-inline u8string UTF16ToUTF8NoThrow(const u16string& str) {
-    return boost::locale::conv::utf_to_utf<UTF8>(str, boost::locale::conv::skip);
-}
-inline u32string UTF16ToUTF32(const u16string& str) {
-    LOCALE_CONVERT_FILL(u16string, str, u32string, UTF32);
-}
-inline u32string UTF16ToUTF32NoThrow(const u16string& str) {
-    return boost::locale::conv::utf_to_utf<UTF32>(str, boost::locale::conv::skip);
-}
-
-/*
- * Conversion renaming for ease of use with UTF32.
- */
-inline u32string stringToUTF32(const std::string& str) {
-    return stringToType<u32string>(str);
-}
-inline u32string stringToUTF32NoThrow(const std::string& str) {
-    return stringToTypeNoThrow<u32string>(str);
-}
-inline u32string stringToUTF32(const char *str) {
-    return stringToType<u32string>(str);
-}
-inline u32string stringToUTF32NoThrow(const char *str) {
-    return stringToTypeNoThrow<u32string>(str);
-}
-inline u8string UTF32ToUTF8(const u32string& str) {
-    LOCALE_CONVERT_FILL(u32string, str, u8string, UTF8);
-}
-inline u8string UTF32ToUTF8NoThrow(const u32string& str) {
-    return boost::locale::conv::utf_to_utf<UTF8>(str, boost::locale::conv::skip);
-}
-inline u16string UTF32ToUTF16(const u32string& str) {
-    LOCALE_CONVERT_FILL(u32string, str, u16string, UTF16);
-}
-inline u16string UTF32ToUTF16NoThrow(const u32string& str) {
-    return boost::locale::conv::utf_to_utf<UTF16>(str, boost::locale::conv::skip);
-}
 
 
 /*
@@ -511,6 +438,271 @@ std::string operator <<(const std::string& a, const T& b) {
     return a + toString(b);
 }
 //TODO make efficient streamer for exceptions/strstart to use
+
+
+/*
+ * Conversion renaming for ease of use with UTF8.
+ */
+inline u8string stringToUTF8(const std::string& str) {
+    return stringToType<u8string>(str);
+}
+inline u8string stringToUTF8NoThrow(const std::string& str) {
+    return stringToTypeNoThrow<u8string>(str);
+}
+inline u8string stringToUTF8(const char *str) {
+    return stringToType<u8string>(str);
+}
+inline u8string stringToUTF8NoThrow(const char *str) {
+    return stringToTypeNoThrow<u8string>(str);
+}
+
+inline u8string stringToUTF8(const std::wstring& str) {
+    LOCALE_CONVERT_FILL(std::wstring, str, u8string, UTF8);
+}
+inline u8string stringToUTF8NoThrow(const std::wstring& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u8string, UTF8);
+}
+inline u8string stringToUTF8(const wchar_t *str) {
+    LOCALE_CONVERT_FILL(wchar_t*, str, u8string, UTF8);
+}
+inline u8string stringToUTF8NoThrow(const wchar_t *str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u8string, UTF8);
+}
+
+inline u8string UTF16ToUTF8(const u16string& str) {
+    LOCALE_CONVERT_FILL(u16string, str, u8string, UTF8);
+}
+inline u8string UTF16ToUTF8NoThrow(const u16string& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u8string, UTF8);
+}
+inline u8string UTF32ToUTF8(const u32string& str) {
+    LOCALE_CONVERT_FILL(u32string, str, u8string, UTF8);
+}
+inline u8string UTF32ToUTF8NoThrow(const u32string& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u8string, UTF8);
+}
+
+// Mask utf8 to utf8
+#if CHAR_MAX != 0xFF
+inline u8string stringToUTF8(const u8string& str) {
+    return str;
+}
+inline u8string stringToUTF8NoThrow(const u8string& str) {
+    return str;
+}
+inline u8string stringToUTF8(const UTF8 *str) {
+    return u8string(str);
+}
+inline u8string stringToUTF8NoThrow(const UTF8 *str) {
+    return u8string(str);
+}
+#endif
+// Mask utf16 to utf8
+#if CHAR_MAX != 0xFFFF
+inline u8string stringToUTF8(const u16string& str) {
+    return UTF16ToUTF8(str);
+}
+inline u8string stringToUTF8NoThrow(const u16string& str) {
+    return UTF16ToUTF8NoThrow(str);
+}
+inline u8string stringToUTF8(const UTF16 *str) {
+    return UTF16ToUTF8(str);
+}
+inline u8string stringToUTF8NoThrow(const UTF16 *str) {
+    return UTF16ToUTF8NoThrow(str);
+}
+#endif
+// Mask utf32 to utf8
+#if CHAR_MAX != 0xFFFFFFFF
+inline u8string stringToUTF8(const u32string& str) {
+    return UTF32ToUTF8(str);
+}
+inline u8string stringToUTF8NoThrow(const u32string& str) {
+    return UTF32ToUTF8NoThrow(str);
+}
+inline u8string stringToUTF8(const UTF32 *str) {
+    return UTF32ToUTF8(str);
+}
+inline u8string stringToUTF8NoThrow(const UTF32 *str) {
+    return UTF32ToUTF8NoThrow(str);
+}
+#endif
+
+/*
+ * Conversion renaming for ease of use with UTF16.
+ */
+inline u16string stringToUTF16(const std::string& str) {
+    return stringToType<u16string>(str);
+}
+inline u16string stringToUTF16NoThrow(const std::string& str) {
+    return stringToTypeNoThrow<u16string>(str);
+}
+inline u16string stringToUTF16(const char *str) {
+    return stringToType<u16string>(str);
+}
+inline u16string stringToUTF16NoThrow(const char *str) {
+    return stringToTypeNoThrow<u16string>(str);
+}
+
+inline u16string stringToUTF16(const std::wstring& str) {
+    LOCALE_CONVERT_FILL(std::wstring, str, u16string, UTF16);
+}
+inline u16string stringToUTF16NoThrow(const std::wstring& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u16string, UTF16);
+}
+inline u16string stringToUTF16(const wchar_t *str) {
+    LOCALE_CONVERT_FILL(wchar_t*, str, u16string, UTF16);
+}
+inline u16string stringToUTF16NoThrow(const wchar_t *str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u16string, UTF16);
+}
+
+inline u16string UTF8ToUTF16(const u8string& str) {
+    LOCALE_CONVERT_FILL(u8string, str, u16string, UTF16);
+}
+inline u16string UTF8ToUTF16NoThrow(const u8string& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u16string, UTF16);
+}
+inline u16string UTF32ToUTF16(const u32string& str) {
+    LOCALE_CONVERT_FILL(u32string, str, u16string, UTF16);
+}
+inline u16string UTF32ToUTF16NoThrow(const u32string& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u16string, UTF16);
+}
+
+// Mask utf8 to utf16
+#if CHAR_MAX != 0xFF
+inline u16string stringToUTF16(const u8string& str) {
+    return UTF8ToUTF16(str);
+}
+inline u16string stringToUTF16NoThrow(const u8string& str) {
+    return UTF8ToUTF16NoThrow(str);
+}
+inline u16string stringToUTF16(const UTF8 *str) {
+    return UTF8ToUTF16(str);
+}
+inline u16string stringToUTF16NoThrow(const UTF8 *str) {
+    return UTF8ToUTF16NoThrow(str);
+}
+#endif
+// Mask utf16 to utf16
+#if CHAR_MAX != 0xFFFF
+inline u16string stringToUTF16(const u16string& str) {
+    return str;
+}
+inline u16string stringToUTF16NoThrow(const u16string& str) {
+    return str;
+}
+inline u16string stringToUTF16(const UTF16 *str) {
+    return u16string(str);
+}
+inline u16string stringToUTF16NoThrow(const UTF16 *str) {
+    return u16string(str);
+}
+#endif
+// Mask utf32 to utf16
+#if CHAR_MAX != 0xFFFFFFFF
+inline u16string stringToUTF16(const u32string& str) {
+    return UTF32ToUTF16(str);
+}
+inline u16string stringToUTF16NoThrow(const u32string& str) {
+    return UTF32ToUTF16NoThrow(str);
+}
+inline u16string stringToUTF16(const UTF32 *str) {
+    return UTF32ToUTF16(str);
+}
+inline u16string stringToUTF16NoThrow(const UTF32 *str) {
+    return UTF32ToUTF16NoThrow(str);
+}
+#endif
+
+/*
+ * Conversion renaming for ease of use with UTF32.
+ */
+inline u32string stringToUTF32(const std::string& str) {
+    return stringToType<u32string>(str);
+}
+inline u32string stringToUTF32NoThrow(const std::string& str) {
+    return stringToTypeNoThrow<u32string>(str);
+}
+inline u32string stringToUTF32(const char *str) {
+    return stringToType<u32string>(str);
+}
+inline u32string stringToUTF32NoThrow(const char *str) {
+    return stringToTypeNoThrow<u32string>(str);
+}
+
+inline u32string stringToUTF32(const std::wstring& str) {
+    LOCALE_CONVERT_FILL(std::wstring, str, u32string, UTF32);
+}
+inline u32string stringToUTF32NoThrow(const std::wstring& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u32string, UTF32);
+}
+inline u32string stringToUTF32(const wchar_t *str) {
+    LOCALE_CONVERT_FILL(wchar_t*, str, u32string, UTF32);
+}
+inline u32string stringToUTF32NoThrow(const wchar_t *str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u32string, UTF32);
+}
+
+inline u32string UTF8ToUTF32(const u8string& str) {
+    LOCALE_CONVERT_FILL(u8string, str, u32string, UTF32);
+}
+inline u32string UTF8ToUTF32NoThrow(const u8string& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u32string, UTF32);
+}
+inline u32string UTF16ToUTF32(const u16string& str) {
+    LOCALE_CONVERT_FILL(u16string, str, u32string, UTF32);
+}
+inline u32string UTF16ToUTF32NoThrow(const u16string& str) {
+    LOCALE_CONVERT_FILL_NO_THROW(str, u32string, UTF32);
+}
+
+// Mask utf8 to utf32
+#if CHAR_MAX != 0xFF
+inline u32string stringToUTF32(const u8string& str) {
+    return UTF8ToUTF32(str);
+}
+inline u32string stringToUTF32NoThrow(const u8string& str) {
+    return UTF8ToUTF32NoThrow(str);
+}
+inline u32string stringToUTF32(const UTF8 *str) {
+    return UTF8ToUTF32(str);
+}
+inline u32string stringToUTF32NoThrow(const UTF8 *str) {
+    return UTF8ToUTF32NoThrow(str);
+}
+#endif
+// Mask utf16 to utf32
+#if CHAR_MAX != 0xFFFF
+inline u32string stringToUTF32(const u16string& str) {
+    return UTF16ToUTF32(str);
+}
+inline u32string stringToUTF32NoThrow(const u16string& str) {
+    return UTF16ToUTF32NoThrow(str);
+}
+inline u32string stringToUTF32(const UTF16 *str) {
+    return UTF16ToUTF32(str);
+}
+inline u32string stringToUTF32NoThrow(const UTF16 *str) {
+    return UTF16ToUTF32NoThrow(str);
+}
+#endif
+// Mask utf32 to utf32
+#if CHAR_MAX != 0xFFFFFFFF
+inline u32string stringToUTF32(const u32string& str) {
+    return str;
+}
+inline u32string stringToUTF32NoThrow(const u32string& str) {
+    return str;
+}
+inline u32string stringToUTF32(const UTF32 *str) {
+    return u32string(str);
+}
+inline u32string stringToUTF32NoThrow(const UTF32 *str) {
+    return u32string(str);
+}
+#endif
 }
 
 // Get rid of this macro, it was only temporarily here
