@@ -5,6 +5,8 @@
 #ifndef CORE_TIME_H_
 #define CORE_TIME_H_
 
+#include <boost/thread/thread_time.hpp>
+
 namespace core {
 /*
  * Returns a system time representing milliseconds in the future.
