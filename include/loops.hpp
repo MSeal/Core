@@ -69,8 +69,8 @@
             BOOST_FOREACH_ID(_iter_unique_)++)
 
 #define forRepeatLong(numiter)                                                      \
-    if (unsigned long BOOST_FOREACH_ID(_iter_unique_) = 0) {} else                  \
-        for(unsigned long BOOST_FOREACH_ID(_iter_maxiter_) = numiter;               \
+    if (unsigned long long int BOOST_FOREACH_ID(_iter_unique_) = 0) {} else         \
+        for(unsigned long long int BOOST_FOREACH_ID(_iter_maxiter_) = numiter;      \
             BOOST_FOREACH_ID(_iter_unique_) != BOOST_FOREACH_ID(_iter_maxiter_);    \
             BOOST_FOREACH_ID(_iter_unique_)++)
 
@@ -105,7 +105,7 @@ struct IncrementCounterPassthrough {
 
 	template<typename Count>
 	IncrementCounterPassthrough(Count& t) {
-		t = -1;
+		t = 0;
 		checker = true;
 		incrementer = boost::bind(&incrementT<Count>, &t);
 	}

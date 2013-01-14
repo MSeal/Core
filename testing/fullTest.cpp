@@ -10,4 +10,5 @@
 #include "testStringUtil.hpp"
 #include "testTSQueue.hpp"
 #include "testSmartPointer.hpp"
+#include "testLoops.hpp"
 
