@@ -60,6 +60,7 @@
 #include <boost/foreach.hpp>
 #include <boost/any.hpp>
 #include <boost/function.hpp>
+#include <boost/bind.hpp>
 
 /* For Repeat */
 #define forRepeat(numiter)                                                          \

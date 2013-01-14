@@ -1,11 +1,15 @@
-#ifndef STRINGUTIL_H_
-#define STRINGUTIL_H_
+/*
+ * stringutil.h
+ *
+ */
+#ifndef STRING_UTIL_H_
+#define STRING_UTIL_H_
 
 #include <boost/lexical_cast.hpp>
 #include <boost/locale/encoding_utf.hpp>
-#include <sstream>
 #include <limits.h>
 #include "detail/exceptionTypes.hpp"
+#include "detail/ssutil.hpp"
 
 // For demangling text in gcc
 #ifdef __GNUC__ // gcc
@@ -34,46 +38,19 @@ typedef uint32_t UTF32;
 #endif
 typedef std::basic_string<UTF32> u32string;
 
-// Forward declare these for specific template implementations
-template<typename T> inline std::string toString(T castable);
-inline std::string toString(const std::type_info& castable);
-inline std::string toString(const std::type_info *castable);
-template<typename T> inline T stringToType(const std::string& str);
-template<typename T> std::string operator <<(const std::string& a, const T& b);
+/*
+ * Classes that are used to build strings at runtime from streams
+ * of objects. The implementation details are in detail/ssutil.hpp.
+ */
+class StrStreamBeginBuilder;
+class StrStreamEndBuilder;
 
 /*
- * Used to create the strstart object, which is a static const
- * object with no internal state. The object is only used to
- * make syntax of string creation from various starting types
- * easy.
+ * Do this as a macro so the __LINE__ matches where the error
+ * occurred.
+ * Not defined in exceptions to avoid circular include logic.
+ * Undefined at end of file.
  */
-struct StrStarter {
-    template <typename T>
-    std::string operator <<(const T& b) const {
-        return toString(b);
-    }
-
-    std::string operator <<(const std::string& b) const {
-        return b;
-    }
-
-    template <typename T>
-    std::string operator +(const T& b) const {
-        return toString(b);
-    }
-
-    std::string operator +(const std::string& b) const {
-        return b;
-    }
-};
-// Create a constant string starter in our cpp -- no state
-// just a helper for starting string assignments.
-extern const StrStarter strstart;
-
-// Do this as a macro so the __LINE__ matches where the error
-// occurred.
-// Not defined in exceptions to avoid circular include logic.
-// Undefined at end of file.
 #define throwCastException(message, sourceType, destType) \
     throw ExceptionBasis(message, ::core::CAST_EXCEPTION, \
             ::core::EXCEP_SEVERITY_ERROR, ::core::CastException) \
@@ -434,10 +411,9 @@ inline std::string toString(const boost::exception *x) {
 
 // Created to help with converting elements to strings
 template<typename T>
-std::string operator <<(const std::string& a, const T& b) {
+inline std::string operator <<(const std::string& a, const T& b) {
     return a + toString(b);
 }
-//TODO make efficient streamer for exceptions/strstart to use
 
 
 /*
@@ -708,4 +684,4 @@ inline u32string stringToUTF32NoThrow(const UTF32 *str) {
 // Get rid of this macro, it was only temporarily here
 #undef throwCastException
 
-#endif /* STRINGUTIL_H_ */
+#endif /* STRING_UTIL_H_ */

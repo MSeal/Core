@@ -117,7 +117,7 @@ namespace core {
 
 
 /* Throws a divide by zero exception */
-#define throwDeadlockException(message) \
+#define throwDivideByZeroException(message) \
     throw ExceptionBasis(message, ::core::DIVIDE_BY_ZERO_EXCEPTION, \
             ::core::EXCEP_SEVERITY_ERROR, ::core::DivideByZeroException)
 }

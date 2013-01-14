@@ -1,8 +1,6 @@
 #include "stringutil.hpp"
 
 namespace core {
-const StrStarter strstart = StrStarter();
-
 /*
  * Type: boost::exception
  */

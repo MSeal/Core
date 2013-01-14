@@ -3,6 +3,7 @@
 
 #include <boost/exception/all.hpp>
 #include <boost/current_function.hpp>
+#include "pointers.hpp"
 #include "enum.hpp"
 
 namespace core {
@@ -38,8 +39,10 @@ const std::string& enumToValue<ExceptionSeverity, const std::string&>(ExceptionS
  * Implementation is in stringUtil; forward declared here to
  * avoid circular include
  */
-struct StrStarter;
-extern const StrStarter strstart;
+struct StrStreamBeginBuilder;
+extern const StrStreamBeginBuilder strstart;
+class StrStreamEndBuilder;
+typedef pointers::smart<StrStreamEndBuilder>::UniquePtr SSEndPtr;
 
 /*
  * Defines a generic exception throwing without defaulted code
@@ -49,7 +52,8 @@ extern const StrStarter strstart;
 // Creates a core exception from meta data
 #define ExceptionBasis(message, code, severity, exceptionType) \
     exceptionType() \
-        << ::core::ThrowErrorMessage(strstart << message) \
+        << ::core::ThrowErrorMessage( \
+            (message << SSEndPtr(new StrStreamEndBuilder())->buildString())) \
         << ::core::ThrowErrorFunction(BOOST_CURRENT_FUNCTION) \
         << ::core::ThrowErrorFileName(__FILE__) \
         << ::core::ThrowErrorLineNumber(__LINE__) \
@@ -58,7 +62,8 @@ extern const StrStarter strstart;
 
 // Extends an existing boost::exception to include core except meta data
 #define extendBasicException(message, code, severity, exception) \
-    exception << ::core::ThrowErrorMessage(strstart << message) \
+    exception \
+        << ::core::ThrowErrorMessage(strstart << message << StrStreamEndBuilder()) \
         << ::core::ThrowErrorFunction(BOOST_CURRENT_FUNCTION) \
         << ::core::ThrowErrorFileName(__FILE__) \
         << ::core::ThrowErrorLineNumber(__LINE__) \
