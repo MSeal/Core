@@ -382,19 +382,64 @@ BOOST_AUTO_TEST_CASE(numToString) {
 }
 
 /*
- * Checks that stringstart correctly produces strings from arbitrary data.
+ * Checks that strstarter correctly produces strings from arbitrary data.
  */
-BOOST_AUTO_TEST_CASE(stringStarter) {
-    BOOST_CHECK_EQUAL((strstart << "char star").compare("char star"), 0);
-    BOOST_CHECK_EQUAL((strstart << std::string("char star")).compare("char star"), 0);
+BOOST_AUTO_TEST_CASE(stringStream) {
+    BOOST_CHECK_EQUAL((strstarter << "char star")->
+            buildString().compare("char star"), 0);
+    BOOST_CHECK_EQUAL((strstarter << "char star"
+            << strender).compare("char star"), 0);
 
-    BOOST_CHECK_EQUAL((strstart << "multiple" << ' ' << std::wstring(L"string") << '-' << "types" << ' '
-            << std::string("added") << ' ' << "together").compare(
-                    "multiple string-types added together"), 0);
+    BOOST_CHECK_EQUAL((strstarter << std::string("string"))->
+            buildString().compare("string"), 0);
+    BOOST_CHECK_EQUAL((strstarter << std::string("string")
+            << strender).compare("string"), 0);
+
+    BOOST_CHECK_EQUAL((strstarter << L"wide char star")->
+            buildString().compare("wide char star"), 0);
+    BOOST_CHECK_EQUAL((strstarter << L"wide char star"
+            << strender).compare("wide char star"), 0);
+
+    BOOST_CHECK_EQUAL((strstarter << std::wstring(L"wstring"))->
+            buildString().compare("wstring"), 0);
+    BOOST_CHECK_EQUAL((strstarter << std::wstring(L"wstring")
+            << strender).compare("wstring"), 0);
+
 
     float delta = 0.00000001;
-    BOOST_CHECK_EQUAL((strstart << 15).compare("15"), 0);
-    BOOST_CHECK_EQUAL((strstart << 3.14 + delta).substr(0, 4).compare("3.14"), 0);
+    BOOST_CHECK_EQUAL((strstarter << 15)->buildString().compare("15"), 0);
+    BOOST_CHECK_EQUAL((strstarter << 15 << strender).compare("15"), 0);
+
+    BOOST_CHECK_EQUAL((strstarter << (3.14 + delta))->
+            buildString().substr(0, 4).compare("3.14"), 0);
+    BOOST_CHECK_EQUAL((strstarter << (3.14 + delta)
+            << strender).substr(0, 4).compare("3.14"), 0);
+
+
+    BOOST_CHECK_EQUAL((strstarter << "multiple" << " " << "char" << " " << "stars")->
+            buildString().compare("multiple char stars"), 0);
+    BOOST_CHECK_EQUAL((strstarter << "multiple" << " " << "char" << " " << "stars"
+            << strender).compare("multiple char stars"), 0);
+
+    BOOST_CHECK_EQUAL((strstarter << std::string("multiple") << std::string(" ")
+            << std::string("strings"))->buildString().compare("multiple strings"), 0);
+    BOOST_CHECK_EQUAL((strstarter << std::string("multiple") << std::string(" ")
+            << std::string("strings") << strender).compare("multiple strings"), 0);
+
+    BOOST_CHECK_EQUAL((strstarter << 'c' << 'h' << 'a' << 'r' << 's')->
+                buildString().compare("chars"), 0);
+    BOOST_CHECK_EQUAL((strstarter << 'c' << 'h' << 'a' << 'r' << 's'
+                << strender).compare("chars"), 0);
+
+
+    BOOST_CHECK_EQUAL((strstarter << "multiple" << ' ' << "(more than " << 2 << ")"
+            << ' ' << std::wstring(L"string") << '-' << "types" << ' '
+            << std::string("added") << ' ' << "together")->buildString().compare(
+                    "multiple (more than 2) string-types added together"), 0);
+    BOOST_CHECK_EQUAL((strstarter << "multiple" << ' ' << "(more than " << 2 << ")"
+            << ' ' << std::wstring(L"string") << '-' << "types" << ' '
+            << std::string("added") << ' ' << "together" << strender).compare(
+                    "multiple (more than 2) string-types added together"), 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

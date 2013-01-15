@@ -1,5 +1,8 @@
-#ifndef EXCEPTIONTYPES_HPP_
-#define EXCEPTIONTYPES_HPP_
+/*
+ * exceptionTypes.hpp
+ */
+#ifndef EXCEPTION_TYPES_H_
+#define EXCEPTION_TYPES_H_
 
 #include <boost/exception/all.hpp>
 #include <boost/current_function.hpp>
@@ -52,8 +55,8 @@ typedef pointers::smart<StrStreamEndBuilder>::UniquePtr SSEndPtr;
 // Creates a core exception from meta data
 #define ExceptionBasis(message, code, severity, exceptionType) \
     exceptionType() \
-        << ::core::ThrowErrorMessage( \
-            (message << SSEndPtr(new StrStreamEndBuilder())->buildString())) \
+        << ::core::ThrowErrorMessage(::core::strstarter \
+                << message << ::core::strender) \
         << ::core::ThrowErrorFunction(BOOST_CURRENT_FUNCTION) \
         << ::core::ThrowErrorFileName(__FILE__) \
         << ::core::ThrowErrorLineNumber(__LINE__) \
@@ -72,10 +75,11 @@ typedef pointers::smart<StrStreamEndBuilder>::UniquePtr SSEndPtr;
 
 // Defines an assertion statement that throws an exception upon failure
 #define assertAsException(condition, message) \
-    if (!condition) throw ExceptionBasis(message, \
-            ::core::ASSERTION_EXCEPTION, \
-            ::core::EXCEP_SEVERITY_ERROR, \
-            ::core::Exception)
+    if (!condition) \
+        throw ExceptionBasis(message, \
+                ::core::ASSERTION_EXCEPTION, \
+                ::core::EXCEP_SEVERITY_ERROR, \
+                ::core::Exception)
 
 /*
  * Exception hierarchy -- for each ExceptionCode there is a struct
@@ -172,4 +176,4 @@ typedef boost::error_info<struct TagCastDest, const std::type_info*> ThrowErrorC
 const std::type_info& getExceptionCastDestination(const boost::exception& x);
 
 }
-#endif /* EXCEPTIONTYPES_HPP_ */
+#endif /* EXCEPTION_TYPES_H_ */

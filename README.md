@@ -38,11 +38,13 @@ built in usable platform independent application components. These components in
 	* Callback loops
 * Strings
 	* Conversion functionality for all common types to/from strings
+	* Efficient stream capabilities for conversion to string
 	* UTF-8, UTF-16, and UTF-32 aware string conversion capabilities
 * Utilities
 	* Various other minor functions
 
 ## Dependencies
+* C++98 Compiler (Some boost features may break on some compilers without C++03 support)
 * Boost (>= 1.50)
 
 ### Dependency Installation
@@ -109,6 +111,7 @@ All unit tests for the repo.
 ## TODO
 * Add utf iterators which step by character instead of by byte
 * Change tracked factory to store shared pointers to objects
+* Change file location macro to strip down to core relative directories
 
 ## Author
 Author(s): Matthew Seal

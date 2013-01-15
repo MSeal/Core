@@ -1,15 +1,21 @@
 /*
  * stringutil.h
  *
+ * TODO describe features
  */
 #ifndef STRING_UTIL_H_
 #define STRING_UTIL_H_
 
 #include <boost/lexical_cast.hpp>
 #include <boost/locale/encoding_utf.hpp>
+#include <boost/variant.hpp>
+#include <vector>
+#include <sstream>
 #include <limits.h>
 #include "detail/exceptionTypes.hpp"
-#include "detail/ssutil.hpp"
+#include "loops.hpp"
+#include "pointers.hpp"
+#include "pptypes.hpp"
 
 // For demangling text in gcc
 #ifdef __GNUC__ // gcc
@@ -38,12 +44,65 @@ typedef uint32_t UTF32;
 #endif
 typedef std::basic_string<UTF32> u32string;
 
-/*
- * Classes that are used to build strings at runtime from streams
- * of objects. The implementation details are in detail/ssutil.hpp.
- */
-class StrStreamBeginBuilder;
-class StrStreamEndBuilder;
+// Forward declarations
+template<typename T> inline std::string toString(const T& castable);
+inline std::string toString(const std::type_info& castable);
+inline std::string toString(const std::type_info *castable);
+template<typename T> inline T stringToType(const std::string& str);
+class StrStreamer;
+typedef pointers::smart<StrStreamer>::UniquePtr StrStreamerPtr;
+
+// TODO describe
+struct StrStreamEnder{};
+
+// TODO describe
+class StrStreamer {
+    friend inline std::string operator <<(
+            StrStreamerPtr builder, const StrStreamEnder& convertable);
+    template<typename T>
+    friend inline StrStreamerPtr operator <<(
+            StrStreamerPtr builder, const T& convertable);
+    friend inline StrStreamerPtr operator <<(
+            StrStreamerPtr builder, const std::string& convertable);
+
+private:
+    typedef boost::variant<const std::string *, std::string> stringTypes;
+    std::vector<stringTypes> stracker;
+
+    /*
+     * Converts stringTypes to a string reference.
+     */
+    const std::string& getStrRef(stringTypes& strin);
+
+public:
+    // Used in case of error
+    static const std::string emptyStr;
+    StrStreamer() : stracker() {
+        stracker.reserve(std::vector<stringTypes>::size_type(128));
+    }
+
+    /*
+     * Builds the string seen so far by streams.
+     */
+    std::string buildString();
+};
+
+// TODO describe
+struct StrStreamStarter {
+    template <typename T>
+    StrStreamerPtr operator <<(const T& b) const {
+        return StrStreamerPtr(new StrStreamer()) << b;
+    }
+};
+// TODO describe
+extern const StrStreamStarter strstarter;
+extern const StrStreamEnder strender;
+
+// TODO describe
+class Stringifyable {
+public:
+    virtual std::string toString() const;
+};
 
 /*
  * Do this as a macro so the __LINE__ matches where the error
@@ -61,7 +120,7 @@ class StrStreamEndBuilder;
  * Type: Generic
  */
 template<typename T>
-inline std::string toString(T castable) {
+inline std::string toString(const T& castable) {
     try {
         return boost::lexical_cast<std::string, T>(castable);
     } catch (boost::bad_lexical_cast) {
@@ -69,8 +128,76 @@ inline std::string toString(T castable) {
                             typeid(T), typeid(std::string));
     }
 }
+
+
+//#include <boost/type_traits/is_function.hpp>
+#include <boost/type_traits/is_member_function_pointer.hpp>
+#include <boost/type_traits/integral_constant.hpp>
+#include <boost/type_traits/is_pod.hpp>
+#include <boost/type_traits/is_class.hpp>
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
+
+template <class T>
+struct handle_other {
+  static std::string convert(const T& t) {
+      return "No method";//toString(t);
+  }
+};
+
+template <class T>
+struct handle_class_with_method {
+  static std::string convert(const T& t) {
+    return t.toString();
+  }
+};
+
+CREATE_MEMBER_FUNC_SIG_CHECK_OLD(toString, std::string, void, const);
+CREATE_MEMBER_FUNC_SIG_CHECK_OLD(toTest, std::string, void,);
+
 template<typename T>
-inline std::string toStringNoThrow(T castable) {
+inline typename detail::enable_if<!boost::is_class<T>::value, std::string>::type
+test(const T& castable) {
+    return "Nothing";
+}
+
+template<typename T>
+inline typename detail::enable_if<boost::is_class<T>::value, std::string>::type
+test(const T& castable) {
+    typedef typename boost::mpl::if_<
+        //typename has_to_string<T, std::string(T::*)() const>::type,
+        typename HasMemberFuncSig_toString<T>::type,
+        handle_class_with_method<T>,
+        handle_other<T>
+      >::type impl;
+    return impl::convert(castable);
+    //return std::string();
+}
+
+/*
+ *
+typename enable_if<boost::mpl::_or<boost::is_class, !has_to_string<T,
+                   std::string(T::*)()>::value >, std::string>::type
+ *
+
+template<typename T>
+//typename boost::enable_if<typename has_to_string<T, std::string(T::*)()>::value, std::string>::type
+typename boost::enable_if<typename boost::is_function<typename std::string(T::toString)()>::type, std::string>::type
+test(const T& t) {
+   // something when T has toString ...
+   return t.toString();
+}
+
+template<typename T>
+typename boost::disable_if<typename has_to_string<T, std::string(T::*)()>::value, std::string>::type
+test(const T& t) {
+   // something when T doesnt have toString ...
+   return "T::toString() does not exist.";
+}
+*/
+
+template<typename T>
+inline std::string toStringNoThrow(const T& castable) {
     try {
         return toString(castable);
     } catch (boost::bad_lexical_cast) {
@@ -106,6 +233,14 @@ inline std::string toString(const std::string& castable) {
 }
 inline std::string toStringNoThrow(const std::string& castable) {
     return castable;
+}
+
+/*
+ * Type: Stringifyable
+ * For user defined classes which implement toString
+ */
+inline std::string toString(const Stringifyable& obj) {
+    return obj.toString();
 }
 
 
@@ -235,6 +370,15 @@ inline std::string toString(const char *castable) {
 inline std::string toStringNoThrow(const char *castable) {
     return std::string(castable);
 }
+/*
+ * Type: char
+ */
+inline std::string toString(const char castable) {
+    return std::string(&castable, 1);
+}
+inline std::string toStringNoThrow(const char castable) {
+    return std::string(&castable, 1);
+}
 
 
 /*
@@ -245,6 +389,15 @@ inline std::string toString(const wchar_t *castable) {
 }
 inline std::string toStringNoThrow(const wchar_t *castable) {
     LOCALE_CONVERT_FILL_NO_THROW(castable, std::string, char);
+}
+/*
+ * Type: wchar_t
+ */
+inline std::string toString(const wchar_t castable) {
+    LOCALE_CONVERT_FILL(wchar_t, std::wstring(&castable), std::string, char);
+}
+inline std::string toStringNoThrow(const wchar_t castable) {
+    LOCALE_CONVERT_FILL_NO_THROW(std::wstring(&castable), std::string, char);
 }
 
 
@@ -408,13 +561,6 @@ inline std::string toString(const boost::exception *x) {
 }
 
 //TODO add more overloads for speedup/removal of exception throwing
-
-// Created to help with converting elements to strings
-template<typename T>
-inline std::string operator <<(const std::string& a, const T& b) {
-    return a + toString(b);
-}
-
 
 /*
  * Conversion renaming for ease of use with UTF8.
@@ -679,6 +825,25 @@ inline u32string stringToUTF32NoThrow(const UTF32 *str) {
     return u32string(str);
 }
 #endif
+
+/*
+ * These must go at the end of the file.
+ */
+inline std::string operator <<(
+        StrStreamerPtr builder, const StrStreamEnder& convertable) {
+    return builder->buildString();
+}
+template<typename T>
+inline StrStreamerPtr operator <<(
+        StrStreamerPtr builder, const T& convertable) {
+    builder->stracker.push_back(toString(convertable));
+    return StrStreamerPtr(builder.release());
+}
+inline StrStreamerPtr operator <<(
+        StrStreamerPtr builder, const std::string& convertable) {
+    builder->stracker.push_back(&convertable);
+    return StrStreamerPtr(builder.release());
+}
 }
 
 // Get rid of this macro, it was only temporarily here

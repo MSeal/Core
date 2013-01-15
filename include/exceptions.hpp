@@ -111,7 +111,7 @@ namespace core {
 
 
 /* Throws a math exception */
-#define throwDeadlockException(message) \
+#define throwMathException(message) \
     throw ExceptionBasis(message, ::core::MATH_EXCEPTION, \
             ::core::EXCEP_SEVERITY_ERROR, ::core::MathException)
 
