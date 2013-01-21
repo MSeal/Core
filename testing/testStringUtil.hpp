@@ -459,12 +459,11 @@ BOOST_AUTO_TEST_CASE(toStringClass) {
     Stringable stringy;
     StringableInherit inherit;
     bool isValue = detail::HasMember_toString<Stringable>::value;
-    BOOST_TEST_MESSAGE(isValue);
+    BOOST_CHECK(isValue);
     isValue = detail::HasMember_toString<StringableInherit>::value;
-    BOOST_TEST_MESSAGE(isValue);
-    std::string result = detail::StringImplStruct<true, Stringable>::toStringImpl(stringy);
-    BOOST_CHECK_EQUAL(result.compare(stringName), 0);
-    //BOOST_CHECK_EQUAL(toString(inherit).compare(stringName), 0);
+    BOOST_CHECK(isValue);
+    BOOST_CHECK_EQUAL(toString(stringy).compare(stringName), 0);
+    BOOST_CHECK_EQUAL(toString(inherit).compare(stringName), 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

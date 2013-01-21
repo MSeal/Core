@@ -109,6 +109,9 @@ All unit tests for the repo.
 * Object Oriented (with a few exceptions)
 
 ## TODO
+* Change function overload approach for pptypes to not have ambiguity warning
+* Add comments to pptypes and stringutil
+* Fix toString(typeid)
 * Add utf iterators which step by character instead of by byte
 * Change tracked factory to store shared pointers to objects
 * Change file location macro to strip down to core relative directories

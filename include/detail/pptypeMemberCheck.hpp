@@ -6,7 +6,8 @@
 #ifndef PREPROCESSOR_TYPES_MEMBER_CHECK_H_
 #define PREPROCESSOR_TYPES_MEMBER_CHECK_H_
 
-#define MEMBER_NO_CONSTRUCT_ARG(arg) *((arg*)NULL)
+//#define MEMBER_NO_CONSTRUCT_ARG(arg) (*((arg*)NULL))
+#define MEMBER_NO_CONSTRUCT_ARG(arg) (*((typename ::core::referenceStrip<arg>::type *)NULL))
 
 #define MEMBER_CHECK_1_TYPENAME typename A1
 #define MEMBER_CHECK_1_CARGLIST R(A1)

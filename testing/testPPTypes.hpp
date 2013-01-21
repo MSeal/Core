@@ -65,6 +65,11 @@ CREATE_MEMBER_CHECK(test);
 // Repeated template generator for 'bar' name
 CREATE_MEMBER_CHECK(bar);
 
+#define FUNC_MEMBER_PPTEST(testType)                            \
+    fCheck = HasMember_test<testType>::value;                   \
+    fCheckCompile = HasMember_test<testType>::type::value;      \
+    barCheck = HasMember_bar<testType>::value;                  \
+    barCheckCompile = HasMember_bar<testType>::type::value
 /*
  * Tests the detector for members of a class.
  * The detector should be able to see private, template, inherited
@@ -79,179 +84,123 @@ BOOST_AUTO_TEST_CASE(hasMember) {
     bool barCheckCompile;
 
     // Primitive types
-    fCheck = HasMember_test<int>::value;
-    fCheckCompile = HasMember_test<int>::type::value;
-    barCheck = HasMember_bar<int>::value;
-    barCheckCompile = HasMember_bar<int>::type::value;
+    FUNC_MEMBER_PPTEST(int);
     BOOST_CHECK(!fCheck); // Not
     BOOST_CHECK(!fCheckCompile); // Not
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<float>::value;
-    fCheckCompile = HasMember_test<float>::type::value;
-    barCheck = HasMember_bar<float>::value;
-    barCheckCompile = HasMember_bar<float>::type::value;
+    FUNC_MEMBER_PPTEST(float);
     BOOST_CHECK(!fCheck); // Not
     BOOST_CHECK(!fCheckCompile); // Not
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<char>::value;
-    fCheckCompile = HasMember_test<char>::type::value;
-    barCheck = HasMember_bar<char>::value;
-    barCheckCompile = HasMember_bar<char>::type::value;
+    FUNC_MEMBER_PPTEST(char);
+    BOOST_CHECK(!fCheck); // Not
+    BOOST_CHECK(!fCheckCompile); // Not
+    BOOST_CHECK(!barCheck); // Not
+    BOOST_CHECK(!barCheckCompile); // Not
+
+    FUNC_MEMBER_PPTEST(char *);
     BOOST_CHECK(!fCheck); // Not
     BOOST_CHECK(!fCheckCompile); // Not
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
     // Base types without required members
-    fCheck = HasMember_test<std::string>::value;
-    fCheckCompile = HasMember_test<std::string>::type::value;
-    barCheck = HasMember_bar<std::string>::value;
-    barCheckCompile = HasMember_bar<std::string>::type::value;
+    FUNC_MEMBER_PPTEST(std::string);
     BOOST_CHECK(!fCheck); // Not
     BOOST_CHECK(!fCheckCompile); // Not
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<char *>::value;
-    fCheckCompile = HasMember_test<char *>::type::value;
-    barCheck = HasMember_bar<char *>::value;
-    barCheckCompile = HasMember_bar<char *>::type::value;
-    BOOST_CHECK(!fCheck); // Not
-    BOOST_CHECK(!fCheckCompile); // Not
-    BOOST_CHECK(!barCheck); // Not
-    BOOST_CHECK(!barCheckCompile); // Not
-
-    fCheck = HasMember_test<std::vector<short> >::value;
-    fCheckCompile = HasMember_test<std::vector<short> >::type::value;
-    barCheck = HasMember_bar<std::vector<short> >::value;
-    barCheckCompile = HasMember_bar<std::vector<short> >::type::value;
+    FUNC_MEMBER_PPTEST(std::vector<short>);
     BOOST_CHECK(!fCheck); // Not
     BOOST_CHECK(!fCheckCompile); // Not
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
     // Test classes designed to trigger appropriately
-    fCheck = HasMember_test<With>::value;
-    fCheckCompile = HasMember_test<With>::type::value;
-    barCheck = HasMember_bar<With>::value;
-    barCheckCompile = HasMember_bar<With>::type::value;
+    FUNC_MEMBER_PPTEST(With);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithPrivate>::value;
-    fCheckCompile = HasMember_test<WithPrivate>::type::value;
-    barCheck = HasMember_bar<WithPrivate>::value;
-    barCheckCompile = HasMember_bar<WithPrivate>::type::value;
+    FUNC_MEMBER_PPTEST(WithPrivate);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithPrivateInherit>::value;
-    fCheckCompile = HasMember_test<WithPrivateInherit>::type::value;
-    barCheck = HasMember_bar<WithPrivateInherit>::value;
-    barCheckCompile = HasMember_bar<WithPrivateInherit>::type::value;
+    FUNC_MEMBER_PPTEST(WithPrivateInherit);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithInt>::value;
-    fCheckCompile = HasMember_test<WithInt>::type::value;
-    barCheck = HasMember_bar<WithInt>::value;
-    barCheckCompile = HasMember_bar<WithInt>::type::value;
+    FUNC_MEMBER_PPTEST(WithInt);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithHidden>::value;
-    fCheckCompile = HasMember_test<WithHidden>::type::value;
-    barCheck = HasMember_bar<WithHidden>::value;
-    barCheckCompile = HasMember_bar<WithHidden>::type::value;
+    FUNC_MEMBER_PPTEST(WithHidden);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithInherit>::value;
-    fCheckCompile = HasMember_test<WithInherit>::type::value;
-    barCheck = HasMember_bar<WithInherit>::value;
-    barCheckCompile = HasMember_bar<WithInherit>::type::value;
+    FUNC_MEMBER_PPTEST(WithInherit);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithTemplate>::value;
-    fCheckCompile = HasMember_test<WithTemplate>::type::value;
-    barCheck = HasMember_bar<WithTemplate>::value;
-    barCheckCompile = HasMember_bar<WithTemplate>::type::value;
+    FUNC_MEMBER_PPTEST(WithTemplate);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithTemplateInherit>::value;
-    fCheckCompile = HasMember_test<WithTemplateInherit>::type::value;
-    barCheck = HasMember_bar<WithTemplateInherit>::value;
-    barCheckCompile = HasMember_bar<WithTemplateInherit>::type::value;
+    FUNC_MEMBER_PPTEST(WithTemplateInherit);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithTemplateInheritPrivate>::value;
-    fCheckCompile = HasMember_test<WithTemplateInheritPrivate>::type::value;
-    barCheck = HasMember_bar<WithTemplateInheritPrivate>::value;
-    barCheckCompile = HasMember_bar<WithTemplateInheritPrivate>::type::value;
+    FUNC_MEMBER_PPTEST(WithTemplateInheritPrivate);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<Without>::value;
-    fCheckCompile = HasMember_test<Without>::type::value;
-    barCheck = HasMember_bar<Without>::value;
-    barCheckCompile = HasMember_bar<Without>::type::value;
+    FUNC_MEMBER_PPTEST(Without);
     BOOST_CHECK(!fCheck); // Not
     BOOST_CHECK(!fCheckCompile); // Not
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithoutInherit>::value;
-    fCheckCompile = HasMember_test<WithoutInherit>::type::value;
-    barCheck = HasMember_bar<WithoutInherit>::value;
-    barCheckCompile = HasMember_bar<WithoutInherit>::type::value;
+    FUNC_MEMBER_PPTEST(WithoutInherit);
     BOOST_CHECK(!fCheck); // Not
     BOOST_CHECK(!fCheckCompile); // Not
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithFromWithout>::value;
-    fCheckCompile = HasMember_test<WithFromWithout>::type::value;
-    barCheck = HasMember_bar<WithFromWithout>::value;
-    barCheckCompile = HasMember_bar<WithFromWithout>::type::value;
+    FUNC_MEMBER_PPTEST(WithFromWithout);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(!barCheck); // Not
     BOOST_CHECK(!barCheckCompile); // Not
 
-    fCheck = HasMember_test<WithMultiple>::value;
-    fCheckCompile = HasMember_test<WithMultiple>::type::value;
-    barCheck = HasMember_bar<WithMultiple>::value;
-    barCheckCompile = HasMember_bar<WithMultiple>::type::value;
+    FUNC_MEMBER_PPTEST(WithMultiple);
     BOOST_CHECK(fCheck);
     BOOST_CHECK(fCheckCompile);
     BOOST_CHECK(barCheck);
     BOOST_CHECK(barCheckCompile);
 }
+
 
 struct Intable {
     // Keep non-explicit to allow strange
@@ -280,41 +229,13 @@ public:
     }
 };
 
-class Stringable {
-public:
-    std::string toString() const {
-        return "";
-    }
-    int testInt() const {
-        return 1;
-    }
-};
-
-class StringableInherit : public Stringable {};
-
-class BadReturnStringable {
-public:
-    int toString () {
-        return 1;
-    }
-    std::string testInt() {
-        return "";
-    }
-};
-
-class NotStringable {
-public:
-    std::string toString;
-    int testInt;
-};
-
 CREATE_MEMBER_FUNC_CHECK(test);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, void (void), primitive);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, void (const int), 1);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, void (int*), 2);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, void (long*), 3);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, void (long*) const, 4);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (const int), 5);
+CREATE_MEMBER_FUNC_SIG_CHECK(test, void (const int*), 5);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, Intable (const int), 6);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, Intable (const int) const, 7);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, void (Intable), 8);
@@ -323,6 +244,15 @@ CREATE_MEMBER_FUNC_SIG_CHECK(test, void (int), 10);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, const void *(const int*), 11);
 CREATE_MEMBER_FUNC_SIG_CHECK(test, int (int), 12);
 
+#define FUNC_ASSIGN_PPTEST(testName, funcName, testType, testSignature)             \
+    funcPossible = IsMemberFunc_##funcName                                          \
+                <testType, testSignature>::value;                                   \
+    funcPossibleCompile = IsMemberFunc_##funcName                                   \
+                <testType, testSignature>::type::value;                             \
+    funcSigPossible = BOOST_PP_CAT(IsMemberSigFunc_##funcName, _##testName)         \
+                <testType>::value;                                                  \
+    funcSigPossibleCompile = BOOST_PP_CAT(IsMemberSigFunc_##funcName, _##testName)  \
+                <testType>::type::value
 
 BOOST_AUTO_TEST_CASE(hasMemberFunc) {
     bool funcPossible;
@@ -333,161 +263,380 @@ BOOST_AUTO_TEST_CASE(hasMemberFunc) {
     bool funcSigPossibleCompile;
 
     // Primitive types
-    funcPossible = IsMemberFunc_test<int, void (void)>::value;
-    funcPossibleCompile = IsMemberFunc_test<int, void (void)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_primitive<int>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_primitive<int>::type::value;
+    FUNC_ASSIGN_PPTEST(primitive, test, int, void (void));
     BOOST_CHECK(!funcPossible);
     BOOST_CHECK(!funcPossibleCompile);
     BOOST_CHECK(!funcSigPossible);
     BOOST_CHECK(!funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<std::string, void (void)>::value;
-    funcPossibleCompile = IsMemberFunc_test<std::string, void (void)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_primitive<std::string>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_primitive<std::string>::type::value;
+    FUNC_ASSIGN_PPTEST(primitive, test, std::string, void (void));
     BOOST_CHECK(!funcPossible);
     BOOST_CHECK(!funcPossibleCompile);
     BOOST_CHECK(!funcSigPossible);
     BOOST_CHECK(!funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<double, void (void)>::value;
-    funcPossibleCompile = IsMemberFunc_test<double, void (void)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_primitive<double>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_primitive<double>::type::value;
+    FUNC_ASSIGN_PPTEST(primitive, test, double, void (void));
     BOOST_CHECK(!funcPossible);
     BOOST_CHECK(!funcPossibleCompile);
     BOOST_CHECK(!funcSigPossible);
     BOOST_CHECK(!funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<char *, void (void)>::value;
-    funcPossibleCompile = IsMemberFunc_test<char *, void (void)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_primitive<char *>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_primitive<char *>::type::value;
+    FUNC_ASSIGN_PPTEST(primitive, test, char *, void (void));
     BOOST_CHECK(!funcPossible);
     BOOST_CHECK(!funcPossibleCompile);
     BOOST_CHECK(!funcSigPossible);
     BOOST_CHECK(!funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<std::vector<float>, void (void)>::value;
-    funcPossibleCompile = IsMemberFunc_test<std::vector<float>, void (void)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_primitive<std::vector<float> >::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_primitive<std::vector<float> >::type::value;
+    FUNC_ASSIGN_PPTEST(primitive, test, float, void (void));
     BOOST_CHECK(!funcPossible);
     BOOST_CHECK(!funcPossibleCompile);
     BOOST_CHECK(!funcSigPossible);
     BOOST_CHECK(!funcSigPossibleCompile);
 
     // Test classes designed to trigger appropriately
-    funcPossible = IsMemberFunc_test<TestCallable, void (const int)>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallable, void (const int)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_1<TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_1<TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(1, test, TestCallable, void (const int));
     BOOST_CHECK(funcPossible);
     BOOST_CHECK(funcPossibleCompile);
     BOOST_CHECK(funcSigPossible);
     BOOST_CHECK(funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<TestCallable, void (int*)>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallable, void (int*)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_2<TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_2<TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(2, test, TestCallable, void (int*));
     BOOST_CHECK(!funcPossible); // Not
     BOOST_CHECK(!funcPossibleCompile); // Not
     BOOST_CHECK(!funcSigPossible); // Not
     BOOST_CHECK(!funcSigPossibleCompile); // Not
 
-    funcPossible = IsMemberFunc_test<const TestCallable, void (long*)>::value;
-    funcPossibleCompile = IsMemberFunc_test<const TestCallable, void (long*)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_3<const TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_3<const TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(3, test, TestCallable, void (long));
     BOOST_CHECK(funcPossible);
     BOOST_CHECK(funcPossibleCompile);
     BOOST_CHECK(funcSigPossible);
     BOOST_CHECK(funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<const TestCallable, void (long*) const>::value;
-    funcPossibleCompile = IsMemberFunc_test<const TestCallable, void (long*) const>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_4<const TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_4<const TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(4, test, TestCallable, void (long*) const);
     BOOST_CHECK(funcPossible);
     BOOST_CHECK(funcPossibleCompile);
     BOOST_CHECK(funcSigPossible);
     BOOST_CHECK(funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<const TestCallable, void (const int)>::value;
-    funcPossibleCompile = IsMemberFunc_test<const TestCallable, void (const int)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_5<const TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_5<const TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(5, test, TestCallable, void (const int*));
     BOOST_CHECK(!funcPossible); // Not
     BOOST_CHECK(!funcPossibleCompile); // Not
     BOOST_CHECK(!funcSigPossible); // Not
     BOOST_CHECK(!funcSigPossibleCompile); // Not
 
-    funcPossible = IsMemberFunc_test<TestCallable, Intable (const int)>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallable, Intable (const int)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_6<TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_6<TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(6, test, TestCallable, Intable (const int));
     BOOST_CHECK(funcPossible);
     BOOST_CHECK(funcPossibleCompile);
     BOOST_CHECK(funcSigPossible);
     BOOST_CHECK(funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<TestCallable, Intable (const int) const>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallable, Intable (const int) const>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_7<TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_7<TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(7, test, TestCallable, Intable (const int) const);
     BOOST_CHECK(!funcPossible); // Not
     BOOST_CHECK(!funcPossibleCompile); // Not
     BOOST_CHECK(!funcSigPossible); // Not
     BOOST_CHECK(!funcSigPossibleCompile); // Not
 
-    funcPossible = IsMemberFunc_test<TestCallable, void (Intable)>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallable, void (Intable)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_8<TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_8<TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(8, test, TestCallable, void (Intable));
     BOOST_CHECK(funcPossible);
     BOOST_CHECK(funcPossibleCompile);
     BOOST_CHECK(funcSigPossible);
     BOOST_CHECK(funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<TestCallable, int&(const int)>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallable, int&(const int)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_9<TestCallable>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_9<TestCallable>::type::value;
+    FUNC_ASSIGN_PPTEST(9, test, TestCallable, int& (const int));
     BOOST_CHECK(!funcPossible); // Not
     BOOST_CHECK(!funcPossibleCompile); // Not
     BOOST_CHECK(!funcSigPossible); // Not
     BOOST_CHECK(!funcSigPossibleCompile); // Not
 
-    funcPossible = IsMemberFunc_test<TestCallableTemplate, void (int)>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallableTemplate, void (int)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_10<TestCallableTemplate>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_10<TestCallableTemplate>::type::value;
+    FUNC_ASSIGN_PPTEST(10, test, TestCallable, void (int));
     BOOST_CHECK(funcPossible);
     BOOST_CHECK(funcPossibleCompile);
     BOOST_CHECK(funcSigPossible);
     BOOST_CHECK(funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<TestCallableTemplate,
-            const void *(const int*)>::value;
-    funcPossibleCompile = IsMemberFunc_test<TestCallableTemplate,
-            const void *(const int*)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_11<TestCallableTemplate>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_11<TestCallableTemplate>::type::value;
+    FUNC_ASSIGN_PPTEST(11, test, TestCallableTemplate, const void *(const int*));
     BOOST_CHECK(funcPossible);
     BOOST_CHECK(funcPossibleCompile);
     BOOST_CHECK(funcSigPossible);
     BOOST_CHECK(funcSigPossibleCompile);
 
-    funcPossible = IsMemberFunc_test<Without, int (int)>::value;
-    funcPossibleCompile = IsMemberFunc_test<Without, int (int)>::type::value;
-    funcSigPossible = IsMemberSigFunc_test_12<Without>::value;
-    funcSigPossibleCompile = IsMemberSigFunc_test_12<Without>::type::value;
+    FUNC_ASSIGN_PPTEST(11, test, Without, int (int));
     BOOST_CHECK(!funcPossible); // Not
     BOOST_CHECK(!funcPossibleCompile); // Not
     BOOST_CHECK(!funcSigPossible); // Not
     BOOST_CHECK(!funcSigPossibleCompile); // Not
+}
+
+#define MANY_FUNC_CREATE_CALLS_PPTEST(args)                                 \
+    void mcall(args) {}                                                     \
+    int mcallret(args) { return 1; }                                        \
+    int mcallret(args) const { return 1; }                                  \
+    void mcallconst(args) const {}
+
+#define MANY_FUNC_CREATE_PPTEST(args, testnum)                              \
+    CREATE_MEMBER_FUNC_SIG_CHECK(mcall, void args, testnum);                \
+    CREATE_MEMBER_FUNC_SIG_CHECK(mcall, void args const, const_##testnum);  \
+    CREATE_MEMBER_FUNC_SIG_CHECK(mcallret, int args, testnum);              \
+    CREATE_MEMBER_FUNC_SIG_CHECK(mcallret, int args const, const_##testnum);\
+    CREATE_MEMBER_FUNC_SIG_CHECK(mcallconst, void args, testnum);           \
+    CREATE_MEMBER_FUNC_SIG_CHECK(mcallconst, void args const, const_##testnum)
+
+// 1 arg
+#define MANY_FUNC_ARGS_PPTEST_1 int
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_1), 1);
+MANY_FUNC_CREATE_PPTEST((Without), fail_1); // For failure test
+// 2 args
+#define MANY_FUNC_ARGS_PPTEST_2 int, long
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_2), 2);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_1, Without), fail_2);
+// 3 args
+#define MANY_FUNC_ARGS_PPTEST_3 int, long, char
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_3), 3);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_2, Without), fail_3);
+// 4 args
+#define MANY_FUNC_ARGS_PPTEST_4 int, long, char, bool
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_4), 4);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_3, Without), fail_4);
+// 5 args
+#define MANY_FUNC_ARGS_PPTEST_5 int, long, char, bool, float
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_5), 5);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_4, Without), fail_5);
+// 6 args
+#define MANY_FUNC_ARGS_PPTEST_6 int, long, char, bool, float,               \
+    short
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_6), 6);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_5, Without), fail_6);
+// 7 args
+#define MANY_FUNC_ARGS_PPTEST_7 int, long, char, bool, float,               \
+    short, const With&
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_7), 7);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_6, Without), fail_7);
+// 8 args
+#define MANY_FUNC_ARGS_PPTEST_8 int, long, char, bool, float,               \
+    short, const With&, double
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_8), 8);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_7, Without), fail_8);
+// 9 args
+#define MANY_FUNC_ARGS_PPTEST_9 int, long, char, bool, float,               \
+    short, const With&, double, std::string
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_9), 9);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_8, Without), fail_9);
+// 10 args
+#define MANY_FUNC_ARGS_PPTEST_10 int, long, char, bool, float,              \
+    short, const With&, double, std::string, int*
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_10), 10);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_9, Without), fail_10);
+// 11 args
+#define MANY_FUNC_ARGS_PPTEST_11 int, long, char, bool, float,              \
+    short, const With&, double, std::string, int*, const char * const
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_11), 11);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_10, Without), fail_11);
+// 12 args
+#define MANY_FUNC_ARGS_PPTEST_12 int, long, char, bool, float,              \
+    short, const With&, double, std::string, int*, const char * const,      \
+    int&
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_12), 12);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_11, Without), fail_12);
+// 13 args
+#define MANY_FUNC_ARGS_PPTEST_13 int, long, char, bool, float,              \
+    short, const With&, double, std::string, int*, const char * const,      \
+    int&, bool**
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_13), 13);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_12, Without), fail_13);
+// 14 args
+#define MANY_FUNC_ARGS_PPTEST_14 int, long, char, bool, float,              \
+    short, const With&, double, std::string, int*, const char * const,      \
+    int&, bool**, std::vector<std::vector<int> >
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_14), 14);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_13, Without), fail_14);
+// 15 args
+#define MANY_FUNC_ARGS_PPTEST_15 int, long, char, bool, float,              \
+    short, const With&, double, std::string, int*, const char * const,      \
+    int&, bool**, std::vector<std::vector<int> >, float&
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_15), 15);
+MANY_FUNC_CREATE_PPTEST((MANY_FUNC_ARGS_PPTEST_14, Without), fail_15);
+
+class ManyTestCallable {
+public:
+    // 1 arg
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_1)
+    // 2 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_2)
+    // 3 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_3)
+    // 4 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_4)
+    // 5 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_5)
+    // 6 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_6)
+    // 7 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_7)
+    // 8 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_8)
+    // 9 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_9)
+    // 10 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_10)
+    // 11 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_11)
+    // 12 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_12)
+    // 13 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_13)
+    // 14 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_14)
+    // 15 args
+    MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_15)
+};
+
+#define MANY_FUNC_ASSIGN_PPTEST(testnum)                                    \
+    mcallPossible = IsMemberSigFunc_mcall_##testnum                         \
+            <ManyTestCallable>::value;                                      \
+    mcallPossibleAsConst =                                                  \
+        BOOST_PP_CAT(IsMemberSigFunc_mcall_const, _##testnum)               \
+            <ManyTestCallable>::value;                                      \
+    mcallRetPossible = IsMemberSigFunc_mcallret_##testnum                   \
+            <ManyTestCallable>::value;                                      \
+    mcallRetPossibleAsConst =                                               \
+        BOOST_PP_CAT(IsMemberSigFunc_mcallret_const, _##testnum)            \
+            <ManyTestCallable>::value;                                      \
+    mcallConstPossible = IsMemberSigFunc_mcallconst_##testnum               \
+            <ManyTestCallable>::value;                                      \
+    mcallConstPossibleAsConst =                                             \
+        BOOST_PP_CAT(IsMemberSigFunc_mcallconst_const, _##testnum)          \
+            <ManyTestCallable>::value
+
+#define MANY_FUNC_CHECK_PPTEST()                                            \
+    BOOST_CHECK(mcallPossible);                                             \
+    BOOST_CHECK(!mcallPossibleAsConst); /* This should fail */              \
+    BOOST_CHECK(mcallRetPossible);                                          \
+    BOOST_CHECK(mcallRetPossibleAsConst);                                   \
+    BOOST_CHECK(mcallConstPossible);                                        \
+    BOOST_CHECK(mcallConstPossibleAsConst)
+
+#define MANY_FUNC_FAIL_CHECK_PPTEST()                                       \
+    /* All of these should fail */                                          \
+    BOOST_CHECK(!mcallPossible);                                            \
+    BOOST_CHECK(!mcallPossibleAsConst);                                     \
+    BOOST_CHECK(!mcallRetPossible);                                         \
+    BOOST_CHECK(!mcallRetPossibleAsConst);                                  \
+    BOOST_CHECK(!mcallConstPossible);                                       \
+    BOOST_CHECK(!mcallConstPossibleAsConst)
+
+BOOST_AUTO_TEST_CASE(hasMemberFuncManyArgs) {
+    // Use these to check each test result
+    bool mcallPossible;
+    bool mcallPossibleAsConst;
+    bool mcallRetPossible;
+    bool mcallRetPossibleAsConst;
+    bool mcallConstPossible;
+    bool mcallConstPossibleAsConst;
+
+    // 1 arg
+    MANY_FUNC_ASSIGN_PPTEST(1);
+    MANY_FUNC_CHECK_PPTEST();
+    // 1 arg mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_1);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 2 args
+    MANY_FUNC_ASSIGN_PPTEST(2);
+    MANY_FUNC_CHECK_PPTEST();
+    // 2 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_2);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 3 args
+    MANY_FUNC_ASSIGN_PPTEST(3);
+    MANY_FUNC_CHECK_PPTEST();
+    // 3 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_3);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 4 args
+    MANY_FUNC_ASSIGN_PPTEST(4);
+    MANY_FUNC_CHECK_PPTEST();
+    // 4 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_4);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 5 args
+    MANY_FUNC_ASSIGN_PPTEST(5);
+    MANY_FUNC_CHECK_PPTEST();
+    // 5 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_5);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 6 args
+    MANY_FUNC_ASSIGN_PPTEST(6);
+    MANY_FUNC_CHECK_PPTEST();
+    // 6 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_6);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 7 args
+    MANY_FUNC_ASSIGN_PPTEST(7);
+    MANY_FUNC_CHECK_PPTEST();
+    // 7 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_7);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 8 args
+    MANY_FUNC_ASSIGN_PPTEST(8);
+    MANY_FUNC_CHECK_PPTEST();
+    // 8 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_8);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 9 args
+    MANY_FUNC_ASSIGN_PPTEST(9);
+    MANY_FUNC_CHECK_PPTEST();
+    // 9 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_9);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 10 args
+    MANY_FUNC_ASSIGN_PPTEST(10);
+    MANY_FUNC_CHECK_PPTEST();
+    // 10 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_10);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 11 args
+    MANY_FUNC_ASSIGN_PPTEST(11);
+    MANY_FUNC_CHECK_PPTEST();
+    // 11 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_11);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 12 args
+    MANY_FUNC_ASSIGN_PPTEST(12);
+    MANY_FUNC_CHECK_PPTEST();
+    // 12 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_12);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 13 args
+    MANY_FUNC_ASSIGN_PPTEST(13);
+    MANY_FUNC_CHECK_PPTEST();
+    // 13 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_13);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 14 args
+    MANY_FUNC_ASSIGN_PPTEST(14);
+    MANY_FUNC_CHECK_PPTEST();
+    // 14 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_14);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
+
+    // 15 args
+    MANY_FUNC_ASSIGN_PPTEST(15);
+    MANY_FUNC_CHECK_PPTEST();
+    // 15 args mismatching args
+    MANY_FUNC_ASSIGN_PPTEST(fail_15);
+    MANY_FUNC_FAIL_CHECK_PPTEST();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
