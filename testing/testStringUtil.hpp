@@ -442,6 +442,31 @@ BOOST_AUTO_TEST_CASE(stringStream) {
                     "multiple (more than 2) string-types added together"), 0);
 }
 
+std::string stringName = "Stringable";
+class Stringable {
+public:
+    std::string toString() const {
+        return stringName;
+    }
+};
+
+class StringableInherit : public Stringable {};
+
+/*
+ * Checks that any class with the toString method is callable with toString function.
+ */
+BOOST_AUTO_TEST_CASE(toStringClass) {
+    Stringable stringy;
+    StringableInherit inherit;
+    bool isValue = detail::HasMember_toString<Stringable>::value;
+    BOOST_TEST_MESSAGE(isValue);
+    isValue = detail::HasMember_toString<StringableInherit>::value;
+    BOOST_TEST_MESSAGE(isValue);
+    std::string result = detail::StringImplStruct<true, Stringable>::toStringImpl(stringy);
+    BOOST_CHECK_EQUAL(result.compare(stringName), 0);
+    //BOOST_CHECK_EQUAL(toString(inherit).compare(stringName), 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 }
 

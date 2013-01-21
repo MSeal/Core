@@ -9,6 +9,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/locale/encoding_utf.hpp>
 #include <boost/variant.hpp>
+#include <boost/mpl/if.hpp>
 #include <vector>
 #include <sstream>
 #include <limits.h>
@@ -116,91 +117,58 @@ public:
              << ::core::ThrowErrorCastSource(&sourceType) \
              << ::core::ThrowErrorCastDest(&destType)
 
+namespace detail {
+// Creates IsMemberSigFunc_toString_check
+CREATE_MEMBER_CHECK(toString);
+
+/*
+ * This function has no working knowledge of the type, so it just tries
+ * a lexical cast.
+ */
+template<bool hasMethod, typename T>
+struct StringImplStruct {
+    static std::string toStringImpl(const T& castable) {
+        try {
+            return boost::lexical_cast<std::string, T>(castable);
+        } catch (boost::bad_lexical_cast) {
+            throwCastException("Unable to cast " << toString(typeid(T)) << " to std::string",
+                               typeid(T), typeid(std::string));
+        }
+    }
+};
+
+/*
+ * The object has a 'toString' member, try using it as a 'std::string toString()'
+ * method.
+ * NOTE: without C++11 it's impossible to check the return type of a no-argument
+ * function when it could also just be a member. Everything looks like the correct
+ * type and have ambiguous returns because of the ()operator.
+ */
+template<typename T>
+struct StringImplStruct<true, T> {
+    static std::string toStringImpl(const T& castable) {
+        return castable.toString();
+    }
+};
+}
+
 /*
  * Type: Generic
  */
 template<typename T>
 inline std::string toString(const T& castable) {
-    try {
-        return boost::lexical_cast<std::string, T>(castable);
-    } catch (boost::bad_lexical_cast) {
-        throwCastException("Unable to cast " << toString(typeid(T)) << " to std::string",
-                            typeid(T), typeid(std::string));
-    }
+    return detail::StringImplStruct
+            <detail::HasMember_toString<T>::value, T>::
+                toStringImpl(castable);
 }
-
-
-//#include <boost/type_traits/is_function.hpp>
-#include <boost/type_traits/is_member_function_pointer.hpp>
-#include <boost/type_traits/integral_constant.hpp>
-#include <boost/type_traits/is_pod.hpp>
-#include <boost/type_traits/is_class.hpp>
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
-
-template <class T>
-struct handle_other {
-  static std::string convert(const T& t) {
-      return "No method";//toString(t);
-  }
-};
-
-template <class T>
-struct handle_class_with_method {
-  static std::string convert(const T& t) {
-    return t.toString();
-  }
-};
-
-CREATE_MEMBER_FUNC_SIG_CHECK_OLD(toString, std::string, void, const);
-CREATE_MEMBER_FUNC_SIG_CHECK_OLD(toTest, std::string, void,);
-
-template<typename T>
-inline typename detail::enable_if<!boost::is_class<T>::value, std::string>::type
-test(const T& castable) {
-    return "Nothing";
-}
-
-template<typename T>
-inline typename detail::enable_if<boost::is_class<T>::value, std::string>::type
-test(const T& castable) {
-    typedef typename boost::mpl::if_<
-        //typename has_to_string<T, std::string(T::*)() const>::type,
-        typename HasMemberFuncSig_toString<T>::type,
-        handle_class_with_method<T>,
-        handle_other<T>
-      >::type impl;
-    return impl::convert(castable);
-    //return std::string();
-}
-
-/*
- *
-typename enable_if<boost::mpl::_or<boost::is_class, !has_to_string<T,
-                   std::string(T::*)()>::value >, std::string>::type
- *
-
-template<typename T>
-//typename boost::enable_if<typename has_to_string<T, std::string(T::*)()>::value, std::string>::type
-typename boost::enable_if<typename boost::is_function<typename std::string(T::toString)()>::type, std::string>::type
-test(const T& t) {
-   // something when T has toString ...
-   return t.toString();
-}
-
-template<typename T>
-typename boost::disable_if<typename has_to_string<T, std::string(T::*)()>::value, std::string>::type
-test(const T& t) {
-   // something when T doesnt have toString ...
-   return "T::toString() does not exist.";
-}
-*/
 
 template<typename T>
 inline std::string toStringNoThrow(const T& castable) {
     try {
         return toString(castable);
     } catch (boost::bad_lexical_cast) {
+        return std::string();
+    } catch (...) {
         return std::string();
     }
 }
