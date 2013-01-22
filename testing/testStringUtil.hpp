@@ -458,10 +458,10 @@ class StringableInherit : public Stringable {};
 BOOST_AUTO_TEST_CASE(toStringClass) {
     Stringable stringy;
     StringableInherit inherit;
-    bool isValue = detail::HasMember_toString<Stringable>::value;
-    BOOST_CHECK(isValue);
-    isValue = detail::HasMember_toString<StringableInherit>::value;
-    BOOST_CHECK(isValue);
+    bool hasToStr = detail::HasMemberSigFunc_toString_strcheck<Stringable>::value;
+    BOOST_CHECK(hasToStr);
+    hasToStr = detail::HasMemberSigFunc_toString_strcheck<StringableInherit>::value;
+    BOOST_CHECK(hasToStr);
     BOOST_CHECK_EQUAL(toString(stringy).compare(stringName), 0);
     BOOST_CHECK_EQUAL(toString(inherit).compare(stringName), 0);
 }

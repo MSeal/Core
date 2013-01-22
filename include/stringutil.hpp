@@ -118,8 +118,9 @@ public:
              << ::core::ThrowErrorCastDest(&destType)
 
 namespace detail {
-// Creates IsMemberSigFunc_toString_check
-CREATE_MEMBER_CHECK(toString);
+//CREATE_MEMBER_CHECK(toString);
+// Creates HasMemberSigFunc_toString_strcheck
+CREATE_MEMBER_FUNC_SIG_CHECK(toString, std::string (void), strcheck);
 
 /*
  * This function has no working knowledge of the type, so it just tries
@@ -158,7 +159,7 @@ struct StringImplStruct<true, T> {
 template<typename T>
 inline std::string toString(const T& castable) {
     return detail::StringImplStruct
-            <detail::HasMember_toString<T>::value, T>::
+            <detail::HasMemberSigFunc_toString_strcheck<T>::value, T>::
                 toStringImpl(castable);
 }
 

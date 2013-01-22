@@ -11,8 +11,14 @@
  * http://stackoverflow.com/questions/257288/
  *      is-it-possible-to-write-a-c-template-to-check-for-a-functions-existence/264088#264088
  *
- * Capabilities:
- * Can't tell difference between references and non-references
+ * Problems:
+ *  No argument private methods will flag HasMemberFunc as true while
+ * versions with arguments will not (this shouldn't be happening, which makes
+ * me worried some compilers will complain/change behavior).
+ *  HasMember also flags private methods (not much to be done on this front).
+ *
+ * TODO Add descriptions
+ * TODO Add macro for call if template match
  */
 #ifndef PREPROCESSOR_TYPES_H_
 #define PREPROCESSOR_TYPES_H_
@@ -41,6 +47,16 @@ struct disableIf {
 template<class R>
 struct disableIf<true, R>{};
 
+template<bool T, typename Yes, typename No>
+struct chooseIf {
+   typedef Yes type;
+};
+
+template<typename Yes, typename No>
+struct chooseIf<false, Yes, No> {
+    typedef No type;
+};
+
 template<typename SrcType, typename DestType>
 struct constnessCheck {
     typedef DestType type;
@@ -59,6 +75,11 @@ struct referenceStrip<Type&> {
     typedef Type type;
 };
 
+/* Only types which match the signature T can be placed in the second template */
+template<typename T, T> struct forceTypeCheck {
+    static const bool value = true;
+};
+
 /*
  * Fake definition of HasMember for CDT parser, since it thinks boost::is_class
  * doesn't exist.
@@ -73,10 +94,6 @@ public:                                                                         
     typedef typename boost::integral_constant<bool, value> type;                            \
 }
 #else
-/*
- * Originally taken freely from http://www.rsdn.ru/forum/cpp/2759773.1
- * Edited heavily to become generic and for easier reading
- */
 #define CREATE_MEMBER_CHECK(mname)                                                          \
 template<typename Type, typename SFINAE = void>                                             \
 /* Fallback class definition if Type is not a class */                                      \
@@ -102,18 +119,25 @@ class HasMember_##mname <Type, typename ::core::enableIf<                       
         void mname(){}                                                                      \
     };                                                                                      \
                                                                                             \
-    struct Check : public Type, public Derived {};                                          \
+    struct MixedType : public Type, public Derived {};                                      \
                                                                                             \
-    /* Only types which match the signature T can be placed in the second template */       \
-    template<typename T, T> class MemberCheck{};                                            \
-                                                                                            \
+    /* Negative case, if Derived was no in name conflict with Type */                       \
     template<typename U>                                                                    \
-    static No resolve(U*, MemberCheck<void (Derived::*)(), &U::mname>* = NULL);             \
+    static typename ::core::enableIf<                                                       \
+        forceTypeCheck<void (Derived::*)(), &U::mname>::value,                              \
+    No>::type                                                                               \
+    resolve(U*);                                                                            \
     static Yes resolve(...);                                                                \
+                                                                                            \
+    /* Performs the check, we could make different versions here if needed */               \
+    template<typename T>                                                                    \
+    struct Check {                                                                          \
+        static const bool value = (sizeof(Yes) == sizeof(resolve((T*)(NULL))));             \
+    };                                                                                      \
                                                                                             \
 public:                                                                                     \
     /* True if the class has the member */                                                  \
-    static const bool value = (sizeof(Yes) == sizeof(resolve((Check*)(NULL))));             \
+    static const bool value = Check<MixedType>::value;                                      \
     /* Used for boost template logic */                                                     \
     typedef typename boost::integral_constant<bool, value> type;                            \
 }
@@ -125,33 +149,97 @@ public:                                                                         
  * Checks for various number of arguments.
  */
 #define MEMBER_CHECK_ARG_GEN(mname, targlist, carglist, farglist)                           \
-template<targlist, typename R>                                                              \
-struct Check<true, carglist> {                                                              \
-    static const bool value =                                                               \
-        sizeof(ReturnValueCheck<Type, R>::resolve(                                          \
-                /* Fake comma operator for void return */                                   \
-                (((DerivedType*)NULL)->mname(farglist),                                     \
-                        hidden::voidResultHolder_##mname <Type>()))                         \
-               ) == sizeof(Yes);                                                            \
-};                                                                                          \
-template <targlist, typename R>                                                             \
-struct Check<true, carglist const> {                                                        \
-    static const bool value =                                                               \
-        sizeof(ReturnValueCheck<Type, R>::resolve(                                          \
-                /* Fake comma operator for void return */                                   \
-                (((DerivedConstMethodType*)NULL)->mname(farglist),                          \
-                        hidden::voidResultHolder_##mname <Type>()))                         \
-               ) == sizeof(Yes);                                                            \
-}
+    template<targlist, typename R>                                                          \
+    struct Check<true, carglist> {                                                          \
+        static const bool value =                                                           \
+            sizeof(ReturnValueCheck<Type, R>::resolve(                                      \
+                    /* Fake comma operator for void return */                               \
+                    (((DerivedType*)NULL)->mname(farglist),                                 \
+                            hidden::voidResultHolder_##mname <Type>()))                     \
+                   ) == sizeof(Yes);                                                        \
+    };                                                                                      \
+    template <targlist, typename R>                                                         \
+    struct Check<true, carglist const> {                                                    \
+        static const bool value =                                                           \
+            sizeof(ReturnValueCheck<Type, R>::resolve(                                      \
+                    /* Fake comma operator for void return */                               \
+                    (((DerivedConstMethodType*)NULL)->mname(farglist),                      \
+                            hidden::voidResultHolder_##mname <Type>()))                     \
+                   ) == sizeof(Yes);                                                        \
+    }
 
 /*
- * Fake definition of IsMemberFunc for CDT parser, since there is an ambiguity
+ * Macro used to generate all of the instances for checking the type
+ * information of no argument member functions.
+ */
+#define MEMBER_CHECK_NO_ARGS(mname)                                                         \
+    /* Enabled if we can cast to a method returning non-void R */                           \
+    template<typename R, typename T>                                                        \
+    static typename ::core::enableIf                                                        \
+        <sizeof(static_cast<R (T::*)()>(&T::mname)) != 0 &&                                 \
+                !boost::is_same<R, void>::value, Yes>::type                                 \
+    noArgMethodCheck(T*);                                                                   \
+    /* Don't forget const version! */                                                       \
+    template<typename R, typename T>                                                        \
+    static typename ::core::enableIf                                                        \
+        <sizeof(static_cast<R (T::*)() const>(&T::mname)) != 0 &&                           \
+                !boost::is_same<R, void>::value, Yes>::type                                 \
+    noArgMethodCheck(T*);                                                                   \
+    /* Enabled if we can cast to a method returning void */                                 \
+    template<typename R, typename T>                                                        \
+    static typename ::core::enableIf                                                        \
+        <sizeof(static_cast<void (T::*)()>(&T::mname)) != 0,                                \
+            typename ::core::chooseIf<boost::is_same<R, void>::value,                       \
+            Yes, No>::type>::type                                                           \
+    /* Don't forget const version! */                                                       \
+    noArgMethodCheck(T*);                                                                   \
+    template<typename R, typename T>                                                        \
+    static typename ::core::enableIf                                                        \
+        <sizeof(static_cast<void (T::*)() const>(&T::mname)) != 0,                          \
+            typename ::core::chooseIf<boost::is_same<R, void>::value,                       \
+            Yes, No>::type>::type                                                           \
+    noArgMethodCheck(T*);                                                                   \
+    /* Fallback for no match */                                                             \
+    template<typename R>                                                                    \
+    static No noArgMethodCheck(...);                                                        \
+                                                                                            \
+    /* Enabled for const objects if we can cast to a method returning non-void R */         \
+    template<typename R, typename T>                                                        \
+    static typename ::core::enableIf                                                        \
+        <sizeof(static_cast<R (T::*)() const>(&T::mname)) != 0 &&                           \
+                !boost::is_same<R, void>::value, Yes>::type                                 \
+    noArgMethodConstCheck(T*);                                                              \
+    /* Enabled for const objects if we can cast to a method returning void */               \
+    template<typename R, typename T>                                                        \
+    static typename ::core::enableIf                                                        \
+        <sizeof(static_cast<void (T::*)() const>(&T::mname)) != 0,                          \
+            typename ::core::chooseIf<boost::is_same<R, void>::value,                       \
+            Yes, No>::type>::type                                                           \
+    noArgMethodConstCheck(T*);                                                              \
+    template<typename R>                                                                    \
+    /* Fallback for no match */                                                             \
+    static No noArgMethodConstCheck(...);                                                   \
+    template<typename R>                                                                    \
+                                                                                            \
+    struct Check<true, R() const> {                                                         \
+        static const bool value =                                                           \
+            sizeof(noArgMethodConstCheck<R>((DerivedVoid*)NULL)) == sizeof(Yes);            \
+    };                                                                                      \
+                                                                                            \
+    template<typename R>                                                                    \
+    struct Check<true, R()> {                                                               \
+        static const bool value =                                                           \
+            sizeof(noArgMethodCheck<R>((DerivedVoid*)NULL)) == sizeof(Yes);                 \
+    }
+
+/*
+ * Fake definition of HasMemberFunc for CDT parser, since there is an ambiguity
  * for one of the templates on non-const checks.
  */
 #ifdef __CDT_PARSER__
 #define CREATE_MEMBER_FUNC_CHECK(mname)                                                     \
-template<typename Type, typename CallDetails>                                                                     \
-struct IsMemberFunc_##mname                                                                 \
+template<typename Type, typename CallDetails>                                               \
+struct HasMemberFunc_##mname                                                                \
 {                                                                                           \
 public:                                                                                     \
     static const bool value = false;                                                        \
@@ -160,7 +248,7 @@ public:                                                                         
 #else
 #define CREATE_MEMBER_FUNC_CHECK(mname)                                                     \
 template<typename Type, typename CallDetails>                                               \
-struct IsMemberFunc_##mname;                                                                \
+struct HasMemberFunc_##mname;                                                               \
                                                                                             \
 namespace hidden {                                                                          \
 namespace membercheck {                                                                     \
@@ -170,17 +258,17 @@ namespace membercheck {                                                         
     template<typename Type>                                                                 \
     class voidResultHolder_##mname {};                                                      \
                                                                                             \
-    /* Use comma operator because it has lowest precidence of C++ operators */              \
-    /* This resolves bad return types like void blowing up template calls */                \
-    template<typename Type, typename U>                                                     \
-    U const& operator,(U const&, voidResultHolder_##mname <Type>);                          \
-    /* Need const version as well */                                                        \
+    /* Use comma operator because it has lowest precedence of C++ operators */              \
+    /* This resolves bad return types (i.e. void) blowing up template calls */              \
     template<typename Type, typename U>                                                     \
     U& operator,(U&, voidResultHolder_##mname <Type>);                                      \
+    /* Need const version as well */                                                        \
+    template<typename Type, typename U>                                                     \
+    U const& operator,(U const&, voidResultHolder_##mname <Type>);                          \
 }                                                                                           \
                                                                                             \
 template<typename Type, typename CallDetails>                                               \
-struct IsMemberFunc_##mname                                                                 \
+struct HasMemberFunc_##mname                                                                \
 {                                                                                           \
 private:                                                                                    \
     /* Keep Yes and No as a struct to avoid ambiguity in inheritance */                     \
@@ -207,8 +295,8 @@ private:                                                                        
     /* Add an overloaded method */                                                          \
     struct Derived : public Type {                                                          \
         using Type::mname;                                                                  \
-        /* Gives warning about ambiguity, can't keep behavior and lose warning... */        \
-        No mname(...);                                                                      \
+        /* Gives warning with both active, not sure if certain compilers will need it... */ \
+        /*No mname(...);*/                                                                  \
         No mname(...) const;                                                                \
     };                                                                                      \
     /* Add an overloaded method */                                                          \
@@ -216,34 +304,28 @@ private:                                                                        
         using Type::mname;                                                                  \
         No mname(...) const;                                                                \
     };                                                                                      \
+    /* Used to hide any private variables */                                                \
+    struct DerivedVoid : public Type {                                                      \
+        using Type::mname;                                                                  \
+    };                                                                                      \
                                                                                             \
     /* Keep constness of Type in Derived Type */                                            \
-    typedef typename ::core::constnessCheck<Type, Derived>::type DerivedType;               \
+    typedef typename ::core::constnessCheck                                                 \
+            <Type, Derived>::type DerivedType;                                              \
     /* Force constant methods to have constant type */                                      \
     typedef typename ::core::constnessCheck                                                 \
-        <const int, DerivedConst>::type DerivedConstMethodType;                             \
+            <const int, DerivedConst>::type DerivedConstMethodType;                         \
                                                                                             \
+    /* Default case is false */                                                             \
     template<bool has, typename F>                                                          \
     struct Check {                                                                          \
         static const bool value = false;                                                    \
     };                                                                                      \
                                                                                             \
-    /* The no argument case can't be perfectly solved without C++11 */                      \
-    /* I spent a good 3 days trying... :( */                                                \
-    template<typename R>                                                                    \
-    struct Check<true, R()> {                                                               \
-        static const bool value = true;                                                     \
-        BOOST_STATIC_ASSERT_MSG(sizeof(R) == 0,                                             \
-                "Cannot check no-argument functions -- use HasMember instead");             \
-    };                                                                                      \
-    template<typename R>                                                                    \
-    struct Check<true, R() const> {                                                         \
-        static const bool value = true;                                                     \
-        BOOST_STATIC_ASSERT_MSG(sizeof(R) == 0,                                             \
-                "Cannot check no-argument functions -- use HasMember instead");             \
-    };                                                                                      \
-                                                                                            \
-    /* Create checks for up to 15 arguments */                                              \
+    /* The no arguments case was a pain to get right -- took a week of trying options */    \
+    /* It doesn't use the same system of inheritance as multi-arg checks */                 \
+    MEMBER_CHECK_NO_ARGS(mname);                                                            \
+    /* Create checks for 1 arg to up to 15 arguments */                                     \
     MEMBER_CHECK_1_ARG(mname);                                                              \
     MEMBER_CHECK_2_ARG(mname);                                                              \
     MEMBER_CHECK_3_ARG(mname);                                                              \
@@ -264,6 +346,7 @@ public:                                                                         
     /* First check the availability of a method using HasMember */                          \
     static const bool value = Check<hidden::membercheck::HasMember_##mname <Type>::value,   \
                                    CallDetails>::value;                                     \
+    /* Used for boost template logic */                                                     \
     typedef typename boost::integral_constant<bool, value> type;                            \
 }
 #endif
@@ -277,11 +360,11 @@ namespace sigcheck##signame {                                                   
 }                                                                                           \
                                                                                             \
 template<typename Type>                                                                     \
-struct BOOST_PP_CAT(IsMemberSigFunc_##mname, _##signame)                                    \
+struct BOOST_PP_CAT(HasMemberSigFunc_##mname, _##signame)                                    \
 {                                                                                           \
 public:                                                                                     \
     /* First check the availability of a method using HasMember */                          \
-    static const bool value = hidden::sigcheck##signame::IsMemberFunc_##mname               \
+    static const bool value = hidden::sigcheck##signame::HasMemberFunc_##mname              \
                                                             <Type, signature>::value;       \
     typedef typename boost::integral_constant<bool, value> type;                            \
 }

@@ -46,6 +46,16 @@ built in usable platform independent application components. These components in
 ## Dependencies
 * C++98 Compiler (Some boost features may break on some compilers without C++03 support)
 * Boost (>= 1.50)
+* Compiler requirements:
+	* class template partial specialization
+	* function type parsing
+	* SFINAE
+	
+### Known Compliant Compilers
+* GCC 4.6
+
+### Known Non-Compliant Compilers
+* Visual C++ 5.0 or lower
 
 ### Dependency Installation
 See mingwInstallNotes.htm for details about setting mingw up on Windows environments with
