@@ -44,7 +44,7 @@ built in usable platform independent application components. These components in
 	* Various other minor functions
 
 ## Dependencies
-* C++98 Compiler (Some boost features may break on some compilers without C++03 support)
+* C++03 Compiler (Need to test C++98 functionality)
 * Boost (>= 1.50)
 * Compiler requirements:
 	* class template partial specialization
