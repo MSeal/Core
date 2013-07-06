@@ -232,7 +232,7 @@ inline std::string toString(const Stringifyable& obj) {
 #define LOCALE_CONVERT_FILL(incharstr, inputname, outstring, outchar)                           \
     try {                                                                                       \
         return boost::locale::conv::utf_to_utf<outchar>(inputname, boost::locale::conv::stop);  \
-    } catch (std::runtime_error re) {                                                           \
+    } catch (std::runtime_error& re) {                                                           \
         /* Rethrow as cast exception type */                                                    \
         throwCastException(LOCALE_STR_MACRO(LOCALE_CAST_QUOTE_COMBINE(incharstr, outstring)),   \
                 typeid(incharstr), typeid(outstring));                                          \

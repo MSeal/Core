@@ -11,4 +11,5 @@
 #include "testTSQueue.hpp"
 #include "testPPTypes.hpp"
 #include "testSmartPointer.hpp"
+#include "testLoops.hpp"
 
