@@ -62,6 +62,7 @@ See mingwInstallNotes.htm for details about setting mingw up on Windows environm
 Eclipse.
 
 #### Libraries:
+With -mt extension to name
 * boost_thread
 * boost_system (required by thread)
 * boost_chrono (required by thread)
@@ -80,8 +81,8 @@ Eclipse.
 * Fix MinGW directory names in build.bat to true locations
 * Change `set toolset=msvc` inf bootstrap.bat to `set toolset=gcc`  
 	bootstrap  
-	b2 --threading=multi --with-thread --build-type=complete --link=static -j 4 stage  
-#### Windows Thread Fixes:
+	b2 --threading=multi --with-thread --with-locale --with-test --build-type=complete --link=static -j 4 stage  
+#### Windows Thread Fixes (fixed in 1.54!):
 * Ticket #4878  
 	boost/thread/detail/config.hpp  
 	For MinGW (tested on gcc 4.6 with boost 1.50):  

@@ -2,3 +2,6 @@
 /StaticDebug
 /Release
 /Debug
+/.cproject
+/.project
+/.settings
