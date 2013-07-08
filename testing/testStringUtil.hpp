@@ -10,7 +10,7 @@
 #include <boost/test/unit_test.hpp>
 
 namespace core {
-BOOST_AUTO_TEST_SUITE(StringUtility)
+BOOST_AUTO_TEST_SUITE(StringUtilityTests)
 
 /*
  * Tests various conversions between string types.

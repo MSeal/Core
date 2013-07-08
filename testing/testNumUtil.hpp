@@ -10,7 +10,7 @@
 #include <boost/test/unit_test.hpp>
 
 namespace core {
-BOOST_AUTO_TEST_SUITE(NumberUtility)
+BOOST_AUTO_TEST_SUITE(NumberUtilityTests)
 
 /*
  * Checks a few values to find their floor/ceil power of 2 value

@@ -12,7 +12,7 @@
 #include "pptypes.hpp"
 
 namespace core {
-BOOST_AUTO_TEST_SUITE(PPTypes)
+BOOST_AUTO_TEST_SUITE(PPTypesTests)
 
 // Various classes with or without 'test' member
 class With {

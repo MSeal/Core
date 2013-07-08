@@ -9,12 +9,11 @@
 #include <boost/test/unit_test.hpp>
 
 namespace core {
-BOOST_AUTO_TEST_SUITE(SmartPointers)
+BOOST_AUTO_TEST_SUITE(SmartPointerTests)
 
 /*
  * Custom class to to test SharedPtr
  */
-
 class DeleteCheck {
 public:
     bool& qbool;
@@ -27,7 +26,7 @@ public:
     std::size_t counter;
     int object;
 
-    IntrusiveCheck() : counter(0) {}
+    IntrusiveCheck() : counter(0), object(0) {}
     ~IntrusiveCheck() {std::cout<<"Deleted";}
 
     std::size_t refCount() {
@@ -74,8 +73,6 @@ typedef typename core::pointers::smart<int>::WeakPtr WIntPtr;
 typedef typename core::pointers::smart<std::string>::WeakPtr WStrPtr;
 
 typedef typename core::pointers::smart<IntrusiveCheck>::IntrusivePtr IntrusivePtr;
-
-
 
 
 /*

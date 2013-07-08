@@ -12,4 +12,5 @@
 #include "testPPTypes.hpp"
 #include "testSmartPointer.hpp"
 #include "testLoops.hpp"
+#include "testSingleton.hpp"
 

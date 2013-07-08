@@ -3,8 +3,8 @@
  * throw an exception, indicating where failure occured.
  */
 
-#ifndef TEST_ENVIRONMENT_TSQUEUE_H_
-#define TEST_ENVIRONMENT_TSQUEUE_H_
+#ifndef TEST_ENVIRONMENT_TSQUEUE_HPP_
+#define TEST_ENVIRONMENT_TSQUEUE_HPP_
 
 #include "threading/container/tsqueue.hpp"
 #include "threading/thread.hpp"
@@ -13,12 +13,13 @@
 #include <vector>
 #include <boost/test/unit_test.hpp>
 
+namespace core {
+BOOST_AUTO_TEST_SUITE(TSQueueTests)
+
 typedef core::threading::container::TSQueue<int> IntQueue;
 using core::threading::Thread;
 using core::threading::ThreadPtr;
 
-namespace core {
-BOOST_AUTO_TEST_SUITE(TSQueue)
 
 /* Enqueues some ints */
 void enqueueInts(IntQueue& intQ, unsigned int numEnqueue) {

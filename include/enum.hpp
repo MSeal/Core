@@ -3,8 +3,8 @@
  *
  * TODO description
  */
-#ifndef ENUM_H_
-#define ENUM_H_
+#ifndef ENUM_HPP_
+#define ENUM_HPP_
 
 #include <boost/bimap.hpp>
 #include <boost/assign/list_of.hpp>
@@ -47,4 +47,4 @@ struct FakeListBuilder {
         LIST_BUILDER<boost::bimap<ENUM_TYPE, VAL_TYPE>::relation>
 
 }
-#endif /* ENUM_H_ */
+#endif /* ENUM_HPP_ */

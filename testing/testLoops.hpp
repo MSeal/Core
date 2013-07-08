@@ -30,9 +30,9 @@ BOOST_AUTO_TEST_CASE(repeatLoops) {
 	BOOST_CHECK_EQUAL(str.length(), 20);
 
 	// Uses unsigned long long int to fix issue of int32 in place of long.
-	unsigned long long int itr = std::numeric_limits<unsigned int>::max();
+	uint64_t itr = std::numeric_limits<uint32_t>::max();
 	itr *= 5;
-	unsigned long long int lng = 0;
+	uint64_t lng = 0;
 
 	forRepeatLong(itr) {
 		lng++;

@@ -360,7 +360,7 @@ namespace sigcheck##signame {                                                   
 }                                                                                           \
                                                                                             \
 template<typename Type>                                                                     \
-struct BOOST_PP_CAT(HasMemberSigFunc_##mname, _##signame)                                    \
+struct BOOST_PP_CAT(HasMemberSigFunc_##mname, _##signame)                                   \
 {                                                                                           \
 public:                                                                                     \
     /* First check the availability of a method using HasMember */                          \

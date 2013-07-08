@@ -5,8 +5,8 @@
  * retrieve any arbitrary singleton object.
  */
 
-#ifndef SINGLETON_H_
-#define SINGLETON_H_
+#ifndef SINGLETON_HPP_
+#define SINGLETON_HPP_
 
 #include "pointers.hpp"
 
@@ -31,11 +31,11 @@ protected:
 	Singleton() {}
 	virtual ~Singleton() {}
 
-	void reset() {
-	    singletonInstance.reset(new T());
-	}
-
 public:
+	static void reset() {
+        singletonInstance.reset(new T());
+    }
+
 	static T& instance() {
 		return *singletonInstance;
 	}
