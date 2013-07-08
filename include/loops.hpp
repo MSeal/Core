@@ -101,19 +101,24 @@ void incrementT(T *t) {
 }
 
 struct IncrementCounterPassthrough {
-	bool checker;
+	bool first;
 	boost::function<void(void)> incrementer;
 
 	template<typename Count>
 	IncrementCounterPassthrough(Count& t) {
 		t = 0;
-		checker = true;
+		// Use first = true to avoid negative assignment to t
+		first = true;
 		incrementer = boost::bind(&incrementT<Count>, &t);
 	}
 
 	template<typename T>
 	T& operator=(T& rhs) {
-		incrementer();
+	    if (first) {
+	        first = false;
+	    } else {
+	        incrementer();
+	    }
 		return rhs;
 	}
 };
@@ -125,16 +130,18 @@ struct IncrementCounterPassthrough {
 #   define reverseEnumerateEach(count, item, container) count = 0; for(item; container;)
 #else
 #   define enumerateEach(count, item, container)                                                                \
-        for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass)(count);	\
-                BOOST_FOREACH_ID(_foreach_count_pass).checker; 													\
-                BOOST_FOREACH_ID(_foreach_count_pass).checker = false)											\
-            BOOST_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass), container)
+        if (bool BOOST_FOREACH_ID(_enum_unique_) = false) {} else                                               \
+        for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass_)(count);   \
+                !BOOST_FOREACH_ID(_enum_unique_);                                                               \
+                BOOST_FOREACH_ID(_enum_unique_) = true)                                                         \
+            BOOST_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass_), container)
 
 #   define reverseEnumerateEach(count, item, container)                                                         \
-        for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass)(count);	\
-                BOOST_FOREACH_ID(_foreach_count_pass).checker; 													\
-				BOOST_FOREACH_ID(_foreach_count_pass).checker = false)											\
-            BOOST_REVERSE_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass), container)
+        if (bool BOOST_FOREACH_ID(_enum_unique_) = false) {} else                                               \
+        for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass_)(count);   \
+                !BOOST_FOREACH_ID(_enum_unique_);                                                               \
+                BOOST_FOREACH_ID(_enum_unique_) = true)                                                         \
+            BOOST_REVERSE_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass_), container)
 #endif
 /* End Enumerate */
 
@@ -177,27 +184,27 @@ inline void onEach(I& item, boost::function<void(I&)>& function, C & container) 
 /* On Each Reverse */
 template <class I, class C>
 inline void reverseOnEach(void (*function)(I), C & container) {
-	reverseForEach(I& item, container) function(item);
-}
-template <class I, class C>
-inline void reverseOnEach(I & item, void (*function)(I), C & container) {
-	reverseForEach(item, container) function(item);
-}
-template <class I, class C>
-inline void reverseOnEach(void (*function)(I&), C & container) {
-	reverseForEach(I& item, container) function(item);
-}
-template <class I, class C>
-inline void reverseOnEach(I & item, void (*function)(I&), C & container) {
-	reverseForEach(item, container) function(item);
-}
-// Do the same for boost::function
-template <class I, class C>
-inline void reverseOnEach(boost::function<void(I&)> function, C & container) {
     reverseForEach(I& item, container) function(item);
 }
 template <class I, class C>
-inline void reverseOnEach(I & item, boost::function<void(I&)> function, C & container) {
+inline void reverseOnEach(I& item, void (*function)(I), C & container) {
+    reverseForEach(item, container) function(item);
+}
+template <class I, class C>
+inline void reverseOnEach(void (*function)(I&), C & container) {
+    reverseForEach(I& item, container) function(item);
+}
+template <class I, class C>
+inline void reverseOnEach(I& item, void (*function)(I&), C & container) {
+    reverseForEach(item, container) function(item);
+}
+// Do the same for boost::function
+template <class I, class C>
+inline void reverseOnEach(boost::function<void(I)>& function, C & container) {
+    reverseForEach(I& item, container) function(item);
+}
+template <class I, class C>
+inline void reverseOnEach(I& item, boost::function<void(I)>& function, C & container) {
     reverseForEach(item, container) function(item);
 }
 template <class I, class C>
@@ -205,7 +212,7 @@ inline void reverseOnEach(boost::function<void(I&)>& function, C & container) {
     reverseForEach(I& item, container) function(item);
 }
 template <class I, class C>
-inline void reverseOnEach(I & item, boost::function<void(I&)>& function, C & container) {
+inline void reverseOnEach(I& item, boost::function<void(I&)>& function, C & container) {
     reverseForEach(item, container) function(item);
 }
 /* End On Each Reverse */
