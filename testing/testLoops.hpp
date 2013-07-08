@@ -14,7 +14,7 @@
 #include <boost/bind.hpp>
 
 namespace core {
-BOOST_AUTO_TEST_SUITE(Loops)
+BOOST_AUTO_TEST_SUITE(LoopTests)
 
 BOOST_AUTO_TEST_CASE(repeatLoops) {
 	int i = 0;
