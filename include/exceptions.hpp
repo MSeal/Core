@@ -8,6 +8,10 @@ namespace core {
 /*
  * New exceptions need to first be added to exceptionTypes.hpp and
  * exceptionTypes.cpp (see block comment in exceptionTypes.cpp).
+ *
+ * If you receive an error message about invalid use of void when
+ * throwing an exception, you added an extra 'throw' keyword in front
+ * of the macro!
  */
 
 /* Throw an exception for a non-specific reason */
@@ -54,9 +58,9 @@ namespace core {
 
 
 /* Throw a call once exception */
-#define throwCallOnceException(message) \
+#define throwRepeatedCallException(message) \
     throw ExceptionBasis(message, ::core::CALL_ONCE_EXCEPTION, \
-            ::core::EXCEP_SEVERITY_ERROR, ::core::CallOnceException)
+            ::core::EXCEP_SEVERITY_ERROR, ::core::RepeatedCallException)
 
 
 /* IO exceptions */

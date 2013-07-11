@@ -8,9 +8,11 @@
 
 #include "testNumUtil.hpp"
 #include "testStringUtil.hpp"
+#include "testExceptions.hpp"
 #include "testTSQueue.hpp"
 #include "testPPTypes.hpp"
 #include "testSmartPointer.hpp"
 #include "testLoops.hpp"
 #include "testSingleton.hpp"
 #include "testTime.hpp"
+#include "testFactory.hpp"

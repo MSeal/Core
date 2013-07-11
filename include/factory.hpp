@@ -39,6 +39,8 @@ protected:
     Builder builder;
 
 public:
+    typedef PtrType TPtr;
+
     Factory() : builder() {}
     Factory(Builder build) : builder(build) {}
     virtual ~Factory() {}
@@ -67,7 +69,7 @@ protected:
     Builder builder;
 
 public:
-    typedef typename pointers::smart<T>::UntrackedPtr TPtr;
+    typedef T* TPtr;
     typedef Tracker MapType;
 
     TrackedFactory() : tracker(), builder() {}
@@ -97,7 +99,7 @@ public:
     TPtr get(const Key& key) {
         typename Tracker::iterator it = tracker.find(key);
         if (it == tracker.end()) {
-            throw throwAttributeException("Key not found in Factory");
+            throwAttributeException("Key not found in Factory");
         }
         return TPtr(it->second);
     }
@@ -123,8 +125,25 @@ public:
      * Drops an element from the tracker. A new getOrProduce
      * request will create a new instance of the object type.
      */
-    void drop(const Key& key) {
+    TPtr drop(const Key& key) {
+        TPtr elem = tryGet(key);
+        if (!elem) {
+            throwAttributeException("Key not found in Factory");
+        }
         tracker.erase(key);
+        return elem;
+    }
+
+    /*
+     * Attempts to drops an element from the tracker. Returns
+     * empty pointer on failure.
+     */
+    TPtr tryDrop(const Key& key) {
+        TPtr elem = tryGet(key);
+        if (elem) {
+            tracker.erase(key);
+        }
+        return elem;
     }
 };
 

@@ -92,7 +92,7 @@ struct UnknownException: virtual GenericException{};
 struct NullPointerException: virtual GenericException{};
 struct CastException: virtual GenericException{};
 struct InitializationException: virtual GenericException{};
-struct CallOnceException: virtual GenericException{};
+struct RepeatedCallException: virtual GenericException{};
 struct IOException: virtual Exception{};
 struct FileOpenException: virtual IOException{};
 struct ParameterException: virtual Exception{};

@@ -81,7 +81,6 @@ typedef typename core::pointers::smart<IntrusiveCheck>::IntrusivePtr IntrusivePt
  * Tests both assignment to a new int, and assignment to the
  * target of an existing pointer for aplicable pointer types.
  */
-
 BOOST_AUTO_TEST_CASE(pointerCreation) {
     int num1 = 1;
     IntPtr ptr1(new int);
@@ -117,13 +116,13 @@ BOOST_AUTO_TEST_CASE(pointerCreation) {
     BOOST_CHECK_EQUAL(intruPtr->get(), 2);
 
 }
+
 /*
  * Tests the creation and assignment of smart
  * pointers with the string template. Tests for both assignment
  * to a base string and assignment to the target of an existing
  * pointer.
  */
-
 BOOST_AUTO_TEST_CASE(stringPointerCreation) {
     std::string str1 = "This is a string.";
     StrPtr ptr1(new std::string);
@@ -155,7 +154,6 @@ BOOST_AUTO_TEST_CASE(stringPointerCreation) {
  * Helper function to test deleting custom
  * pointers.
  */
-
 void checkDelete (bool& qbool) {
     DeleteCheck ptr1(qbool);
 }
@@ -174,7 +172,6 @@ DeleteCheck checkNoDelete (bool& qbool) {
  * Checks to ensure that custom pointers delete
  * when out of scope.
  */
-
 BOOST_AUTO_TEST_CASE(checkPointerCreation) {
     bool qbool = false;
     checkDelete(qbool);

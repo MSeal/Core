@@ -1,12 +1,10 @@
 /*
  * testLoops.hpp
- *
- *  Created on: Jan 14, 2013
- *      Author: Caitlin
+ * Tests the capability to iterate over a variety of custom loops.
  */
 
-#ifndef TESTLOOPS_HPP_
-#define TESTLOOPS_HPP_
+#ifndef TEST_LOOPS_HPP_
+#define TEST_LOOPS_HPP_
 
 #include "loops.hpp"
 #include <boost/test/unit_test.hpp>
@@ -209,4 +207,4 @@ BOOST_AUTO_TEST_CASE(onEachNoItemLoops) {
 
 BOOST_AUTO_TEST_SUITE_END()
 }
-#endif /* TESTLOOPS_HPP_ */
+#endif /* TEST_LOOPS_HPP_ */

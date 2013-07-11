@@ -37,9 +37,6 @@
 
 namespace core { namespace pointers {
 
-// Forward declaration
-namespace detail { template<typename T> class UntrackedPtr; }
-
 /*
  * This allows for remapping the names of pointers as well
  * as give unique_ptr a default deleter. C++ doesn't allow
@@ -68,8 +65,6 @@ struct smart {
     typedef typename detail::smartBoost<T, UniqueDeleter>::UniquePtr UniquePtr;
     //typedef std::auto_ptr<T> AutoPtr;
     typedef typename detail::smartBoost<T>::AutoPtr AutoPtr;
-    // typedef here for the sake of same syntax capabilities
-    typedef typename detail::UntrackedPtr<T> UntrackedPtr;
 };
 
 /*
@@ -134,47 +129,6 @@ struct maps {
     //typedef boost::ptr_multimap<Key, T, Compare, CloneAllocator, Allocator> PtrMultiMap;
     typedef typename detail::mapsBoost<Key, T, Compare, CloneAllocator, Allocator>::PtrMultiMap PtrMultiMap;
 };
-
-namespace detail {
-/*
- * A pointer which is owned elsewhere and used as a reference. Since this wraps
- * a pointer it can be NULL -- unlike a reference -- but is not tracked in anyway.
- * The obfuscation also makes deleting the underlying pointer accidentally
- * impossible.
- */
-template<typename T>
-class UntrackedPtr {
-private:
-    T *uptr;
-public:
-    UntrackedPtr(T *ptr) : uptr(ptr) {}
-    UntrackedPtr(const UntrackedPtr<T>& other) : uptr(other.uptr) {}
-
-    void swap(UntrackedPtr& other) {
-        T *tmp = uptr;
-        other.uptr = uptr;
-        uptr = tmp;
-    }
-
-    UntrackedPtr& operator=(const UntrackedPtr<T>& other) {
-        uptr = other.uptr;
-        return *this;
-    }
-
-    T* operator->() const { return uptr; }
-    T& operator*() const { return *uptr; }
-
-    T *get() const { return uptr; }
-
-    operator bool() const { return uptr; }
-    bool operator !() const { return !uptr; }
-
-    template<typename S>
-    bool operator ==(S other) const { return uptr == other; }
-    template<typename S>
-    bool operator !=(S other) const { return uptr != other; }
-};
-}
 
 }}
 #endif /* POINTERS_H_ */
