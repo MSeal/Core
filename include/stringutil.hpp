@@ -418,7 +418,7 @@ inline std::string toString(const std::type_info& castable) {
     // demangle them to get a cleaner print statement
     int status;
     char *realname = abi::__cxa_demangle(castable.name(), NULL, NULL, &status);
-    if (status != 0) {
+    if (status == 0) {
         // Just copy into a string for ease of memory use.
         // We don't care about inefficiencies here as this
         // is usually only called when an error has occurred.
@@ -526,6 +526,14 @@ void extractExceptionFileAndLine(const boost::exception& x, std::string& parseMe
 
 std::string toString(const boost::exception& x);
 inline std::string toString(const boost::exception *x) {
+    return toString(*x);
+}
+
+/*
+ * Type: std::exception
+ */
+std::string toString(const std::exception& x);
+inline std::string toString(const std::exception *x) {
     return toString(*x);
 }
 

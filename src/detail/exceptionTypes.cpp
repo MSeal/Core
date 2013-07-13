@@ -140,7 +140,7 @@ int getExceptionLineNumber(const boost::exception& x) {
 }
 
 /* Cast exception attachments */
-const std::type_info& getExceptionCastSource(boost::exception& x) {
+const std::type_info& getExceptionCastSource(const boost::exception& x) {
     const std::type_info *const *result = boost::get_error_info<ThrowErrorCastSource>(x);
     if (result == NULL) {
         return typeid(void);

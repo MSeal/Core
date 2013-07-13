@@ -46,42 +46,107 @@ BOOST_AUTO_TEST_CASE(exceptionMessageStreams) {
     } catch(GenericException& ge) {
         BOOST_CHECK_EQUAL(getExceptionMessage(ge), "1 single GenericException");
     }
+
+#ifdef ABI_DEMANGLE // gcc
+    // Test typeid format generation if gcc
+    try {
+        throwBasicException(typeid(GenericException));
+        BOOST_ERROR("Failed to throw GenericException");
+    } catch(GenericException& ge) {
+        BOOST_CHECK_EQUAL(getExceptionMessage(ge), "core::GenericException");
+    }
+#endif
 }
 
-// TODO test other expected outputs
-//BOOST_AUTO_TEST_CASE(exceptionMessageStreams) {
-//    BOOST_CHECK_THROW(throwBasicException(1 << " single " << typeid(GenericException)), GenericException);
-//    try {
-//        throwBasicException(1 << " single " << std::string("GenericException"));
-//        BOOST_ERROR("Failed to throw GenericException");
-//    } catch(GenericException& ge) {
-//        BOOST_CHECK_EQUAL(getExceptionMessage(ge), "1 single GenericException");
-//    }
-//}
-//typedef boost::error_info<struct TagMessage, std::string> ThrowErrorMessage;
-//const std::string getExceptionMessage(const boost::exception & x);
-//
-//typedef boost::error_info<struct TagErrorCode, ExceptionCode> ThrowErrorCode;
-//ExceptionCode getExceptionCode(const boost::exception& x);
-//
-//typedef boost::error_info<struct TagErrorSeverity, ExceptionSeverity> ThrowErrorSeverity;
-//ExceptionSeverity getExceptionSeverity(const boost::exception& x);
-//
-//typedef boost::throw_function ThrowErrorFunction;
-//const std::string getExceptionFunction(const boost::exception& x);
-//
-//typedef boost::throw_file ThrowErrorFileName;
-//const std::string getExceptionFileName(const boost::exception& x);
-//
-//typedef boost::throw_line ThrowErrorLineNumber;
-//int getExceptionLineNumber(const boost::exception& x);
-//
-///* Cast exception attachments */
-//typedef boost::error_info<struct TagCastSource, const std::type_info*> ThrowErrorCastSource;
-//const std::type_info& getExceptionCastSource(const boost::exception& x);
-//
-//typedef boost::error_info<struct TagCastDest, const std::type_info*> ThrowErrorCastDest;
-//const std::type_info& getExceptionCastDestination(const boost::exception& x);
+BOOST_AUTO_TEST_CASE(exceptionCode) {
+    try {
+        throwBasicException("Basic");
+        BOOST_ERROR("Failed to throw Basic Exception");
+    } catch(GenericException& be) {
+        BOOST_CHECK_EQUAL(getExceptionCode(be), GENERIC_EXCEPTION);
+    }
+
+    try {
+        throwNullPointerException("Null Pointer");
+        BOOST_ERROR("Failed to throw Null Pointer Exception");
+    } catch(NullPointerException& npe) {
+        BOOST_CHECK_EQUAL(getExceptionCode(npe), NULL_POINTER_EXCEPTION);
+    }
+
+    try {
+        throwInsertFailedException("Insert Failed");
+        BOOST_ERROR("Failed to throw Null Pointer Exception");
+    } catch(InsertFailedException& ife) {
+        BOOST_CHECK_EQUAL(getExceptionCode(ife), INSERT_FAILED_EXCEPTION);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(exceptionSeverity) {
+    try {
+        throwInfoException("Info");
+        BOOST_ERROR("Failed to throw Info Exception");
+    } catch(GenericException& ie) {
+        BOOST_CHECK_EQUAL(getExceptionSeverity(ie), EXCEP_SEVERITY_NOTICE);
+    }
+
+    try {
+        throwWarningException("Warning");
+        BOOST_ERROR("Failed to throw Warning Exception");
+    } catch(GenericException& we) {
+        BOOST_CHECK_EQUAL(getExceptionSeverity(we), EXCEP_SEVERITY_WARNING);
+    }
+
+    try {
+        throwBasicException("Basic");
+        BOOST_ERROR("Failed to throw Basic Exception");
+    } catch(GenericException& be) {
+        BOOST_CHECK_EQUAL(getExceptionSeverity(be), EXCEP_SEVERITY_ERROR);
+    }
+
+    try {
+        throwNullPointerException("Null Pointer");
+        BOOST_ERROR("Failed to throw Null Pointer Exception");
+    } catch(NullPointerException& npe) {
+        BOOST_CHECK_EQUAL(getExceptionSeverity(npe), EXCEP_SEVERITY_ERROR);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(exceptionFunction) {
+    try {
+        throwBasicException("Basic");
+        BOOST_ERROR("Failed to throw Basic Exception");
+    } catch(GenericException& be) {
+        BOOST_CHECK(getExceptionFunction(be).find("exceptionFunction") != std::string::npos);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(exceptionFileName) {
+    try {
+       throwBasicException("Basic");
+       BOOST_ERROR("Failed to throw Basic Exception");
+   } catch(GenericException& be) {
+       BOOST_CHECK_EQUAL(getExceptionFileName(be), __FILE__);
+   }
+}
+
+BOOST_AUTO_TEST_CASE(exceptionLineNumber) {
+    try {
+       throwBasicException("Basic");
+       BOOST_ERROR("Failed to throw Basic Exception");
+   } catch(GenericException& be) {
+       BOOST_CHECK(getExceptionLineNumber(be) > 0);
+   }
+}
+
+BOOST_AUTO_TEST_CASE(exceptionCast) {
+    try {
+       throwCastException("Cast test", typeid(std::string), typeid(int));
+       BOOST_ERROR("Failed to throw Cast Exception");
+   } catch(GenericException& be) {
+       BOOST_CHECK(getExceptionCastSource(be) == typeid(std::string));
+       BOOST_CHECK(getExceptionCastDestination(be) == typeid(int));
+   }
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 }

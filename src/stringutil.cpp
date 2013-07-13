@@ -95,21 +95,21 @@ void extractExceptionFileAndLine(const boost::exception& x, std::string& parseMe
 }
 
 std::string toString(const boost::exception& x) {
-    // Get severity
+    // Severity, code, rest
     ExceptionSeverity severity = getExceptionSeverity(x);
     std::string parseMessage = toString(severity);
 
-    // Add exception code string
     extractExceptionCode(x, parseMessage);
     parseMessage += ":";
 
-    // Add location
     extractExceptionFunction(x, parseMessage);
-    // Add message
     extractExceptionMessage(x, parseMessage);
-    // Add file
     extractExceptionFileAndLine(x, parseMessage);
 
     return parseMessage;
+}
+
+std::string toString(const std::exception& x) {
+    return x.what();
 }
 }
