@@ -16,3 +16,4 @@
 #include "testSingleton.hpp"
 #include "testTime.hpp"
 #include "testFactory.hpp"
+#include "testEnum.hpp"

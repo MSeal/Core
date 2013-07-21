@@ -18,7 +18,6 @@ struct Exception: virtual std::exception, virtual boost::exception{};
  *
  * Changes to this enumeration require changing:
  *      EXCEP_SEVERITY_..._STRING (in cpp)
- *      enumToValue<ExceptionSeverity, const std::string&> (in cpp)
  *      EXCEP_SEVERITY_STRING_BIMAP (in cpp)
  */
 enum ExceptionSeverity {
@@ -34,9 +33,6 @@ template<>
 inline ServityStringMap& enumMappings<ExceptionSeverity, std::string>() {
     return EXCEP_SEVERITY_STRING_BIMAP;
 }
-// Optimization for const string&, which does no copying
-template<>
-const std::string& enumToValue<ExceptionSeverity, const std::string&>(ExceptionSeverity eval);
 
 /*
  * Implementation is in stringUtil; forward declared here to
@@ -109,7 +105,6 @@ struct DivideByZeroException: virtual MathException{};
  *
  * Changes to this enumeration require changing:
  *      ..._EXCEPTION_STRING (in cpp)
- *      enumToValue<ExceptionCode, const std::string&> (in cpp)
  *      EXCEP_CODE_STRING_BIMAP (in cpp)
  *      throw...Exception (in exceptions.hpp)
  *
@@ -145,9 +140,6 @@ template<>
 inline ExceptCodeStringMap& enumMappings<ExceptionCode, std::string>() {
     return EXCEP_CODE_STRING_BIMAP;
 }
-// Optimization for const string&, which does no copying
-template<>
-const std::string& enumToValue<ExceptionCode, const std::string&>(ExceptionCode eval);
 
 /* Typical exception attachments */
 typedef boost::error_info<struct TagMessage, std::string> ThrowErrorMessage;

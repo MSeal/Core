@@ -1,5 +1,4 @@
 #include "detail/exceptionTypes.hpp"
-#include "enum.hpp"
 
 namespace core {
 /*
@@ -9,17 +8,6 @@ const std::string EXCEP_SEVERITY_NOTICE_STRING = "Notice";
 const std::string EXCEP_SEVERITY_WARNING_STRING = "Warning";
 const std::string EXCEP_SEVERITY_ERROR_STRING = "Error";
 const std::string EXCEP_SEVERITY_UNKOWN_STRING = "Unknown Exception Severity";
-
-// Optimization for const string&, which does no copying
-template<>
-const std::string& enumToValue<ExceptionSeverity, const std::string&>(ExceptionSeverity eval) {
-    switch(eval) {
-    case EXCEP_SEVERITY_NOTICE: return EXCEP_SEVERITY_NOTICE_STRING;
-    case EXCEP_SEVERITY_WARNING: return EXCEP_SEVERITY_WARNING_STRING;
-    case EXCEP_SEVERITY_ERROR: return EXCEP_SEVERITY_ERROR_STRING;
-    default: return EXCEP_SEVERITY_UNKOWN_STRING;
-    }
-}
 
 ServityStringMap EXCEP_SEVERITY_STRING_BIMAP =
         BI_MAP_BUILDER(ExceptionSeverity, std::string)
@@ -45,31 +33,6 @@ const std::string RACE_CONDITION_EXCEPTION_STRING = "Concurrency Race Condition 
 const std::string DEADLOCK_EXCEPTION_STRING = "Concurrency Deadlock Exception";
 const std::string MATH_EXCEPTION_STRING = "Math Exception";
 const std::string DIVIDE_BY_ZERO_EXCEPTION_STRING = "Divide By Zero Exception";
-
-// Optimization for const string&, which does no copying
-template<>
-const std::string& enumToValue<ExceptionCode, const std::string&>(ExceptionCode eval) {
-    switch (eval) {
-    case GENERIC_EXCEPTION: return GENERIC_EXCEPTION_STRING;
-    case UNKNOWN_EXCEPTION: return UNKNOWN_EXCEPTION_STRING;
-    case ASSERTION_EXCEPTION: return ASSERTION_EXCEPTION_STRING;
-    case NULL_POINTER_EXCEPTION: return NULL_POINTER_EXCEPTION_STRING;
-    case CAST_EXCEPTION: return CAST_EXCEPTION_STRING;
-    case INITIALIZATION_EXCEPTION: return INITIALIZATION_EXCEPTION_STRING;
-    case CALL_ONCE_EXCEPTION: return CALL_ONCE_EXCEPTION_STRING;
-    case IO_EXCEPTION: return IO_EXCEPTION_STRING;
-    case FILE_OPEN_EXCEPTION: return FILE_OPEN_EXCEPTION_STRING;
-    case PARAMETER_EXCEPTION: return PARAMETER_EXCEPTION_STRING;
-    case ATTRIBUTE_EXCEPTION: return ATTRIBUTE_EXCEPTION_STRING;
-    case INSERT_FAILED_EXCEPTION: return INSERT_FAILED_EXCEPTION_STRING;
-    case CONCURRENCY_EXCEPTION: return CONCURRENCY_EXCEPTION_STRING;
-    case RACE_CONDITION_EXCEPTION: return RACE_CONDITION_EXCEPTION_STRING;
-    case DEADLOCK_EXCEPTION: return DEADLOCK_EXCEPTION_STRING;
-    case MATH_EXCEPTION: return MATH_EXCEPTION_STRING;
-    case DIVIDE_BY_ZERO_EXCEPTION: return DIVIDE_BY_ZERO_EXCEPTION_STRING;
-    default: return UNKNOWN_EXCEPTION_STRING;
-    }
-}
 
 ExceptCodeStringMap EXCEP_CODE_STRING_BIMAP =
         BI_MAP_BUILDER(ExceptionCode, std::string)

@@ -51,7 +51,7 @@ inline LogStringMap& enumMappings<LogLevel, std::string>() {
 }
 // Optimization for const string&, which does no copying
 template<>
-const std::string& enumToValue<LogLevel, const std::string&>(LogLevel eval);
+const std::string& enumToValue<const std::string&>(LogLevel eval);
 
 /*
  * Timestamped message template

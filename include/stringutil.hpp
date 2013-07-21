@@ -131,7 +131,7 @@ struct StringImplStruct {
     static std::string toStringImpl(const T& castable) {
         try {
             return boost::lexical_cast<std::string, T>(castable);
-        } catch (boost::bad_lexical_cast) {
+        } catch (boost::bad_lexical_cast&) {
             throwCastException("Unable to cast " << toString(typeid(T)) << " to std::string",
                                typeid(T), typeid(std::string));
         }
@@ -456,18 +456,13 @@ inline std::string toStringNoThrow(const std::type_info *castable) {
  * Type: ExceptionSeverity
  */
 inline const std::string& toString(const ExceptionSeverity severity) {
-    // The enumToValue function with const std::string& is
-    // specially defined to do a no-copy request for names of
-    // severity.
-    // Otherwise we could copy with std::string typename
-    // instead.
-    return enumToValue<ExceptionSeverity, const std::string&>(severity);
+    return enumToValue<std::string>(severity);
 }
 template<>
 inline ExceptionSeverity stringToType<ExceptionSeverity>(const std::string& str) {
     try {
         // Use our predefined bimap to convert for us
-        return valueToEnum<ExceptionSeverity, std::string>(str);
+        return valueToEnum<ExceptionSeverity>(str);
     } catch (...) {
         throwCastException("Invalid/Unknown enumeration string name",
                             typeid(std::string), typeid(ExceptionSeverity));
@@ -477,7 +472,7 @@ template<>
 inline ExceptionSeverity stringToTypeNoThrow<ExceptionSeverity>(const std::string& str) {
     try {
         // Use our predefined bimap to convert for us
-       return valueToEnum<ExceptionSeverity, std::string>(str);
+       return valueToEnum<ExceptionSeverity>(str);
    } catch (...) {
         return EXCEP_SEVERITY_ERROR;
     }
@@ -488,18 +483,13 @@ inline ExceptionSeverity stringToTypeNoThrow<ExceptionSeverity>(const std::strin
  * Type: ExceptionCode
  */
 inline const std::string& toString(const ExceptionCode code) {
-    // The enumToValue function with const std::string& is
-    // specially defined to do a no-copy request for names of
-    // codes.
-    // Otherwise we could copy with std::string typename
-    // instead.
-    return enumToValue<ExceptionCode, const std::string&>(code);
+    return enumToValue<std::string>(code);
 }
 template<>
 inline ExceptionCode stringToType<ExceptionCode>(const std::string& str) {
     try {
         // Use our predefined bimap to convert for us
-        return valueToEnum<ExceptionCode, std::string>(str);
+        return valueToEnum<ExceptionCode>(str);
     } catch (...) {
         throwCastException("Invalid/Unknown enumeration string name",
                             typeid(std::string), typeid(ExceptionCode));
@@ -509,7 +499,7 @@ template<>
 inline ExceptionCode stringToTypeNoThrow<ExceptionCode>(const std::string& str) {
     try {
         // Use our predefined bimap to convert for us
-        return valueToEnum<ExceptionCode, std::string>(str);
+        return valueToEnum<ExceptionCode>(str);
     } catch (...) {
         return UNKNOWN_EXCEPTION;
     }

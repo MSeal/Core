@@ -13,7 +13,7 @@ const std::string LOG_DEBUG_STRING = "Debug";
 
 // Optimization for const string&, which does no copying
 template<>
-const std::string& enumToValue<LogLevel, const std::string&>(LogLevel eval) {
+const std::string& enumToValue<const std::string&>(LogLevel eval) {
     switch(eval) {
     case LOG_DEBUG: return LOG_DEBUG_STRING;
     case LOG_INFO: return LOG_INFO_STRING;
