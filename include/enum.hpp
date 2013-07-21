@@ -1,7 +1,29 @@
 /*
  * enum.h
  *
- * TODO description
+ * This file defines some wrappers on bimap relations that
+ * allow for more automated mappings of enumerations to other
+ * types.
+ *
+ * The mappings work through a few templated function calls.
+ * In many cases enumMappings can be defined by itself and serve
+ * in the default definitions of enumToValue and valueToEnum.
+ * The function simply defines the retrieval of the bimap between
+ * the given enumeration and some ValType. The ValType will need
+ * to have a defined less than operator.
+ *
+ * In certain cases the enumToValue and/or valueToEnum need to be
+ * defined to avoid issues with bimap relations. Cases that cause
+ * this are when ValType doesn't define a less than operator, when
+ * there is a one-to-many relationship between the enumeration and
+ * ValType, or when a pre-existing mapping function already exists.
+ * In these cases you can define the function to circumvent the
+ * bimap relation and use other functions to perform mapping.
+ *
+ * If there exists a one-to-many relationship between the
+ * enumeration and ValType, you can use
+ * detail::enumToValueMultiVal<EnumType, ValType>(eval)
+ * to define the enumToValue function.
  */
 #ifndef ENUM_HPP_
 #define ENUM_HPP_
