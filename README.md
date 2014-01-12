@@ -1,5 +1,5 @@
 # Core
-An application framework for C++ build on Boost.
+An application framework for C++ using Boost.
 
 ## Description
 Core is a heavily tested application framework designed to give users a wide range of

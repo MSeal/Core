@@ -2,6 +2,7 @@
  * stringutil.h
  *
  * TODO describe features
+ * TODO add pointer template conversions
  */
 #ifndef STRING_UTIL_H_
 #define STRING_UTIL_H_
@@ -53,11 +54,26 @@ template<typename T> inline T stringToType(const std::string& str);
 class StrStreamer;
 typedef pointers::smart<StrStreamer>::UniquePtr StrStreamerPtr;
 
-// TODO describe
+// Struct used to trigger buildString methods in StrStreamer.
 struct StrStreamEnder{};
 
-// TODO describe
+/*
+ * The StrStreamer class is a string builder which incrementally
+ * builds references to string objects until either the buildString
+ * method is called or a StrStreamEnder struct is passed into
+ * the stream operator. In either of these cases the string is
+ * finalized and a string of the appropriate length is constructed
+ * and returned.
+ *
+ * The class relies on the toString function defined in stringutil
+ * to convert any type to a string. If the streamed object is already
+ * a string, then a pointer to that string is generated instead of
+ * copying the original string. Note that this means that if the a
+ * string becomes deallocated between being passed into a streamer and
+ * triggering to buildString method then undefined behavior will insue.
+ */
 class StrStreamer {
+    // Used to end the stream and build a string
     friend inline std::string operator <<(
             StrStreamerPtr builder, const StrStreamEnder& convertable);
     template<typename T>
@@ -70,36 +86,38 @@ private:
     typedef boost::variant<const std::string *, std::string> stringTypes;
     std::vector<stringTypes> stracker;
 
-    /*
-     * Converts stringTypes to a string reference.
-     */
+    // Converts stringTypes to a string reference.
     const std::string& getStrRef(stringTypes& strin);
 
 public:
     // Used in case of error
     static const std::string emptyStr;
-    StrStreamer() : stracker() {
-        stracker.reserve(std::vector<stringTypes>::size_type(128));
+    StrStreamer(const size_t reserve=128) : stracker() {
+        stracker.reserve(std::vector<stringTypes>::size_type(reserve));
     }
 
-    /*
-     * Builds the string seen so far by streams.
-     */
+    // Builds the string seen so far by streams.
     std::string buildString();
 };
 
-// TODO describe
+// Used to start a stream without an explicit constructor calls
 struct StrStreamStarter {
     template <typename T>
     StrStreamerPtr operator <<(const T& b) const {
         return StrStreamerPtr(new StrStreamer()) << b;
     }
 };
-// TODO describe
+/*
+ * Since starters and enders are stateless objects, there are
+ * some constant constructed versions available.
+ */
 extern const StrStreamStarter strstarter;
 extern const StrStreamEnder strender;
 
-// TODO describe
+/*
+ * Can be used with custom classes to force the creation of a
+ * toString method which will be detected by the toString operator.
+ */
 class Stringifyable {
 public:
     virtual std::string toString() const;
@@ -232,7 +250,7 @@ inline std::string toString(const Stringifyable& obj) {
 #define LOCALE_CONVERT_FILL(incharstr, inputname, outstring, outchar)                           \
     try {                                                                                       \
         return boost::locale::conv::utf_to_utf<outchar>(inputname, boost::locale::conv::stop);  \
-    } catch (std::runtime_error& re) {                                                           \
+    } catch (std::runtime_error& re) {                                                          \
         /* Rethrow as cast exception type */                                                    \
         throwCastException(LOCALE_STR_MACRO(LOCALE_CAST_QUOTE_COMBINE(incharstr, outstring)),   \
                 typeid(incharstr), typeid(outstring));                                          \
