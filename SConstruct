@@ -11,13 +11,27 @@ if not (mode in expected_modes):
 project = ARGUMENTS.get('project', 'core')
 build = ARGUMENTS.get('build', 'static')
 mode = ARGUMENTS.get('mode', 'release')
-compiler = ARGUMENTS.get('compiler', 'mingw')
-if compiler in ['msvc', 'vs']:
+compiler = ARGUMENTS.get('compiler', 'default')
+
+VS_CHECKS = ['msvc', 'mslink', 'vs', 'vc']
+GCC_CHECKS = ['gnu', 'gcc', 'g++', 'mingw']
+# Determine which compiler is defaulted
+if compiler == 'default':
+    check = Environment()
+    for tool in check._dict['TOOLS']:
+        if tool in VS_CHECKS:
+            compiler = tool
+            break
+        if tool in GCC_CHECKS:
+            compiler = tool
+            break
+# TODO match version numbers as well
+if compiler in VS_CHECKS:
     compiler = 'msvc'
-    tools = ['mslink', 'msvc', 'gfortran', 'masm', 'mslib', 'msvs', 'midl', 'filesystem', 'jar', 'javac', 'rmic', 'zip']
-elif compiler in ['mingw', 'gcc', 'g++']:
+    tools = ['mslink', 'msvc']
+elif compiler in GCC_CHECKS:
     tools = [compiler]
-    compiler = 'gcc'
+    compiler = 'gnu'
 else:
     tools = [compiler]
 
@@ -27,10 +41,10 @@ src_dir = 'testing' if project == 'test' else 'src'
 env = Environment(tools=tools)
 
 cflags = []
-if compiler == 'gcc':
+if compiler == 'gnu':
     cflags.extend(['-g', '-c', '-fmessage-length=0'])
 if compiler == 'msvc':
-    cflags.extend(['/wd4503'])
+    cflags.extend(['/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619'])
 
 if mode == 'debug':
     cflags.extend(['-Wall'])
