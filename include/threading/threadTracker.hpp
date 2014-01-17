@@ -59,8 +59,7 @@ private:
 	ApplicationWPtr application;
 
 	// Helper function, need the declaration in header...
-	ThreadTrackerPtr stopTrackingThreadImpl(
-	        boost::function<bool(ThreadTrackerPtr)> checkFound);
+	ThreadTrackerPtr stopTrackingThreadImpl(boost::function1<bool, ThreadTrackerPtr> checkFound);
 
 public:
 	ThreadManager(ApplicationWPtr app);
@@ -76,7 +75,7 @@ public:
 	 * be tracked by the global thread tracker.
 	 */
 	ThreadTrackerPtr spawnThread(const std::string& name, void(*worker)());
-	ThreadTrackerPtr spawnThread(const std::string& name, boost::function<void()> worker);
+	ThreadTrackerPtr spawnThread(const std::string& name, boost::function0<void> worker);
 
 	/*
 	 * Functions that provide various ways of retrieving thread objects.

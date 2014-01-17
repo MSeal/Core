@@ -12,14 +12,31 @@ project = ARGUMENTS.get('project', 'core')
 build = ARGUMENTS.get('build', 'static')
 mode = ARGUMENTS.get('mode', 'release')
 compiler = ARGUMENTS.get('compiler', 'mingw')
+if compiler in ['msvc', 'vs']:
+    compiler = 'msvc'
+    tools = ['mslink', 'msvc', 'gfortran', 'masm', 'mslib', 'msvs', 'midl', 'filesystem', 'jar', 'javac', 'rmic', 'zip']
+elif compiler in ['mingw', 'gcc', 'g++']:
+    tools = [compiler]
+    compiler = 'gcc'
+else:
+    tools = [compiler]
+
 variant_dir = mode.title() + build.title() if project == 'core' else mode.title() + 'Test'
 src_dir = 'testing' if project == 'test' else 'src'
 
-env = Environment(tools=[compiler])
+env = Environment(tools=tools)
+
+cflags = []
+if compiler == 'gcc':
+    cflags.extend(['-g', '-c', '-fmessage-length=0'])
+if compiler == 'msvc':
+    cflags.extend(['/wd4503'])
+
 if mode == 'debug':
-    cflags = ['-g','-O2', '-Wall', '-c', '-fmessage-length=0']
+    cflags.extend(['-Wall'])
 else:
-    cflags = ['-g','-O3', '-c', '-fmessage-length=0']
+    cflags.extend(['-Ox' if compiler == 'msvc' else '-O3'])
+
 Export('env', 'mode', 'project', 'build', 'cflags')
 
 # Put all .sconsign files in one place

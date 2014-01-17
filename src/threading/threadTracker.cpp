@@ -28,12 +28,12 @@ ThreadTrackerPtr ThreadManager::trackThread(const std::string& name, ThreadPtr t
 ThreadTrackerPtr ThreadManager::spawnThread(const std::string& name, void(*worker)())  {
 	return trackThread(name, ThreadPtr(new Thread(worker)));
 }
-ThreadTrackerPtr ThreadManager::spawnThread(const std::string& name, boost::function<void()> worker) {
+ThreadTrackerPtr ThreadManager::spawnThread(const std::string& name, boost::function0<void> worker) {
 	return trackThread(name, ThreadPtr(new Thread(worker)));
 }
 
 ThreadTrackerPtr ThreadManager::stopTrackingThreadImpl(
-        boost::function<bool(ThreadTrackerPtr)> checkFound) {
+        boost::function1<bool, ThreadTrackerPtr> checkFound) {
     bool found = false;
     // This gives us a scope locked wrapper on our vector
     LockedVectorPtr lockedThreads = threads.generateLockedReference();
@@ -71,12 +71,12 @@ bool stopTrackingById(ThreadTrackerPtr tptr, const boost::thread::id id) {
  * ThreadTracker (or an empty pointer if the object didn't exist)
  */
 ThreadTrackerPtr ThreadManager::stopTrackingThread(const std::string& name) {
-    boost::function<bool(ThreadTrackerPtr)> checkFound =
+    boost::function1<bool, ThreadTrackerPtr> checkFound =
             boost::bind(stopTrackingByName, _1, boost::cref(name));
 	return stopTrackingThreadImpl(checkFound);
 }
 ThreadTrackerPtr ThreadManager::stopTrackingThread(const boost::thread::id id) {
-    boost::function<bool(ThreadTrackerPtr)> checkFound =
+    boost::function1<bool, ThreadTrackerPtr> checkFound =
             boost::bind(stopTrackingById, _1, id);
     return stopTrackingThreadImpl(checkFound);
 }

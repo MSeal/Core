@@ -10,17 +10,18 @@
 #include <boost/thread.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/function.hpp>
 #include "pointers.hpp"
 
 namespace core { namespace threading {
 
 /* Forward declaration of lockable types */
 class Lockable;
-typedef typename pointers::smart<Lockable>::SharedPtr LockablePtr;
-typedef typename pointers::smart<const Lockable>::SharedPtr ConstLockablePtr;
+typedef pointers::smart<Lockable>::SharedPtr LockablePtr;
+typedef pointers::smart<const Lockable>::SharedPtr ConstLockablePtr;
 class ReadWriteLockable;
-typedef typename pointers::smart<ReadWriteLockable>::SharedPtr ReadWriteLockablePtr;
-typedef typename pointers::smart<const ReadWriteLockable>::SharedPtr ConstReadWriteLockablePtr;
+typedef pointers::smart<ReadWriteLockable>::SharedPtr ReadWriteLockablePtr;
+typedef pointers::smart<const ReadWriteLockable>::SharedPtr ConstReadWriteLockablePtr;
 
 template<typename Ref> class LockedReferencePtr;
 template<typename Ref> class ReadLockedReferencePtr;
@@ -385,20 +386,20 @@ public:
  */
 class LockableWrap : public Lockable {
 protected:
-    const boost::function<void()> lockFunc;
-    const boost::function<void()> unlockFunc;
-    const boost::function<bool()> tryLockFunc;
+    const boost::function0<void> lockFunc;
+    const boost::function0<void> unlockFunc;
+    const boost::function0<bool> tryLockFunc;
     void *lockAddress;
 
 public:
-    LockableWrap(const boost::function<void()> lock,
-                 const boost::function<void()> unlock,
+    LockableWrap(const boost::function0<void> lock,
+                 const boost::function0<void> unlock,
                  void *address) :
       lockFunc(lock), unlockFunc(unlock), tryLockFunc(NULL), lockAddress(address) {}
 
-    LockableWrap(const boost::function<void()> lock,
-                 const boost::function<void()> unlock,
-                 const boost::function<bool()> tryLock,
+    LockableWrap(const boost::function0<void> lock,
+                 const boost::function0<void> unlock,
+                 const boost::function0<bool> tryLock,
                  void *address) :
           lockFunc(lock), unlockFunc(unlock), tryLockFunc(tryLock), lockAddress(address) {}
 
@@ -517,25 +518,25 @@ public:
  */
 class ReadWriteLockableWrap : public LockableWrap {
 protected:
-    const boost::function<void()> sharedLockFunc;
-    const boost::function<void()> sharedUnlockFunc;
-    const boost::function<bool()> sharedTryLockFunc;
+    const boost::function0<void> sharedLockFunc;
+    const boost::function0<void> sharedUnlockFunc;
+    const boost::function0<bool> sharedTryLockFunc;
 
 public:
-    ReadWriteLockableWrap(const boost::function<void()> lock,
-                          const boost::function<void()> unlock,
-                          const boost::function<void()> sharedLock,
-                          const boost::function<void()> sharedUnlock,
+    ReadWriteLockableWrap(const boost::function0<void> lock,
+                          const boost::function0<void> unlock,
+                          const boost::function0<void> sharedLock,
+                          const boost::function0<void> sharedUnlock,
                           void *address) :
         LockableWrap(lock, unlock, address),
         sharedLockFunc(sharedLock), sharedUnlockFunc(sharedUnlock), sharedTryLockFunc(NULL) {}
 
-    ReadWriteLockableWrap(const boost::function<void()> lock,
-                          const boost::function<void()> unlock,
-                          const boost::function<bool()> tryLock,
-                          const boost::function<void()> sharedLock,
-                          const boost::function<void()> sharedUnlock,
-                          const boost::function<bool()> trySharedLock,
+    ReadWriteLockableWrap(const boost::function0<void> lock,
+                          const boost::function0<void> unlock,
+                          const boost::function0<bool> tryLock,
+                          const boost::function0<void> sharedLock,
+                          const boost::function0<void> sharedUnlock,
+                          const boost::function0<bool> trySharedLock,
                           void *address) :
         LockableWrap(lock, unlock, tryLock, address),
         sharedLockFunc(sharedLock), sharedUnlockFunc(sharedUnlock), sharedTryLockFunc(trySharedLock) {}

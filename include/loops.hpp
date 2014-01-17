@@ -102,7 +102,7 @@ void incrementT(T *t) {
 
 struct IncrementCounterPassthrough {
 	bool first;
-	boost::function<void(void)> incrementer;
+	boost::function0<void> incrementer;
 
 	template<typename Count>
 	IncrementCounterPassthrough(Count& t) {
@@ -164,19 +164,19 @@ inline void onEach(I& item, void (*function)(I&), C & container) {
 }
 // Do the same for boost::function
 template <class I, class C>
-inline void onEach(boost::function<void(I)>& function, C & container) {
+inline void onEach(boost::function1<void, I>& function, C & container) {
     forEach(I& item, container) function(item);
 }
 template <class I, class C>
-inline void onEach(I& item, boost::function<void(I)>& function, C & container) {
+inline void onEach(I& item, boost::function1<void, I>& function, C & container) {
     forEach(item, container) function(item);
 }
 template <class I, class C>
-inline void onEach(boost::function<void(I&)>& function, C & container) {
+inline void onEach(boost::function1<void, I&>& function, C & container) {
     forEach(I& item, container) function(item);
 }
 template <class I, class C>
-inline void onEach(I& item, boost::function<void(I&)>& function, C & container) {
+inline void onEach(I& item, boost::function1<void, I&>& function, C & container) {
     forEach(item, container) function(item);
 }
 /* End On Each */
@@ -200,19 +200,19 @@ inline void reverseOnEach(I& item, void (*function)(I&), C & container) {
 }
 // Do the same for boost::function
 template <class I, class C>
-inline void reverseOnEach(boost::function<void(I)>& function, C & container) {
+inline void reverseOnEach(boost::function1<void, I>& function, C & container) {
     reverseForEach(I& item, container) function(item);
 }
 template <class I, class C>
-inline void reverseOnEach(I& item, boost::function<void(I)>& function, C & container) {
+inline void reverseOnEach(I& item, boost::function1<void, I>& function, C & container) {
     reverseForEach(item, container) function(item);
 }
 template <class I, class C>
-inline void reverseOnEach(boost::function<void(I&)>& function, C & container) {
+inline void reverseOnEach(boost::function1<void, I&>& function, C & container) {
     reverseForEach(I& item, container) function(item);
 }
 template <class I, class C>
-inline void reverseOnEach(I& item, boost::function<void(I&)>& function, C & container) {
+inline void reverseOnEach(I& item, boost::function1<void, I&>& function, C & container) {
     reverseForEach(item, container) function(item);
 }
 /* End On Each Reverse */

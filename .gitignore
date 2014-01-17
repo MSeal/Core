@@ -13,3 +13,4 @@ ReleaseTest
 .settings
 .pydevproject
 .sconsign.dblite
+logs

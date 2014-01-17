@@ -104,7 +104,7 @@ void TSQueueSink::sinkWorker() {
  * Initialized the sink thread for processing messages asynchronously.
  */
 threading::ThreadTrackerPtr TSQueueSink::initSinkThread(const std::string sinkName) {
-    boost::function<void()> sinkFunc = boost::bind(&TSQueueSink::sinkWorker, this);
+    boost::function0<void> sinkFunc = boost::bind(&TSQueueSink::sinkWorker, this);
     return application.lock()->threadManager.spawnThread(sinkName, sinkFunc);
 }
 }

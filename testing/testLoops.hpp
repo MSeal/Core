@@ -136,7 +136,7 @@ void noOpRef(int& i) {}
 
 BOOST_AUTO_TEST_CASE(onEachNoRefLoops) {
     int total = 0, check;
-    boost::function<void(int)> callback(boost::bind(&sum, &total, _1));
+    boost::function1<void, int> callback(boost::bind(&sum, &total, _1));
 
     std::vector<int> vect;
     for(int i = 0; i < 10; i++) {
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(onEachNoRefLoops) {
 
 BOOST_AUTO_TEST_CASE(onEachRefFuncLoops) {
     int total = 0, check;
-    boost::function<void(int&)> callbackRef(boost::bind(&sumRef, &total, _1));
+    boost::function1<void, int&> callbackRef(boost::bind(&sumRef, &total, _1));
 
     std::vector<int> vect;
     for(int i = 0; i < 10; i++) {
@@ -177,8 +177,8 @@ BOOST_AUTO_TEST_CASE(onEachRefFuncLoops) {
 
 BOOST_AUTO_TEST_CASE(onEachNoItemLoops) {
     int total = 0;
-    boost::function<void(int)> callback(boost::bind(&sum, &total, _1));
-    boost::function<void(int&)> callbackRef(boost::bind(&sumRef, &total, _1));
+    boost::function1<void, int> callback(boost::bind(&sum, &total, _1));
+    boost::function1<void, int&> callbackRef(boost::bind(&sumRef, &total, _1));
 
     std::vector<int> vect;
     for(int i = 0; i < 10; i++) {
