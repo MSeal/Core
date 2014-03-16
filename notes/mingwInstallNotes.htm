@@ -5,10 +5,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows Platform &laquo; the seeker&#8217;s quill</title>
 
-	<link rel="stylesheet" href="http://s2.wp.com/wp-content/themes/pub/neat/style.css?m=1342105898g&amp;1" type="text/css" media="screen" />
-	<link rel="pingback" href="http://theseekersquill.wordpress.com/xmlrpc.php" />
+    <link rel="stylesheet" href="http://s2.wp.com/wp-content/themes/pub/neat/style.css?m=1342105898g&amp;1" type="text/css" media="screen" />
+    <link rel="pingback" href="http://theseekersquill.wordpress.com/xmlrpc.php" />
 
-	<link rel="alternate" type="application/rss+xml" title="the seeker&#039;s quill &raquo; Feed" href="http://theseekersquill.wordpress.com/feed/" />
+    <link rel="alternate" type="application/rss+xml" title="the seeker&#039;s quill &raquo; Feed" href="http://theseekersquill.wordpress.com/feed/" />
 <link rel="alternate" type="application/rss+xml" title="the seeker&#039;s quill &raquo; Comments Feed" href="http://theseekersquill.wordpress.com/comments/feed/" />
 <link rel="alternate" type="application/rss+xml" title="the seeker&#039;s quill &raquo; How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform Comments Feed" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/feed/" />
 <script type="text/javascript">
@@ -54,40 +54,40 @@ var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, pleas
 <link rel='openid.delegate' href='http://theseekersquill.wordpress.com/' />
 <link rel="search" type="application/opensearchdescription+xml" href="http://theseekersquill.wordpress.com/osd.xml" title="the seeker&#039;s quill" />
 <link rel="search" type="application/opensearchdescription+xml" href="http://wordpress.com/opensearch.xml" title="WordPress.com" />
-		<style>
-		/* <![CDATA[ */
-		/* Block: reblog */
-		
-		.reblog-from img                   { margin: 0 10px 0 0; vertical-align: middle; padding: 0; border: 0; }
-		.reblogger-note img.avatar         { float: left; padding: 0; border: 0; }
-		.reblogger-note-content            { margin: 0 0 20px; }
-		.reblog-post .wpcom-enhanced-excerpt-content { border-left: 3px solid #eee; padding-left: 15px; }
-		.reblog-post ul.thumb-list         { display: block; list-style: none; margin: 2px 0; padding: 0; clear: both; }
-		.reblog-post ul.thumb-list li      { display: inline; margin: 0; padding: 0 1px; border: 0; }
-		.reblog-post ul.thumb-list li a    { margin: 0; padding: 0; border: 0; }
-		.reblog-post ul.thumb-list li img  { margin: 0; padding: 0; border: 0; }
-		
-		.reblog-post .wpcom-enhanced-excerpt { clear: both; }
-		
-		.reblog-post .wpcom-enhanced-excerpt address,
-		.reblog-post .wpcom-enhanced-excerpt li,
-		.reblog-post .wpcom-enhanced-excerpt h1,
-		.reblog-post .wpcom-enhanced-excerpt h2,
-		.reblog-post .wpcom-enhanced-excerpt h3,
-		.reblog-post .wpcom-enhanced-excerpt h4,
-		.reblog-post .wpcom-enhanced-excerpt h5,
-		.reblog-post .wpcom-enhanced-excerpt h6,
-		.reblog-post .wpcom-enhanced-excerpt p { font-size: 100% !important; }
-		
-		.reblog-post .wpcom-enhanced-excerpt blockquote,
-		.reblog-post .wpcom-enhanced-excerpt pre,
-		.reblog-post .wpcom-enhanced-excerpt code,
-		.reblog-post .wpcom-enhanced-excerpt q { font-size: 98% !important; }
-		
+        <style>
+        /* <![CDATA[ */
+        /* Block: reblog */
+        
+        .reblog-from img                   { margin: 0 10px 0 0; vertical-align: middle; padding: 0; border: 0; }
+        .reblogger-note img.avatar         { float: left; padding: 0; border: 0; }
+        .reblogger-note-content            { margin: 0 0 20px; }
+        .reblog-post .wpcom-enhanced-excerpt-content { border-left: 3px solid #eee; padding-left: 15px; }
+        .reblog-post ul.thumb-list         { display: block; list-style: none; margin: 2px 0; padding: 0; clear: both; }
+        .reblog-post ul.thumb-list li      { display: inline; margin: 0; padding: 0 1px; border: 0; }
+        .reblog-post ul.thumb-list li a    { margin: 0; padding: 0; border: 0; }
+        .reblog-post ul.thumb-list li img  { margin: 0; padding: 0; border: 0; }
+        
+        .reblog-post .wpcom-enhanced-excerpt { clear: both; }
+        
+        .reblog-post .wpcom-enhanced-excerpt address,
+        .reblog-post .wpcom-enhanced-excerpt li,
+        .reblog-post .wpcom-enhanced-excerpt h1,
+        .reblog-post .wpcom-enhanced-excerpt h2,
+        .reblog-post .wpcom-enhanced-excerpt h3,
+        .reblog-post .wpcom-enhanced-excerpt h4,
+        .reblog-post .wpcom-enhanced-excerpt h5,
+        .reblog-post .wpcom-enhanced-excerpt h6,
+        .reblog-post .wpcom-enhanced-excerpt p { font-size: 100% !important; }
+        
+        .reblog-post .wpcom-enhanced-excerpt blockquote,
+        .reblog-post .wpcom-enhanced-excerpt pre,
+        .reblog-post .wpcom-enhanced-excerpt code,
+        .reblog-post .wpcom-enhanced-excerpt q { font-size: 98% !important; }
+        
 
-		/* ]]> */		
-		</style>
-		<style type="text/css">.recentcomments a{display:inline !important;padding: 0 !important;margin: 0 !important;}</style>
+        /* ]]> */        
+        </style>
+        <style type="text/css">.recentcomments a{display:inline !important;padding: 0 !important;margin: 0 !important;}</style>
 <meta name="application-name" content="the seeker&#039;s quill" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-task" content="name=Subscribe;action-uri=http://theseekersquill.wordpress.com/feed/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=http://s2.wp.com/i/favicon.ico" /><meta name="title" content="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform | the seeker&#039;s quill on WordPress.com" />
 <meta name="description" content="This article outlines how to install, build and use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows platform.  The article will cover all steps including: Downloading and installing the Eclipse C++ IDE. Downloading and installing the MinGW (GCC, G++, GDB, etc) compiler toolchain. Downloading and installing&hellip;" />
 
@@ -100,15 +100,15 @@ td.recentcommentstexttop { border: none !important;padding:0px 0px 0px 10px;}
 td.recentcommentstextend { border: none !important;padding:0px 0px 2px 10px;}
 </style><style type="text/css">
 #header {
-	font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
-	text-align: left;
-	background: url(http://theseekersquill.files.wordpress.com/2009/02/700x200_header_theseekersquill.jpg);
- 	width: 700px;
- 	height: 200px;
-	margin: 0px;
+    font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+    text-align: left;
+    background: url(http://theseekersquill.files.wordpress.com/2009/02/700x200_header_theseekersquill.jpg);
+     width: 700px;
+     height: 200px;
+    margin: 0px;
 }
 #header * {
-	display: none;
+    display: none;
 }
 </style>
 </head>
@@ -121,20 +121,20 @@ td.recentcommentstextend { border: none !important;padding:0px 0px 2px 10px;}
     <div class="description"></div>
 </div>
 
-	<div id="content">
+    <div id="content">
 
   
-		<div class="navigation">
-			<div class="alignleft">&laquo; <a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)</a></div>
-			<div class="alignright"></div>
-		</div>
+        <div class="navigation">
+            <div class="alignleft">&laquo; <a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)</a></div>
+            <div class="alignright"></div>
+        </div>
 
-		<div class="post-467 post type-post status-publish format-standard hentry category-boost category-c category-computer category-development category-eclipse-ide category-mingw category-programming category-windows tag-boost tag-c-2 tag-development-2 tag-eclipse tag-gcc tag-ide tag-mingw-2 tag-programming-2 tag-windows">
-			<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/h1.gif?m=1158640643g" class="lefth2img" alt="h1" /><h2 id="post-467">How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform</h2>
+        <div class="post-467 post type-post status-publish format-standard hentry category-boost category-c category-computer category-development category-eclipse-ide category-mingw category-programming category-windows tag-boost tag-c-2 tag-development-2 tag-eclipse tag-gcc tag-ide tag-mingw-2 tag-programming-2 tag-windows">
+            <img src="http://s2.wp.com/wp-content/themes/pub/neat/images/h1.gif?m=1158640643g" class="lefth2img" alt="h1" /><h2 id="post-467">How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform</h2>
             <small>August 24, 2010 <!-- by theseekersquill --></small>
 
-			<div class="entrytext">
-				<p style="text-align:center;"><img class="aligncenter size-full wp-image-512" title="boost" src="http://theseekersquill.files.wordpress.com/2010/08/boost.png?w=450" alt=""   /></p>
+            <div class="entrytext">
+                <p style="text-align:center;"><img class="aligncenter size-full wp-image-512" title="boost" src="http://theseekersquill.files.wordpress.com/2010/08/boost.png?w=450" alt=""   /></p>
 <p>This article outlines how to install, build and use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows platform.  The article will cover all steps including:</p>
 <ul>
 <li>Downloading and installing the Eclipse C++ IDE.</li>
@@ -345,74 +345,74 @@ Body: Great news, Boost Library integration works.</code></li>
 <li><a title="The project leader of the Eclipse CDT project" href="http://cdtdoug.blogspot.com" target="_blank">cdtdoug.blogspot.com</a> &#8211; Personal blog of the Eclipse CDT project  leader providing insights into his mind and the future directions of the project.</li>
 </ul>
 <div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-stumbleupon"><a rel="nofollow" class="share-stumbleupon sd-button share-icon" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?share=stumbleupon" title="Click to share on StumbleUpon"><span>StumbleUpon</span></a></li><li class="share-digg"><a rel="nofollow" class="share-digg sd-button share-icon" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?share=digg" title="Click to Digg this post"><span>Digg</span></a></li><li class="share-reddit"><a rel="nofollow" class="share-reddit sd-button share-icon" href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?share=reddit" title="Click to share on Reddit"><span>Reddit</span></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div></div></div><div class="wpl-likebox sd-block sd-like"><h3 class="sd-title">Like this:</h3><div class="sd-content"><div id="like-467" class="wpl-button "><a href='http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/?like=1&amp;_wpnonce=4b4642de45' title='I like this.' class='like needs-login sd-button' rel='nofollow'><span>Like</span></a></div><div class="wpl-count sd-like-count">One blogger likes this.</div><ul class="wpl-avatars sd-like-gravatars"><li><a href="http://gravatar.com/oliversampson" title="Oliver" class="wpl-liker" rel="nofollow"><img src='http://0.gravatar.com/avatar/91baaba62648a9da63f5e6faad51f8e3?s=30&amp;d=identicon&amp;r=G' class='avatar avatar-30' alt='Oliver' width='30' height='30' /></a></li></ul></div></div></div>
-							</div>
-			<p class="postmetadata">Posted in <a href="http://theseekersquill.wordpress.com/category/computer/boost/" title="View all posts in Boost" rel="category tag">Boost</a>, <a href="http://theseekersquill.wordpress.com/category/computer/c/" title="View all posts in C++" rel="category tag">C++</a>, <a href="http://theseekersquill.wordpress.com/category/computer/" title="View all posts in Computer" rel="category tag">Computer</a>, <a href="http://theseekersquill.wordpress.com/category/computer/development/" title="View all posts in Development" rel="category tag">Development</a>, <a href="http://theseekersquill.wordpress.com/category/computer/eclipse-ide/" title="View all posts in Eclipse IDE" rel="category tag">Eclipse IDE</a>, <a href="http://theseekersquill.wordpress.com/category/computer/mingw/" title="View all posts in MinGW" rel="category tag">MinGW</a>, <a href="http://theseekersquill.wordpress.com/category/computer/programming/" title="View all posts in Programming" rel="category tag">Programming</a>, <a href="http://theseekersquill.wordpress.com/category/computer/windows/" title="View all posts in Windows" rel="category tag">Windows</a> <strong>|</strong> Tagged <a href="http://theseekersquill.wordpress.com/tag/boost/" rel="tag">Boost</a>, <a href="http://theseekersquill.wordpress.com/tag/c-2/" rel="tag">c++</a>, <a href="http://theseekersquill.wordpress.com/tag/development-2/" rel="tag">development</a>, <a href="http://theseekersquill.wordpress.com/tag/eclipse/" rel="tag">Eclipse</a>, <a href="http://theseekersquill.wordpress.com/tag/gcc/" rel="tag">gcc</a>, <a href="http://theseekersquill.wordpress.com/tag/ide/" rel="tag">IDE</a>, <a href="http://theseekersquill.wordpress.com/tag/mingw-2/" rel="tag">mingw</a>, <a href="http://theseekersquill.wordpress.com/tag/programming-2/" rel="tag">programming</a>, <a href="http://theseekersquill.wordpress.com/tag/windows/" rel="tag">Windows</a> <strong>|</strong> </p>
-		</div>
+                            </div>
+            <p class="postmetadata">Posted in <a href="http://theseekersquill.wordpress.com/category/computer/boost/" title="View all posts in Boost" rel="category tag">Boost</a>, <a href="http://theseekersquill.wordpress.com/category/computer/c/" title="View all posts in C++" rel="category tag">C++</a>, <a href="http://theseekersquill.wordpress.com/category/computer/" title="View all posts in Computer" rel="category tag">Computer</a>, <a href="http://theseekersquill.wordpress.com/category/computer/development/" title="View all posts in Development" rel="category tag">Development</a>, <a href="http://theseekersquill.wordpress.com/category/computer/eclipse-ide/" title="View all posts in Eclipse IDE" rel="category tag">Eclipse IDE</a>, <a href="http://theseekersquill.wordpress.com/category/computer/mingw/" title="View all posts in MinGW" rel="category tag">MinGW</a>, <a href="http://theseekersquill.wordpress.com/category/computer/programming/" title="View all posts in Programming" rel="category tag">Programming</a>, <a href="http://theseekersquill.wordpress.com/category/computer/windows/" title="View all posts in Windows" rel="category tag">Windows</a> <strong>|</strong> Tagged <a href="http://theseekersquill.wordpress.com/tag/boost/" rel="tag">Boost</a>, <a href="http://theseekersquill.wordpress.com/tag/c-2/" rel="tag">c++</a>, <a href="http://theseekersquill.wordpress.com/tag/development-2/" rel="tag">development</a>, <a href="http://theseekersquill.wordpress.com/tag/eclipse/" rel="tag">Eclipse</a>, <a href="http://theseekersquill.wordpress.com/tag/gcc/" rel="tag">gcc</a>, <a href="http://theseekersquill.wordpress.com/tag/ide/" rel="tag">IDE</a>, <a href="http://theseekersquill.wordpress.com/tag/mingw-2/" rel="tag">mingw</a>, <a href="http://theseekersquill.wordpress.com/tag/programming-2/" rel="tag">programming</a>, <a href="http://theseekersquill.wordpress.com/tag/windows/" rel="tag">Windows</a> <strong>|</strong> </p>
+        </div>
 
-		<h3 id="comments">9 comments</h3>
+        <h3 id="comments">9 comments</h3>
 
-	<ol class="commentlist">
-	
+    <ol class="commentlist">
+    
 <li class="comment even thread-even depth-1 highlander-comment" id="comment-106">
 <div id="div-comment-106">
-	<div class="comment-author vcard">
-	<img alt='' src='http://1.gravatar.com/avatar/7c7a972ac7ccf99619c4ef156010c769?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>I seemed to be aware about this previously, nevertheless there was clearly a few helpful bits that concluded the picture for me personally, thank you so much!</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-106" title="">by</a>
-						<cite class="fn"><a href='http://satellitedirectlyonyourcomputer.com/tag/technology' rel='external nofollow' class='url'>Candice Pulanco</a></cite>
-			 February 13, 2011 at 2:02 am						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=106#respond' onclick='return addComment.moveForm("div-comment-106", "106", "respond", "467")'>Reply</a>	</div>
+    <div class="comment-author vcard">
+    <img alt='' src='http://1.gravatar.com/avatar/7c7a972ac7ccf99619c4ef156010c769?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>I seemed to be aware about this previously, nevertheless there was clearly a few helpful bits that concluded the picture for me personally, thank you so much!</p>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-106" title="">by</a>
+                        <cite class="fn"><a href='http://satellitedirectlyonyourcomputer.com/tag/technology' rel='external nofollow' class='url'>Candice Pulanco</a></cite>
+             February 13, 2011 at 2:02 am                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=106#respond' onclick='return addComment.moveForm("div-comment-106", "106", "respond", "467")'>Reply</a>    </div>
 </div>
 </li>
 
 <li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="comment-108">
 <div id="div-comment-108">
-	<div class="comment-author vcard">
-	<img alt='' src='http://2.gravatar.com/avatar/e091bba2ec34513f01b75235bc2ced9c?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Section 5.2.1 for Boost 1.46: &#8220;C:\software\boost_1_46_0\tools\build\v2\engine\src\build.bat&#8221;.<br />
+    <div class="comment-author vcard">
+    <img alt='' src='http://2.gravatar.com/avatar/e091bba2ec34513f01b75235bc2ced9c?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>Section 5.2.1 for Boost 1.46: &#8220;C:\software\boost_1_46_0\tools\build\v2\engine\src\build.bat&#8221;.<br />
 Great article! Thanks a lot.</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-108" title="">by</a>
-						<cite class="fn">Adriano</cite>
-			 February 27, 2011 at 4:11 pm						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=108#respond' onclick='return addComment.moveForm("div-comment-108", "108", "respond", "467")'>Reply</a>	</div>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-108" title="">by</a>
+                        <cite class="fn">Adriano</cite>
+             February 27, 2011 at 4:11 pm                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=108#respond' onclick='return addComment.moveForm("div-comment-108", "108", "respond", "467")'>Reply</a>    </div>
 </div>
 </li>
 
 <li class="comment byuser comment-author-oliversampson even thread-even depth-1 parent highlander-comment" id="comment-120">
 <div id="div-comment-120">
-	<div class="comment-author vcard">
-	<img alt='' src='http://0.gravatar.com/avatar/91baaba62648a9da63f5e6faad51f8e3?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thanks for this article! I&#8217;m trying to do this for the Boost_1_46_1 build, and when I run the bootstrap batch file (which ran dandily building the Visual C libraries!) I get a &#8220;This program can&#8217;t start because mspdb100.dll is missing from your computer. Try reinstalling the program to fix this problem.&#8221; Joy! (Any tips?) And as Adriano writes, the build.bat file has moved.</p>
+    <div class="comment-author vcard">
+    <img alt='' src='http://0.gravatar.com/avatar/91baaba62648a9da63f5e6faad51f8e3?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>Thanks for this article! I&#8217;m trying to do this for the Boost_1_46_1 build, and when I run the bootstrap batch file (which ran dandily building the Visual C libraries!) I get a &#8220;This program can&#8217;t start because mspdb100.dll is missing from your computer. Try reinstalling the program to fix this problem.&#8221; Joy! (Any tips?) And as Adriano writes, the build.bat file has moved.</p>
 <p>I&#8217;ve just subscribed to the Boost.Build mailing list to see if I can start hunting down this problem.</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-120" title="">by</a>
-						<cite class="fn"><a href='http://oliversampson.wordpress.com' rel='external nofollow' class='url'>Oliver</a></cite>
-			 March 21, 2011 at 1:04 am						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=120#respond' onclick='return addComment.moveForm("div-comment-120", "120", "respond", "467")'>Reply</a>	</div>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-120" title="">by</a>
+                        <cite class="fn"><a href='http://oliversampson.wordpress.com' rel='external nofollow' class='url'>Oliver</a></cite>
+             March 21, 2011 at 1:04 am                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=120#respond' onclick='return addComment.moveForm("div-comment-120", "120", "respond", "467")'>Reply</a>    </div>
 </div>
 <ul class='children'>
 
 <li class="comment odd alt depth-2 highlander-comment" id="comment-149">
 <div id="div-comment-149">
-	<div class="comment-author vcard">
-	<img alt='' src='http://2.gravatar.com/avatar/58c498841c8a36f1d74146fea48f4464?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thanks a lot, helped me after hours of futile attempts linking against boost.</p>
+    <div class="comment-author vcard">
+    <img alt='' src='http://2.gravatar.com/avatar/58c498841c8a36f1d74146fea48f4464?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>Thanks a lot, helped me after hours of futile attempts linking against boost.</p>
 <p># IMPORTANT: To link a Boost C++ Binary library, e.g.: libboost_regex-mgw44-1_44.a the command line option should be: -lboost_regex-mgw44-1_44 (i.e.: Remove the prefix lib and the postfix .a).</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-149" title="">by</a>
-						<cite class="fn">S.</cite>
-			 May 23, 2011 at 1:54 pm						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=149#respond' onclick='return addComment.moveForm("div-comment-149", "149", "respond", "467")'>Reply</a>	</div>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-149" title="">by</a>
+                        <cite class="fn">S.</cite>
+             May 23, 2011 at 1:54 pm                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=149#respond' onclick='return addComment.moveForm("div-comment-149", "149", "respond", "467")'>Reply</a>    </div>
 </div>
 </li>
 </ul>
@@ -420,33 +420,33 @@ Great article! Thanks a lot.</p>
 
 <li class="comment even thread-odd thread-alt depth-1 parent highlander-comment" id="comment-227">
 <div id="div-comment-227">
-	<div class="comment-author vcard">
-	<img alt='' src='http://1.gravatar.com/avatar/d6b37696693ffe2b4281edfecebec701?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thanks in advance,</p>
+    <div class="comment-author vcard">
+    <img alt='' src='http://1.gravatar.com/avatar/d6b37696693ffe2b4281edfecebec701?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>Thanks in advance,</p>
 <p>I found the problem that I can not input into the console at the step 7.8. Could you please help me one more.</p>
 <p>Thanks.</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-227" title="">by</a>
-						<cite class="fn">Vinh Vo</cite>
-			 September 14, 2011 at 8:53 am						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=227#respond' onclick='return addComment.moveForm("div-comment-227", "227", "respond", "467")'>Reply</a>	</div>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-227" title="">by</a>
+                        <cite class="fn">Vinh Vo</cite>
+             September 14, 2011 at 8:53 am                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=227#respond' onclick='return addComment.moveForm("div-comment-227", "227", "respond", "467")'>Reply</a>    </div>
 </div>
 <ul class='children'>
 
 <li class="comment odd alt depth-2 highlander-comment" id="comment-235">
 <div id="div-comment-235">
-	<div class="comment-author vcard">
-	<img alt='' src='http://s0.wp.com/imgpress?url=http%3A%2F%2Fgraph.facebook.com%2F516028927%2Fpicture%3Ftype%3Dlarge%26_md5%3D784037c2d22edc2bf4d46731c6da8ee1&#038;resize=32%2C32' class='avatar avatar-32' height='32' width='32' />	<p><a href="http://stackoverflow.com/questions/3443254/eclipse-cdt-using-mingw-does-not-output-in-console" rel="nofollow">http://stackoverflow.com/questions/3443254/eclipse-cdt-using-mingw-does-not-output-in-console</a></p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-235" title="">by</a>
-						<cite class="fn"><a href='http://www.facebook.com/abhaybhaskar' rel='external nofollow' class='url'>Abhay Bhaskar</a></cite>
-			 October 8, 2011 at 4:44 pm						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=235#respond' onclick='return addComment.moveForm("div-comment-235", "235", "respond", "467")'>Reply</a>	</div>
+    <div class="comment-author vcard">
+    <img alt='' src='http://s0.wp.com/imgpress?url=http%3A%2F%2Fgraph.facebook.com%2F516028927%2Fpicture%3Ftype%3Dlarge%26_md5%3D784037c2d22edc2bf4d46731c6da8ee1&#038;resize=32%2C32' class='avatar avatar-32' height='32' width='32' />    <p><a href="http://stackoverflow.com/questions/3443254/eclipse-cdt-using-mingw-does-not-output-in-console" rel="nofollow">http://stackoverflow.com/questions/3443254/eclipse-cdt-using-mingw-does-not-output-in-console</a></p>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-235" title="">by</a>
+                        <cite class="fn"><a href='http://www.facebook.com/abhaybhaskar' rel='external nofollow' class='url'>Abhay Bhaskar</a></cite>
+             October 8, 2011 at 4:44 pm                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=235#respond' onclick='return addComment.moveForm("div-comment-235", "235", "respond", "467")'>Reply</a>    </div>
 </div>
 </li>
 </ul>
@@ -454,234 +454,234 @@ Great article! Thanks a lot.</p>
 
 <li class="comment even thread-even depth-1 highlander-comment" id="comment-262">
 <div id="div-comment-262">
-	<div class="comment-author vcard">
-	<img alt='' src='http://2.gravatar.com/avatar/e958d52cac56772f11bd9f2971fc4d44?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>I just installed Boost 1.48, and I found this guide invaluable (had to make a few minor tweaks).  I followed from step 4.<br />
+    <div class="comment-author vcard">
+    <img alt='' src='http://2.gravatar.com/avatar/e958d52cac56772f11bd9f2971fc4d44?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>I just installed Boost 1.48, and I found this guide invaluable (had to make a few minor tweaks).  I followed from step 4.<br />
 Step 5.1 (edit bootstrap.bat):  I also had to add the argument &#8220;mingw&#8221; after &#8220;call.\build.bat&#8221;<br />
 Step 5.2 (edit build.bat):  It is now in \tools\build\v2\engine.<br />
 Step 5.3.5 (build binaries):  The bootstrap told me to type &#8220;.\b2&#8243; and this seemed to suffice; I did not do the line command shown here but it all seems to work (took about 15 minutes).<br />
 Many thanks!</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-262" title="">by</a>
-						<cite class="fn">Karin J</cite>
-			 December 27, 2011 at 6:52 pm						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=262#respond' onclick='return addComment.moveForm("div-comment-262", "262", "respond", "467")'>Reply</a>	</div>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-262" title="">by</a>
+                        <cite class="fn">Karin J</cite>
+             December 27, 2011 at 6:52 pm                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=262#respond' onclick='return addComment.moveForm("div-comment-262", "262", "respond", "467")'>Reply</a>    </div>
 </div>
 </li>
 
 <li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="comment-264">
 <div id="div-comment-264">
-	<div class="comment-author vcard">
-	<img alt='' src='http://0.gravatar.com/avatar/0eac0c4d775fbfe2fd17e934802561ee?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thank You! You save me lot&#8217;s of time!<br />
+    <div class="comment-author vcard">
+    <img alt='' src='http://0.gravatar.com/avatar/0eac0c4d775fbfe2fd17e934802561ee?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>Thank You! You save me lot&#8217;s of time!<br />
 Don&#8217;t you want to do the same to POCO C++; ITK and VTK <img src='http://s0.wp.com/wp-includes/images/smilies/icon_smile.gif?m=1129645325g' alt=':)' class='wp-smiley' /> </p>
 <p>Great Job and Thank You Again!</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-264" title="">by</a>
-						<cite class="fn"><a href='http://blog.danielcosta.pt' rel='external nofollow' class='url'>Daniel Costa</a></cite>
-			 January 3, 2012 at 4:36 pm						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=264#respond' onclick='return addComment.moveForm("div-comment-264", "264", "respond", "467")'>Reply</a>	</div>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-264" title="">by</a>
+                        <cite class="fn"><a href='http://blog.danielcosta.pt' rel='external nofollow' class='url'>Daniel Costa</a></cite>
+             January 3, 2012 at 4:36 pm                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=264#respond' onclick='return addComment.moveForm("div-comment-264", "264", "respond", "467")'>Reply</a>    </div>
 </div>
 </li>
 
 <li class="comment even thread-even depth-1 highlander-comment" id="comment-276">
 <div id="div-comment-276">
-	<div class="comment-author vcard">
-	<img alt='' src='http://1.gravatar.com/avatar/d1c066320e8b1e62a95aa1cfd840769c?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />	<p>Thank you so much for this explanation.i followed it to install and build boost 1.48.0 .i had the problem that eclipse was terminated once i run the program.i fixed this problem by putting the directory of the binary libraries in my system environment variables.</p>
-	<small class="comment-meta commentmetadata">
-						&nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
-			<a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-276" title="">by</a>
-						<cite class="fn">aiman</cite>
-			 February 28, 2012 at 8:18 am						 						 </small><br />
-	</div>
-	<div class="reply">
-	<a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=276#respond' onclick='return addComment.moveForm("div-comment-276", "276", "respond", "467")'>Reply</a>	</div>
+    <div class="comment-author vcard">
+    <img alt='' src='http://1.gravatar.com/avatar/d1c066320e8b1e62a95aa1cfd840769c?s=32&amp;d=identicon&amp;r=G' class='avatar avatar-32' height='32' width='32' />    <p>Thank you so much for this explanation.i followed it to install and build boost 1.48.0 .i had the problem that eclipse was terminated once i run the program.i fixed this problem by putting the directory of the binary libraries in my system environment variables.</p>
+    <small class="comment-meta commentmetadata">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img src="http://s2.wp.com/wp-content/themes/pub/neat/images/comment_arr.gif?m=1158640643g" alt="" />
+            <a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/#comment-276" title="">by</a>
+                        <cite class="fn">aiman</cite>
+             February 28, 2012 at 8:18 am                                                  </small><br />
+    </div>
+    <div class="reply">
+    <a class='comment-reply-link' href='/2010/08/24/howto-boost-mingw/?replytocom=276#respond' onclick='return addComment.moveForm("div-comment-276", "276", "respond", "467")'>Reply</a>    </div>
 </div>
 </li>
-	</ol>
+    </ol>
 
-	<div class="navigation">
-		<div class="alignleft"></div>
-		<div class="alignright"></div>
-	</div>
-	<br />
+    <div class="navigation">
+        <div class="alignleft"></div>
+        <div class="alignright"></div>
+    </div>
+    <br />
 
   
 
 
-								<div id="respond">
-				<h3 id="reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2010/08/24/howto-boost-mingw/#respond" style="display:none;">Cancel reply</a></small></h3>
-									<form action="http://theseekersquill.wordpress.com/wp-comments-post.php" method="post" id="commentform">
-																										
+                                <div id="respond">
+                <h3 id="reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2010/08/24/howto-boost-mingw/#respond" style="display:none;">Cancel reply</a></small></h3>
+                                    <form action="http://theseekersquill.wordpress.com/wp-comments-post.php" method="post" id="commentform">
+                                                                                                        
 
 
-												
+                                                
 <input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
 
 <div class="comment-form-field comment-textarea">
-	<label for="comment">Enter your comment here...</label>
-	<div id="comment-form-comment"><textarea id="comment" name="comment"></textarea></div>
+    <label for="comment">Enter your comment here...</label>
+    <div id="comment-form-comment"><textarea id="comment" name="comment"></textarea></div>
 </div>
 
 <div id="comment-form-identity">
 
-	<div id="comment-form-nascar">
-		<p>Fill in your details below or click an icon to log in:</p>
-		<ul>
-			<li class="selected" style="display:none;">
-				<a href="#comment-form-guest" id="postas-guest" title="Guest">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
-					<span></span>
-				</a>
-			</li>
-			<li>
-				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
-					<span></span>
-				</a>
-			</li>
-		</ul>
-	</div>
+    <div id="comment-form-nascar">
+        <p>Fill in your details below or click an icon to log in:</p>
+        <ul>
+            <li class="selected" style="display:none;">
+                <a href="#comment-form-guest" id="postas-guest" title="Guest">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+                    <span></span>
+                </a>
+            </li>
+            <li>
+                <a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+                    <span></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-	<div id="comment-form-guest" class="comment-form-service selected">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&forcedefault=y&d=identicon" alt="Gravatar" width="25" class="no-grav" />
-</a>			</div>
+    <div id="comment-form-guest" class="comment-form-service selected">
+        <div class="comment-form-padder">
+            <div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">                <img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&forcedefault=y&d=identicon" alt="Gravatar" width="25" class="no-grav" />
+</a>            </div>
 
-				<div class="comment-form-fields">
-				<div class="comment-form-field comment-form-email">
-					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
-					<div class="comment-form-input"><input id="email" name="email" type="text" value="" /></div>
-				</div>
-				<div class="comment-form-field comment-form-author">
-					<label for="author">Name <span class="required">(required)</span></label>
-					<div class="comment-form-input"><input id="author" name="author" type="text" value="" /></div>
-				</div>
-				<div class="comment-form-field comment-form-url">
-					<label for="url">Website</label>
-					<div class="comment-form-input"><input id="url" name="url" type="text" value="" /></div>
-				</div> 
-			</div>
-	
-		</div>
-	</div>
+                <div class="comment-form-fields">
+                <div class="comment-form-field comment-form-email">
+                    <label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+                    <div class="comment-form-input"><input id="email" name="email" type="text" value="" /></div>
+                </div>
+                <div class="comment-form-field comment-form-author">
+                    <label for="author">Name <span class="required">(required)</span></label>
+                    <div class="comment-form-input"><input id="author" name="author" type="text" value="" /></div>
+                </div>
+                <div class="comment-form-field comment-form-url">
+                    <label for="url">Website</label>
+                    <div class="comment-form-input"><input id="url" name="url" type="text" value="" /></div>
+                </div> 
+            </div>
+    
+        </div>
+    </div>
 
-	<div id="comment-form-wordpress" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="http://s2.wp.com/wp-content/mu-plugins/highlander-comments/images/wplogo.png?m=1289230950g" alt="WordPress.com Logo" width="25" class="no-grav" />
-			</div>
+    <div id="comment-form-wordpress" class="comment-form-service">
+        <div class="comment-form-padder">
+            <div class="comment-form-avatar">
+                <img src="http://s2.wp.com/wp-content/mu-plugins/highlander-comments/images/wplogo.png?m=1289230950g" alt="WordPress.com Logo" width="25" class="no-grav" />
+            </div>
 
-				<div class="comment-form-fields">
-				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="http://1.gravatar.com/avatar/d8ce4866b7a36ec5a18e4f64b93cd3a4?s=25" />
-				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="38122359" />
-				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="86037db90bde5110b64530de6d567dc857845d3e" />
-				<p class="comment-form-posting-as pa-wordpress"><strong>pyrce:</strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
-	
-		</div>
-	</div>
+                <div class="comment-form-fields">
+                <input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="http://1.gravatar.com/avatar/d8ce4866b7a36ec5a18e4f64b93cd3a4?s=25" />
+                <input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="38122359" />
+                <input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="86037db90bde5110b64530de6d567dc857845d3e" />
+                <p class="comment-form-posting-as pa-wordpress"><strong>pyrce:</strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+            </div>
+    
+        </div>
+    </div>
 
-	<div id="comment-form-twitter" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon" alt="Twitter picture" width="25" class="no-grav" />
-			</div>
+    <div id="comment-form-twitter" class="comment-form-service">
+        <div class="comment-form-padder">
+            <div class="comment-form-avatar">
+                <img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon" alt="Twitter picture" width="25" class="no-grav" />
+            </div>
 
-				<div class="comment-form-fields">
-				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
-				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
-				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
-				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
-	
-		</div>
-	</div>
+                <div class="comment-form-fields">
+                <input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
+                <input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
+                <input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
+                <p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+            </div>
+    
+        </div>
+    </div>
 
-	<div id="comment-form-facebook" class="comment-form-service">
-		<div class="comment-form-padder">
-			<div class="comment-form-avatar">
-				<img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon" alt="Facebook photo" width="25" class="no-grav" />
-			</div>
+    <div id="comment-form-facebook" class="comment-form-service">
+        <div class="comment-form-padder">
+            <div class="comment-form-avatar">
+                <img src="http://www.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25&d=identicon" alt="Facebook photo" width="25" class="no-grav" />
+            </div>
 
-				<div class="comment-form-fields">
-				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
-				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
-				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
-				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
-			</div>
-	
-		</div>
-	</div>
+                <div class="comment-form-fields">
+                <input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
+                <input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
+                <input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
+                <p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+            </div>
+    
+        </div>
+    </div>
 
 
-	<div id="comment-form-load-service" class="comment-form-service">
-		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
-		<p>Connecting to %s</p>
-	</div>
-	
-	
+    <div id="comment-form-load-service" class="comment-form-service">
+        <div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+        <p>Connecting to %s</p>
+    </div>
+    
+    
 </div>
 
 <script type="text/javascript">
 jQuery(document).ready(function(){
-	var input = document.createElement( 'input' ),
-	    comment = jQuery( '#comment' );
+    var input = document.createElement( 'input' ),
+        comment = jQuery( '#comment' );
 
-	if ( 'placeholder' in input ) {
-		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
-	}
+    if ( 'placeholder' in input ) {
+        comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+    }
 
-	// Expando Mode: start small, then auto-resize on first click + text length
-	jQuery( '#comment-form-identity' ).hide();
-	jQuery( '#comment-form-subscribe' ).hide();
-	jQuery( '#commentform .form-submit' ).hide();
+    // Expando Mode: start small, then auto-resize on first click + text length
+    jQuery( '#comment-form-identity' ).hide();
+    jQuery( '#comment-form-subscribe' ).hide();
+    jQuery( '#commentform .form-submit' ).hide();
 
-	comment.css( { 'height':'10px' } ).one( 'focus', function() {
-		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
-		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
-		jQuery( '#comment-form-identity' ).slideDown();
-		jQuery( '#comment-form-subscribe' ).slideDown();
-		jQuery( '#commentform .form-submit' ).slideDown();
-	});
+    comment.css( { 'height':'10px' } ).one( 'focus', function() {
+        var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+        jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+        jQuery( '#comment-form-identity' ).slideDown();
+        jQuery( '#comment-form-subscribe' ).slideDown();
+        jQuery( '#commentform .form-submit' ).slideDown();
+    });
 });
 </script>
 
 <div id="comment-form-subscribe"> 
-	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" tabindex="6"/> <label class="subscribe-label" id="subscribe-label" for="subscribe">Notify me of follow-up comments via email.</label></p></div>
+    <p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;" tabindex="6"/> <label class="subscribe-label" id="subscribe-label" for="subscribe">Notify me of follow-up comments via email.</label></p></div>
 
-												<p class="form-submit">
-							<input name="submit" type="submit" id="comment-submit" value="Post Comment" />
-							<input type='hidden' name='comment_post_ID' value='467' id='comment_post_ID' />
+                                                <p class="form-submit">
+                            <input name="submit" type="submit" id="comment-submit" value="Post Comment" />
+                            <input type='hidden' name='comment_post_ID' value='467' id='comment_post_ID' />
 <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
-						</p>
-						
+                        </p>
+                        
 <input type="hidden" name="genseq" value="1345406142" />
 <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="78ff072c5a" /></p><script type='text/javascript' src='http://s2.wp.com/wp-content/mu-plugins/akismet-2.5/form.js?m=1308783962g'></script>
-<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="85"/></p>					</form>
-							</div><!-- #respond -->
-			<div style="clear: both"></div>			
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="85"/></p>                    </form>
+                            </div><!-- #respond -->
+            <div style="clear: both"></div>            
 
-	
-	</div>
+    
+    </div>
 
-	<div id="sidebar">
-		<ul>
-			<li>
-						</li>
+    <div id="sidebar">
+        <ul>
+            <li>
+                        </li>
 <li id="search-2" class="widget widget_search"><form method="get" id="searchform" action="http://theseekersquill.wordpress.com/">
 <div><input type="text" value="search archives" name="s" id="s" onblur="if (this.value == '') {this.value = 'search archives';}" onfocus="if (this.value == 'search archives') {this.value = '';}" />
 <input type="submit" id="searchsubmit" />
@@ -735,73 +735,73 @@ jQuery(document).ready(function(){
 <a href='http://theseekersquill.wordpress.com/tag/vncserver/' class='tag-link-8826851' title='1 topic' style='font-size: 8pt;'>vncserver</a>
 <a href='http://theseekersquill.wordpress.com/tag/windows/' class='tag-link-800' title='2 topics' style='font-size: 12.2pt;'>Windows</a></div></li>
 <li id="archives-2" class="widget widget_archive"><h2 class="widgettitle">Archives</h2>
-		<ul>
-			<li><a href='http://theseekersquill.wordpress.com/2010/08/' title='August 2010'>August 2010</a>&nbsp;(1)</li>
-	<li><a href='http://theseekersquill.wordpress.com/2010/05/' title='May 2010'>May 2010</a>&nbsp;(1)</li>
-	<li><a href='http://theseekersquill.wordpress.com/2010/04/' title='April 2010'>April 2010</a>&nbsp;(2)</li>
-	<li><a href='http://theseekersquill.wordpress.com/2010/03/' title='March 2010'>March 2010</a>&nbsp;(4)</li>
-	<li><a href='http://theseekersquill.wordpress.com/2010/02/' title='February 2010'>February 2010</a>&nbsp;(1)</li>
-	<li><a href='http://theseekersquill.wordpress.com/2009/07/' title='July 2009'>July 2009</a>&nbsp;(2)</li>
-	<li><a href='http://theseekersquill.wordpress.com/2008/04/' title='April 2008'>April 2008</a>&nbsp;(1)</li>
-		</ul>
+        <ul>
+            <li><a href='http://theseekersquill.wordpress.com/2010/08/' title='August 2010'>August 2010</a>&nbsp;(1)</li>
+    <li><a href='http://theseekersquill.wordpress.com/2010/05/' title='May 2010'>May 2010</a>&nbsp;(1)</li>
+    <li><a href='http://theseekersquill.wordpress.com/2010/04/' title='April 2010'>April 2010</a>&nbsp;(2)</li>
+    <li><a href='http://theseekersquill.wordpress.com/2010/03/' title='March 2010'>March 2010</a>&nbsp;(4)</li>
+    <li><a href='http://theseekersquill.wordpress.com/2010/02/' title='February 2010'>February 2010</a>&nbsp;(1)</li>
+    <li><a href='http://theseekersquill.wordpress.com/2009/07/' title='July 2009'>July 2009</a>&nbsp;(2)</li>
+    <li><a href='http://theseekersquill.wordpress.com/2008/04/' title='April 2008'>April 2008</a>&nbsp;(1)</li>
+        </ul>
 </li>
 <li id="calendar-2" class="widget widget_calendar"><h2 class="widgettitle">&nbsp;</h2>
 <div id="calendar_wrap"><table id="wp-calendar">
-	<caption>August 2010</caption>
-	<thead>
-	<tr>
-		<th scope="col" title="Monday">M</th>
-		<th scope="col" title="Tuesday">T</th>
-		<th scope="col" title="Wednesday">W</th>
-		<th scope="col" title="Thursday">T</th>
-		<th scope="col" title="Friday">F</th>
-		<th scope="col" title="Saturday">S</th>
-		<th scope="col" title="Sunday">S</th>
-	</tr>
-	</thead>
+    <caption>August 2010</caption>
+    <thead>
+    <tr>
+        <th scope="col" title="Monday">M</th>
+        <th scope="col" title="Tuesday">T</th>
+        <th scope="col" title="Wednesday">W</th>
+        <th scope="col" title="Thursday">T</th>
+        <th scope="col" title="Friday">F</th>
+        <th scope="col" title="Saturday">S</th>
+        <th scope="col" title="Sunday">S</th>
+    </tr>
+    </thead>
 
-	<tfoot>
-	<tr>
-		<td colspan="3" id="prev"><a href="http://theseekersquill.wordpress.com/2010/05/" title="View posts for May 2010">&laquo; May</a></td>
-		<td class="pad">&nbsp;</td>
-		<td colspan="3" id="next" class="pad">&nbsp;</td>
-	</tr>
-	</tfoot>
+    <tfoot>
+    <tr>
+        <td colspan="3" id="prev"><a href="http://theseekersquill.wordpress.com/2010/05/" title="View posts for May 2010">&laquo; May</a></td>
+        <td class="pad">&nbsp;</td>
+        <td colspan="3" id="next" class="pad">&nbsp;</td>
+    </tr>
+    </tfoot>
 
-	<tbody>
-	<tr>
-		<td colspan="6" class="pad">&nbsp;</td><td>1</td>
-	</tr>
-	<tr>
-		<td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td>
-	</tr>
-	<tr>
-		<td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>
-	</tr>
-	<tr>
-		<td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td>
-	</tr>
-	<tr>
-		<td>23</td><td><a href="http://theseekersquill.wordpress.com/2010/08/24/" title="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform">24</a></td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td>
-	</tr>
-	<tr>
-		<td>30</td><td>31</td>
-		<td class="pad" colspan="5">&nbsp;</td>
-	</tr>
-	</tbody>
-	</table></div></li>
-	<li id="recent-comments" class="widget widget_recent_comments">		<h2 class="widgettitle">Recent Comments</h2>
-		<table class='recentcommentsavatar' cellspacing='0' cellpadding='0' border='0'><tr><td title="Carlos" class="recentcommentsavatartop" style="height:48px; width:48px"><img alt='' src='http://2.gravatar.com/avatar/56f63aa778164e05a0b3d65d737ad751?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstexttop">Carlos on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-299">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr><tr><td title="BK" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://1.gravatar.com/avatar/7de705dcd9e93de44886e896fd407abf?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">BK on <a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/#comment-294">How to Install a Full MiKTeX L&hellip;</a></td></tr><tr><td title="sharkllama" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://0.gravatar.com/avatar/071d9179bef9b50c7a36d23f2f5c8a58?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">sharkllama on <a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/#comment-287">How to Install a Full MiKTeX L&hellip;</a></td></tr><tr><td title="theseekersquill" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://2.gravatar.com/avatar/82df8be80e0c8504956dfffdde9b96de?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">theseekersquill on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-285">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr><tr><td title="Jean-Pierre" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://1.gravatar.com/avatar/1580ebbdf3e98bb4f8602a51608b41cc?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">Jean-Pierre on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-284">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr></table>
-	</li>
-		<li id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widgettitle">Recent Posts</h2>
-		<ul>
-				<li><a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/" title="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform">How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform</a></li>
-				<li><a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/" title="How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)</a></li>
-				<li><a href="http://theseekersquill.wordpress.com/2010/04/30/howto-install-handbrake-snapshot/" title="How to easily and simply download, install and run the latest Handbrake development snapshot on Ubuntu Lucid Lynx&nbsp;10.04">How to easily and simply download, install and run the latest Handbrake development snapshot on Ubuntu Lucid Lynx&nbsp;10.04</a></li>
-				<li><a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/" title="LaTeX &#8211; Getting the Harvard Citation Style to work &#8211; Cite URLs&nbsp;properly.">LaTeX &#8211; Getting the Harvard Citation Style to work &#8211; Cite URLs&nbsp;properly.</a></li>
-				<li><a href="http://theseekersquill.wordpress.com/2010/03/16/vnc-server-ubuntu-windows/" title="How to install VNC server on an Ubuntu PC and remote connect to it from a Windows&nbsp;PC">How to install VNC server on an Ubuntu PC and remote connect to it from a Windows&nbsp;PC</a></li>
-				</ul>
-		</li>
+    <tbody>
+    <tr>
+        <td colspan="6" class="pad">&nbsp;</td><td>1</td>
+    </tr>
+    <tr>
+        <td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td>
+    </tr>
+    <tr>
+        <td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>
+    </tr>
+    <tr>
+        <td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td>
+    </tr>
+    <tr>
+        <td>23</td><td><a href="http://theseekersquill.wordpress.com/2010/08/24/" title="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform">24</a></td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td>
+    </tr>
+    <tr>
+        <td>30</td><td>31</td>
+        <td class="pad" colspan="5">&nbsp;</td>
+    </tr>
+    </tbody>
+    </table></div></li>
+    <li id="recent-comments" class="widget widget_recent_comments">        <h2 class="widgettitle">Recent Comments</h2>
+        <table class='recentcommentsavatar' cellspacing='0' cellpadding='0' border='0'><tr><td title="Carlos" class="recentcommentsavatartop" style="height:48px; width:48px"><img alt='' src='http://2.gravatar.com/avatar/56f63aa778164e05a0b3d65d737ad751?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstexttop">Carlos on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-299">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr><tr><td title="BK" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://1.gravatar.com/avatar/7de705dcd9e93de44886e896fd407abf?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">BK on <a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/#comment-294">How to Install a Full MiKTeX L&hellip;</a></td></tr><tr><td title="sharkllama" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://0.gravatar.com/avatar/071d9179bef9b50c7a36d23f2f5c8a58?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">sharkllama on <a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/#comment-287">How to Install a Full MiKTeX L&hellip;</a></td></tr><tr><td title="theseekersquill" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://2.gravatar.com/avatar/82df8be80e0c8504956dfffdde9b96de?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">theseekersquill on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-285">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr><tr><td title="Jean-Pierre" class="recentcommentsavatarend" style="height:48px; width:48px"><img alt='' src='http://1.gravatar.com/avatar/1580ebbdf3e98bb4f8602a51608b41cc?s=48&amp;d=identicon&amp;r=G' class='avatar avatar-48' height='48' width='48' /></td><td class="recentcommentstextend">Jean-Pierre on <a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/#comment-284">LaTeX &#8211; Getting the Harv&hellip;</a></td></tr></table>
+    </li>
+        <li id="recent-posts-2" class="widget widget_recent_entries">        <h2 class="widgettitle">Recent Posts</h2>
+        <ul>
+                <li><a href="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/" title="How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform">How to Install, Build and Use the Boost C++ libraries for development with the Eclipse IDE using the MinGW compiler on a Windows&nbsp;Platform</a></li>
+                <li><a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/" title="How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04&nbsp;(Amd64)</a></li>
+                <li><a href="http://theseekersquill.wordpress.com/2010/04/30/howto-install-handbrake-snapshot/" title="How to easily and simply download, install and run the latest Handbrake development snapshot on Ubuntu Lucid Lynx&nbsp;10.04">How to easily and simply download, install and run the latest Handbrake development snapshot on Ubuntu Lucid Lynx&nbsp;10.04</a></li>
+                <li><a href="http://theseekersquill.wordpress.com/2010/04/01/latex-harvard-citations/" title="LaTeX &#8211; Getting the Harvard Citation Style to work &#8211; Cite URLs&nbsp;properly.">LaTeX &#8211; Getting the Harvard Citation Style to work &#8211; Cite URLs&nbsp;properly.</a></li>
+                <li><a href="http://theseekersquill.wordpress.com/2010/03/16/vnc-server-ubuntu-windows/" title="How to install VNC server on an Ubuntu PC and remote connect to it from a Windows&nbsp;PC">How to install VNC server on an Ubuntu PC and remote connect to it from a Windows&nbsp;PC</a></li>
+                </ul>
+        </li>
 <li id="top-posts-2" class="widget widget_top-posts"><h2 class="widgettitle">Top Posts</h2>
 <ul><li><a href="http://theseekersquill.wordpress.com/2010/03/16/vnc-server-ubuntu-windows/" class="bump-view" data-bump-view="tp">How to install VNC server on an Ubuntu PC and remote connect to it from a Windows PC</a></li>
 <li><a href="http://theseekersquill.wordpress.com/2010/03/07/install-configure-latex/" class="bump-view" data-bump-view="tp">How to Install a Full MiKTeX LaTeX Installation and configure TeXnicCenter on Windows XP, Windows Vista and Windows 7</a></li>
@@ -814,101 +814,101 @@ jQuery(document).ready(function(){
 <li><a href="http://theseekersquill.wordpress.com/2010/05/03/canon_mp610_ubuntu_1004_64bit/" class="bump-view" data-bump-view="tp">How to install the Canon MP610 Printer drivers on 64-bit Ubuntu Lucid Lynx 10.04 (Amd64)</a></li>
 </ul></li>
 <li id="pages-2" class="widget widget_pages"><h2 class="widgettitle">Pages</h2>
-		<ul>
-			<li class="page_item page-item-2"><a href="http://theseekersquill.wordpress.com/about/">About</a></li>
-		</ul>
-		</li>
+        <ul>
+            <li class="page_item page-item-2"><a href="http://theseekersquill.wordpress.com/about/">About</a></li>
+        </ul>
+        </li>
 <li id="meta-3" class="widget widget_meta"><h2 class="widgettitle">Meta</h2>
-			<ul>
-			<li><a href="http://theseekersquill.wordpress.com/wp-login.php?action=register">Register</a></li>			<li><a href="http://theseekersquill.wordpress.com/wp-login.php">Log in</a></li>
-			<li><a href="http://theseekersquill.wordpress.com/feed/" title="Syndicate this site using RSS 2.0">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-			<li><a href="http://theseekersquill.wordpress.com/comments/feed/" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
-			<li><a href="http://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>
-						</ul>
+            <ul>
+            <li><a href="http://theseekersquill.wordpress.com/wp-login.php?action=register">Register</a></li>            <li><a href="http://theseekersquill.wordpress.com/wp-login.php">Log in</a></li>
+            <li><a href="http://theseekersquill.wordpress.com/feed/" title="Syndicate this site using RSS 2.0">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+            <li><a href="http://theseekersquill.wordpress.com/comments/feed/" title="The latest comments to all posts in RSS">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+            <li><a href="http://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>
+                        </ul>
 </li>
-		<li id="blog-stats" class="widget widget_statscounter">			<h2 class="widgettitle">Blog Stats</h2>
-			<ul>
-			<li>178,071 hits</li>
-			</ul>
-		</li>
-<li id="text-2" class="widget widget_text">			<div class="textwidget"><a title="wordpress blog stats" href="http://www.statcounter.com/wordpress.com/" target="_blank"><img src="http://c.statcounter.com/4923521/0/1da4eda3/1/" alt="wordpress blog stats" border="0"></a></div>
-		</li>
+        <li id="blog-stats" class="widget widget_statscounter">            <h2 class="widgettitle">Blog Stats</h2>
+            <ul>
+            <li>178,071 hits</li>
+            </ul>
+        </li>
+<li id="text-2" class="widget widget_text">            <div class="textwidget"><a title="wordpress blog stats" href="http://www.statcounter.com/wordpress.com/" target="_blank"><img src="http://c.statcounter.com/4923521/0/1da4eda3/1/" alt="wordpress blog stats" border="0"></a></div>
+        </li>
 <li id="categories-2" class="widget widget_categories"><h2 class="widgettitle">Categories</h2>
 <select name='cat' id='cat' class='postform' >
-	<option value='-1'>Select Category</option>
-	<option class="level-0" value="357">applications&nbsp;&nbsp;(2)</option>
-	<option class="level-0" value="214632">Boost&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="2426">C++&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="258">Computer&nbsp;&nbsp;(11)</option>
-	<option class="level-0" value="1117716">Customizations&nbsp;&nbsp;(3)</option>
-	<option class="level-0" value="780">Development&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="1008475">Eclipse IDE&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="209196">Git&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="8800">LaTeX&nbsp;&nbsp;(2)</option>
-	<option class="level-0" value="124">Life&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="610">Linux&nbsp;&nbsp;(7)</option>
-	<option class="level-0" value="190609">MinGW&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="1868">Philosophy&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="196">Programming&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="97227">Remote Desktop&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="7579659">Ubuntu&nbsp;&nbsp;(4)</option>
-	<option class="level-0" value="1">Uncategorized&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="57231">USB&nbsp;&nbsp;(1)</option>
-	<option class="level-0" value="800">Windows&nbsp;&nbsp;(4)</option>
+    <option value='-1'>Select Category</option>
+    <option class="level-0" value="357">applications&nbsp;&nbsp;(2)</option>
+    <option class="level-0" value="214632">Boost&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="2426">C++&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="258">Computer&nbsp;&nbsp;(11)</option>
+    <option class="level-0" value="1117716">Customizations&nbsp;&nbsp;(3)</option>
+    <option class="level-0" value="780">Development&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="1008475">Eclipse IDE&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="209196">Git&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="8800">LaTeX&nbsp;&nbsp;(2)</option>
+    <option class="level-0" value="124">Life&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="610">Linux&nbsp;&nbsp;(7)</option>
+    <option class="level-0" value="190609">MinGW&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="1868">Philosophy&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="196">Programming&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="97227">Remote Desktop&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="7579659">Ubuntu&nbsp;&nbsp;(4)</option>
+    <option class="level-0" value="1">Uncategorized&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="57231">USB&nbsp;&nbsp;(1)</option>
+    <option class="level-0" value="800">Windows&nbsp;&nbsp;(4)</option>
 </select>
 
 <script type='text/javascript'>
 /* <![CDATA[ */
-	var dropdown = document.getElementById("cat");
-	function onCatChange() {
-		if ( dropdown.options[dropdown.selectedIndex].value > 0 ) {
-			location.href = "http://theseekersquill.wordpress.com/?cat="+dropdown.options[dropdown.selectedIndex].value;
-		}
-	}
-	dropdown.onchange = onCatChange;
+    var dropdown = document.getElementById("cat");
+    function onCatChange() {
+        if ( dropdown.options[dropdown.selectedIndex].value > 0 ) {
+            location.href = "http://theseekersquill.wordpress.com/?cat="+dropdown.options[dropdown.selectedIndex].value;
+        }
+    }
+    dropdown.onchange = onCatChange;
 /* ]]> */
 </script>
 
 </li>
-		</ul>
-	</div>
+        </ul>
+    </div>
 
 <div id="footer">
-	<p>
-	<a href="http://wordpress.com/?ref=footer" rel="generator">Blog at WordPress.com</a>.
-		<br />Theme: <a href="http://theme.wordpress.com/themes/neat/" title="Learn more about this theme">Neat!</a>.		<a href="http://theseekersquill.wordpress.com/feed/">Entries (RSS)</a>
-		and <a href="http://theseekersquill.wordpress.com/comments/feed/">Comments (RSS)</a>.
-	</p>
+    <p>
+    <a href="http://wordpress.com/?ref=footer" rel="generator">Blog at WordPress.com</a>.
+        <br />Theme: <a href="http://theme.wordpress.com/themes/neat/" title="Learn more about this theme">Neat!</a>.        <a href="http://theseekersquill.wordpress.com/feed/">Entries (RSS)</a>
+        and <a href="http://theseekersquill.wordpress.com/comments/feed/">Comments (RSS)</a>.
+    </p>
 </div>
 
 </div>
-		
+        
 <script type="text/javascript">
 var _qevents = _qevents || [], wpcomQuantcastData = {"qacct":"p-18-mFEk4J448M","labels":",language.en,type.wpcom,posttag.boost,posttag.c-2,posttag.development-2,posttag.eclipse,posttag.gcc,posttag.ide,posttag.mingw-2,posttag.programming-2,posttag.windows"};
 function wpcomQuantcastPixel( labels, options ) {
-	var i, defaults = wpcomQuantcastData, data = { event: 'ajax' };
+    var i, defaults = wpcomQuantcastData, data = { event: 'ajax' };
 
-	labels  = labels  || '';
-	options = options || {};
+    labels  = labels  || '';
+    options = options || {};
 
-	if ( typeof labels != 'string' )
-		options = labels;
+    if ( typeof labels != 'string' )
+        options = labels;
 
-	for ( i in defaults ) {
-		data[i] = defaults[i];
-	}
+    for ( i in defaults ) {
+        data[i] = defaults[i];
+    }
 
-	for ( i in options ) {
-		data[i] = options[i];
-	}
+    for ( i in options ) {
+        data[i] = options[i];
+    }
 
-	if ( data.labels ) {
-		data.labels += ',' + labels;
-	} else {
-		data.labels = labels;
-	}
+    if ( data.labels ) {
+        data.labels += ',' + labels;
+    } else {
+        data.labels = labels;
+    }
 
-	_qevents.push( data );
+    _qevents.push( data );
 };
 (function() {var elem = document.createElement('script');elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";elem.async = true;elem.type = "text/javascript";var scpt = document.getElementsByTagName('script')[0];scpt.parentNode.insertBefore(elem, scpt);  })();
 _qevents.push( wpcomQuantcastData );
@@ -916,85 +916,85 @@ _qevents.push( wpcomQuantcastData );
 <noscript><div style="display: none;"><img src="//pixel.quantserve.com/pixel/p-18-mFEk4J448M.gif?labels=%2Clanguage.en%2Ctype.wpcom%2Cposttag.boost%2Cposttag.c-2%2Cposttag.development-2%2Cposttag.eclipse%2Cposttag.gcc%2Cposttag.ide%2Cposttag.mingw-2%2Cposttag.programming-2%2Cposttag.windows" height="1" width="1" alt="" /></div></noscript>
 
 
-	<script type="text/javascript">
-	/* <![CDATA[ */
-	(function($){
-		$(document).on( 'ready post-load', function() {
+    <script type="text/javascript">
+    /* <![CDATA[ */
+    (function($){
+        $(document).on( 'ready post-load', function() {
 
-			// Remove the login box when clicking the page
-			$( document ).mousedown( function( e ) {
-				if ( null == $( e.target ).closest( '#wpl-mustlogin' ).get( 0 ) ) {
-					$( '#wpl-mustlogin' ).remove();
-				}
-			});
+            // Remove the login box when clicking the page
+            $( document ).mousedown( function( e ) {
+                if ( null == $( e.target ).closest( '#wpl-mustlogin' ).get( 0 ) ) {
+                    $( '#wpl-mustlogin' ).remove();
+                }
+            });
 
-			// Handle clicking the like button itself
-			$('.wpl-button > a.like').click( function(e) {
-				e.preventDefault();
+            // Handle clicking the like button itself
+            $('.wpl-button > a.like').click( function(e) {
+                e.preventDefault();
 
-				var postid = $(this).parent().attr('id').split('like-')[1];
-				$.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
-					'action': 'wpl_record_stat',
-					'stat_name': 'loggedout_like_click'
-				} );
+                var postid = $(this).parent().attr('id').split('like-')[1];
+                $.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
+                    'action': 'wpl_record_stat',
+                    'stat_name': 'loggedout_like_click'
+                } );
 
-				var tenMins = new Date();
-				tenMins.setTime( tenMins.getTime() + 600000 );
-				document.cookie = 'wpl_rand=4051ea3181; expires=' + tenMins.toGMTString() + '; domain=wordpress.com; path=/;';
+                var tenMins = new Date();
+                tenMins.setTime( tenMins.getTime() + 600000 );
+                document.cookie = 'wpl_rand=4051ea3181; expires=' + tenMins.toGMTString() + '; domain=wordpress.com; path=/;';
 
-				$(this).parent().siblings('.wpl-count').after( '\
-					<div id="wpl-mustlogin"> \
-						<form action="https://theseekersquill.wordpress.com/wp-login.php" method="post"> \
-							<p>Just one more step to like this:</p> \
-							<label><span>Username</span> <input type="text" name="log" id="user_login" class="input" value="" size="20" tabindex="80" /></label> \
-							<label><span>Password</span> <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="81" /></label> \
-							<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="82" /> \
-							<input type="hidden" name="postid" value="' + postid + '" /> \
-							<input type="hidden" name="redirect_to" value="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw?year=2010&#038;monthnum=08&#038;day=24&#038;name=howto-boost-mingw&#038;like=1" /> \
-							<input type="hidden" name="wpl_rand" value="4051ea3181" /> \
-							<p>Not a member yet? <a href="http://wordpress.com/signup/?ref=likebox" id="wpl-signup-link">Sign up with WordPress.com</a></p> \
-						</form> \
-					</div> \
-				');
+                $(this).parent().siblings('.wpl-count').after( '\
+                    <div id="wpl-mustlogin"> \
+                        <form action="https://theseekersquill.wordpress.com/wp-login.php" method="post"> \
+                            <p>Just one more step to like this:</p> \
+                            <label><span>Username</span> <input type="text" name="log" id="user_login" class="input" value="" size="20" tabindex="80" /></label> \
+                            <label><span>Password</span> <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="81" /></label> \
+                            <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In" tabindex="82" /> \
+                            <input type="hidden" name="postid" value="' + postid + '" /> \
+                            <input type="hidden" name="redirect_to" value="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw?year=2010&#038;monthnum=08&#038;day=24&#038;name=howto-boost-mingw&#038;like=1" /> \
+                            <input type="hidden" name="wpl_rand" value="4051ea3181" /> \
+                            <p>Not a member yet? <a href="http://wordpress.com/signup/?ref=likebox" id="wpl-signup-link">Sign up with WordPress.com</a></p> \
+                        </form> \
+                    </div> \
+                ');
 
-				$('#wpl-mustlogin').hide().slideDown('fast');
-			} );
+                $('#wpl-mustlogin').hide().slideDown('fast');
+            } );
 
-			$('#wpl-mustlogin input.input').live( 'focus', function() {
-				$(this).prev().hide();
-			}).live( 'blur', function() {
-				if ( $(this).val() == '' ) {
-					$(this).prev().show();
-				}
-			});
+            $('#wpl-mustlogin input.input').live( 'focus', function() {
+                $(this).prev().hide();
+            }).live( 'blur', function() {
+                if ( $(this).val() == '' ) {
+                    $(this).prev().show();
+                }
+            });
 
-			$('#wpl-mustlogin input#wp-submit').live( 'click', function(e) {
-				e.preventDefault();
+            $('#wpl-mustlogin input#wp-submit').live( 'click', function(e) {
+                e.preventDefault();
 
-				$.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
-					'action': 'wpl_record_stat',
-					'stat_name': 'loggedout_login_submit'
-				}, function() {
-					$('#wpl-mustlogin form').submit();
-				} );
-			});
+                $.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
+                    'action': 'wpl_record_stat',
+                    'stat_name': 'loggedout_login_submit'
+                }, function() {
+                    $('#wpl-mustlogin form').submit();
+                } );
+            });
 
-			$('#wpl-mustlogin a#wpl-signup-link').live( 'click', function(e) {
-				e.preventDefault();
+            $('#wpl-mustlogin a#wpl-signup-link').live( 'click', function(e) {
+                e.preventDefault();
 
-				var link = $(this).attr('href');
+                var link = $(this).attr('href');
 
-				$.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
-					'action': 'wpl_record_stat',
-					'stat_name': 'loggedout_signup_click'
-				}, function() {
-					location.href = link;
-				} );
-			});
-		})
-	})(jQuery);
-	/* ]]> */
-	</script>
+                $.post( 'http://theseekersquill.wordpress.com/wp-admin/admin-ajax.php', {
+                    'action': 'wpl_record_stat',
+                    'stat_name': 'loggedout_signup_click'
+                }, function() {
+                    location.href = link;
+                } );
+            });
+        })
+    })(jQuery);
+    /* ]]> */
+    </script>
 <script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=201233aa'></script>
 <script type='text/javascript'>
 /* <![CDATA[ */
@@ -1002,69 +1002,69 @@ var WPGroHo = {"my_hash":""};
 /* ]]> */
 </script>
 <script type='text/javascript' src='http://s1.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1318621548g'></script>
-<script>jQuery(document).ready(function($){ Gravatar.profile_cb = function( h, d ) { WPGroHo.syncProfileData( h, d );	}; Gravatar.my_hash = WPGroHo.my_hash; Gravatar.init( 'body', '#wp-admin-bar-my-account' ); });</script>	<div style="display:none">
-	<div class="grofile-hash-map-7c7a972ac7ccf99619c4ef156010c769">
-	</div>
-	<div class="grofile-hash-map-e091bba2ec34513f01b75235bc2ced9c">
-	</div>
-	<div class="grofile-hash-map-91baaba62648a9da63f5e6faad51f8e3">
-	</div>
-	<div class="grofile-hash-map-58c498841c8a36f1d74146fea48f4464">
-	</div>
-	<div class="grofile-hash-map-d6b37696693ffe2b4281edfecebec701">
-	</div>
-	<div class="grofile-hash-map-29cf2c00bc24947f95fc2329458b71d5">
-	</div>
-	<div class="grofile-hash-map-e958d52cac56772f11bd9f2971fc4d44">
-	</div>
-	<div class="grofile-hash-map-0eac0c4d775fbfe2fd17e934802561ee">
-	</div>
-	<div class="grofile-hash-map-d1c066320e8b1e62a95aa1cfd840769c">
-	</div>
-	<div class="grofile-hash-map-56f63aa778164e05a0b3d65d737ad751">
-	</div>
-	<div class="grofile-hash-map-7de705dcd9e93de44886e896fd407abf">
-	</div>
-	<div class="grofile-hash-map-071d9179bef9b50c7a36d23f2f5c8a58">
-	</div>
-	<div class="grofile-hash-map-82df8be80e0c8504956dfffdde9b96de">
-	</div>
-	<div class="grofile-hash-map-1580ebbdf3e98bb4f8602a51608b41cc">
-	</div>
-	</div>
+<script>jQuery(document).ready(function($){ Gravatar.profile_cb = function( h, d ) { WPGroHo.syncProfileData( h, d );    }; Gravatar.my_hash = WPGroHo.my_hash; Gravatar.init( 'body', '#wp-admin-bar-my-account' ); });</script>    <div style="display:none">
+    <div class="grofile-hash-map-7c7a972ac7ccf99619c4ef156010c769">
+    </div>
+    <div class="grofile-hash-map-e091bba2ec34513f01b75235bc2ced9c">
+    </div>
+    <div class="grofile-hash-map-91baaba62648a9da63f5e6faad51f8e3">
+    </div>
+    <div class="grofile-hash-map-58c498841c8a36f1d74146fea48f4464">
+    </div>
+    <div class="grofile-hash-map-d6b37696693ffe2b4281edfecebec701">
+    </div>
+    <div class="grofile-hash-map-29cf2c00bc24947f95fc2329458b71d5">
+    </div>
+    <div class="grofile-hash-map-e958d52cac56772f11bd9f2971fc4d44">
+    </div>
+    <div class="grofile-hash-map-0eac0c4d775fbfe2fd17e934802561ee">
+    </div>
+    <div class="grofile-hash-map-d1c066320e8b1e62a95aa1cfd840769c">
+    </div>
+    <div class="grofile-hash-map-56f63aa778164e05a0b3d65d737ad751">
+    </div>
+    <div class="grofile-hash-map-7de705dcd9e93de44886e896fd407abf">
+    </div>
+    <div class="grofile-hash-map-071d9179bef9b50c7a36d23f2f5c8a58">
+    </div>
+    <div class="grofile-hash-map-82df8be80e0c8504956dfffdde9b96de">
+    </div>
+    <div class="grofile-hash-map-1580ebbdf3e98bb4f8602a51608b41cc">
+    </div>
+    </div>
 <script type='text/javascript'>
 /* <![CDATA[ */
 var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"http:\/\/theseekersquill.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"http:\/\/theseekersquill.wordpress.com\/wp-login.php?action=logout&_wpnonce=f71b3675d6","homeURL":"http:\/\/theseekersquill.wordpress.com\/","postID":"467","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"","userIsLoggedIn":"","isJetpack":"0"};
 /* ]]> */
 </script>
 <script type='text/javascript' src='http://s0.wp.com/wp-content/mu-plugins/highlander-comments/script.js?m=1342824083g'></script>
-	
-	<div id="bit" class="loggedout-follow-normal">
-		<a class="bsub" href="javascript:void(0)"><span id='bsub-text'>Follow</span></a>
-		<div id="bitsubscribe">
-			
-					<h3><label for="loggedout-follow-field">Follow &ldquo;the seeker's quill&rdquo;</label></h3>
-		
-			<form action="https://subscribe.wordpress.com" method="post" accept-charset="utf-8" id="loggedout-follow">
-			<p>Get every new post delivered to your Inbox.</p>
-			
-			<p id="loggedout-follow-error" style="display: none;"></p>
+    
+    <div id="bit" class="loggedout-follow-normal">
+        <a class="bsub" href="javascript:void(0)"><span id='bsub-text'>Follow</span></a>
+        <div id="bitsubscribe">
+            
+                    <h3><label for="loggedout-follow-field">Follow &ldquo;the seeker's quill&rdquo;</label></h3>
+        
+            <form action="https://subscribe.wordpress.com" method="post" accept-charset="utf-8" id="loggedout-follow">
+            <p>Get every new post delivered to your Inbox.</p>
+            
+            <p id="loggedout-follow-error" style="display: none;"></p>
 
-					
-			
-			<p><input type="email" name="email" style="width: 95%; padding: 1px 2px" value="Enter your email address" onfocus='this.value=(this.value=="Enter your email address") ? "" : this.value;' onblur='this.value=(this.value=="") ? "Enter email address" : this.value;'  id="loggedout-follow-field"/></p>
+                    
+            
+            <p><input type="email" name="email" style="width: 95%; padding: 1px 2px" value="Enter your email address" onfocus='this.value=(this.value=="Enter your email address") ? "" : this.value;' onblur='this.value=(this.value=="") ? "Enter email address" : this.value;'  id="loggedout-follow-field"/></p>
 
-			<input type="hidden" name="action" value="subscribe"/>
-			<input type="hidden" name="blog_id" value="3435066"/>
-			<input type="hidden" name="source" value="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/"/>
-			<input type="hidden" name="sub-type" value="loggedout-follow"/>
+            <input type="hidden" name="action" value="subscribe"/>
+            <input type="hidden" name="blog_id" value="3435066"/>
+            <input type="hidden" name="source" value="http://theseekersquill.wordpress.com/2010/08/24/howto-boost-mingw/"/>
+            <input type="hidden" name="sub-type" value="loggedout-follow"/>
 
-			<input type="hidden" id="_wpnonce" name="_wpnonce" value="67276bf76e" /><input type="hidden" name="_wp_http_referer" value="/2010/08/24/howto-boost-mingw/" />
-			<p id='bsub-subscribe-button'><input type="submit" value="Sign me up" /></p>
-			</form>
-					<div id='bsub-credit'><a href="http://wordpress.com/signup/?ref=lof">Powered by WordPress.com</a></div>
-		</div><!-- #bitsubscribe -->
-	</div><!-- #bit -->
+            <input type="hidden" id="_wpnonce" name="_wpnonce" value="67276bf76e" /><input type="hidden" name="_wp_http_referer" value="/2010/08/24/howto-boost-mingw/" />
+            <p id='bsub-subscribe-button'><input type="submit" value="Sign me up" /></p>
+            </form>
+                    <div id='bsub-credit'><a href="http://wordpress.com/signup/?ref=lof">Powered by WordPress.com</a></div>
+        </div><!-- #bitsubscribe -->
+    </div><!-- #bit -->
 <script type='text/javascript' src='http://s0.wp.com/wp-content/mu-plugins/post-flair/sharing/sharing.js?m=1345189394g'></script>
 <script type="text/javascript" src="http://b.scorecardresearch.com/beacon.js"></script><script type="text/javascript">try{COMSCORE.beacon({c1:2,c2:7518284});}catch(e){}</script><noscript><p class="robots-nocontent"><img src="http://b.scorecardresearch.com/p?cj=1c1=2&#038;c2=7518284" alt="" style="display:none" width="1" height="1" /></p></noscript><script type='text/javascript' src='http://s1.wp.com/wp-content/js/devicepx.js?m=1345254346g'></script>
 <script type="text/javascript">
@@ -1089,7 +1089,7 @@ try{
 st_go({'blog':'3435066','v':'wpcom','user_id':'0','post':'467','subd':'theseekersquill'});
 ex_go({'crypt':'UE40eW5QN0p8M2Y/RE1zNDZ8S252Wis9XUQyb3YrcUVIU2R0VH5TdWI5d350TFdaeXR4OFRqWXZaZ1hnb1h3JURUYWlRSi1rLXpjJXU4TzRtQk8sJlltaTNaQnxmcTUxZ1ExTmcrRn5aTSV4UVRNM0s/S0F8OFtzUk5+eis0cSVzYmllZGFhU1t3K01RWGZuZkZYX3g0YUx8WlhxV1Yzck90TkY9QXQzRmpGV0JFSndyVHYuR1NyekJ8RSwtNF1LZS49Tk5LeXBtUWpfU2F3WTBLd0lMaG16YU1VNGMlUVk5M2IsdkYzWiZNJjdVdWZYLzNoM2o1Z0JxaThGQiUyNjQlTmo1ZlpWTFkmN0htYXA2UWwwUTNITjdDd0ZsRzVkRWVrcmlxSkVFR3dU'});
 addLoadEvent(function(){linktracker_init('3435066',467);});
-	</script>
+    </script>
 <noscript><img src="http://stats.wordpress.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
 <br /><br /><br />
 </body>

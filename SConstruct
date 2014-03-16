@@ -44,7 +44,7 @@ cflags = []
 if compiler == 'gnu':
     cflags.extend(['-g', '-c', '-fmessage-length=0'])
 if compiler == 'msvc':
-    cflags.extend(['/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619'])
+    cflags.extend(['/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619', '/wd4668'])
 
 if mode == 'debug':
     cflags.extend(['-Wall'])

@@ -25,20 +25,20 @@ public:
     typedef typename pointers::smart<T>::ScopedPtr SingletonPtr;
 
 protected:
-	static SingletonPtr singletonInstance;
+    static SingletonPtr singletonInstance;
 
-	/* Singleton constructor */
-	Singleton() {}
-	virtual ~Singleton() {}
+    /* Singleton constructor */
+    Singleton() {}
+    virtual ~Singleton() {}
 
 public:
-	static void reset() {
+    static void reset() {
         singletonInstance.reset(new T());
     }
 
-	static T& instance() {
-		return *singletonInstance;
-	}
+    static T& instance() {
+        return *singletonInstance;
+    }
 };
 
 template<typename T> typename Singleton<T>::SingletonPtr Singleton<T>::singletonInstance(new T());

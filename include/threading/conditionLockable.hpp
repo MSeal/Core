@@ -25,79 +25,79 @@ class ReadWriteConditionLockProxy;
  * Implementing classes must provide the locking mechanism.
  */
 class Condition {
-	friend class boost::detail::basic_condition_variable;
-	friend class boost::condition_variable_any;
+    friend class boost::detail::basic_condition_variable;
+    friend class boost::condition_variable_any;
 
 protected:
-	typedef boost::condition_variable_any ConditionVariable;
+    typedef boost::condition_variable_any ConditionVariable;
 
-	/*
-	 * These must be implemented by any Condition classes. We didn't
-	 * inherit from Lockable to avoid multiple inheritance issues.
-	 * The only part of Lockable that required is these three methods.
-	 */
-	virtual void lock() = 0;
-	virtual bool tryLock() = 0;
-	virtual void unlock() = 0;
+    /*
+     * These must be implemented by any Condition classes. We didn't
+     * inherit from Lockable to avoid multiple inheritance issues.
+     * The only part of Lockable that required is these three methods.
+     */
+    virtual void lock() = 0;
+    virtual bool tryLock() = 0;
+    virtual void unlock() = 0;
 
 public:
-	/*
-	 * Used to retrieve the condition variable directly.
-	 */
-	virtual ConditionVariable& getConditionVariable() = 0;
+    /*
+     * Used to retrieve the condition variable directly.
+     */
+    virtual ConditionVariable& getConditionVariable() = 0;
 
-	Condition() {}
-	virtual ~Condition() {}
+    Condition() {}
+    virtual ~Condition() {}
 
-	/*
-	 * Wrappers on the condition calls with the lock component
-	 * written into each method. This prevents accidental mismatches
-	 * between what's locked and what' being conditioned on.
-	 */
-	void notifyOne() {
-		getConditionVariable().notify_one();
-	}
-	void notifyAll() {
-		getConditionVariable().notify_all();
-	}
+    /*
+     * Wrappers on the condition calls with the lock component
+     * written into each method. This prevents accidental mismatches
+     * between what's locked and what' being conditioned on.
+     */
+    void notifyOne() {
+        getConditionVariable().notify_one();
+    }
+    void notifyAll() {
+        getConditionVariable().notify_all();
+    }
 
-	void wait() {
-		getConditionVariable().wait(*this);
-	}
+    void wait() {
+        getConditionVariable().wait(*this);
+    }
 
-	template<typename predicate_type>
-	void wait(predicate_type predicate) {
-		getConditionVariable().wait(*this, predicate);
-	}
+    template<typename predicate_type>
+    void wait(predicate_type predicate) {
+        getConditionVariable().wait(*this, predicate);
+    }
 
-	bool timedWait(boost::system_time const& abs_time) {
-		return getConditionVariable().timed_wait(*this, abs_time);
-	}
+    bool timedWait(boost::system_time const& abs_time) {
+        return getConditionVariable().timed_wait(*this, abs_time);
+    }
 
-	template<typename duration_type>
-	bool timedWait(duration_type const& rel_time) {
-		return getConditionVariable().timed_wait(*this, rel_time);
-	}
+    template<typename duration_type>
+    bool timedWait(duration_type const& rel_time) {
+        return getConditionVariable().timed_wait(*this, rel_time);
+    }
 
-	template<typename predicate_type>
-	bool timedWait(boost::system_time const& abs_time,predicate_type predicate) {
-		return getConditionVariable().timed_wait(*this, abs_time, predicate);
-	}
+    template<typename predicate_type>
+    bool timedWait(boost::system_time const& abs_time,predicate_type predicate) {
+        return getConditionVariable().timed_wait(*this, abs_time, predicate);
+    }
 
-	template<typename duration_type,typename predicate_type>
-	bool timedWait(duration_type const& rel_time, predicate_type predicate) {
-		return getConditionVariable().timed_wait(*this, rel_time, predicate);
-	}
+    template<typename duration_type,typename predicate_type>
+    bool timedWait(duration_type const& rel_time, predicate_type predicate) {
+        return getConditionVariable().timed_wait(*this, rel_time, predicate);
+    }
 
-	// backwards compatibility
-	bool timedWait(boost::xtime const& abs_time) {
-		return getConditionVariable().timed_wait(*this, abs_time);
-	}
+    // backwards compatibility
+    bool timedWait(boost::xtime const& abs_time) {
+        return getConditionVariable().timed_wait(*this, abs_time);
+    }
 
-	template<typename predicate_type>
-	bool timedWait(boost::xtime const& abs_time,predicate_type predicate) {
-		return getConditionVariable().timed_wait(*this, abs_time, predicate);
-	}
+    template<typename predicate_type>
+    bool timedWait(boost::xtime const& abs_time,predicate_type predicate) {
+        return getConditionVariable().timed_wait(*this, abs_time, predicate);
+    }
 };
 
 /*
@@ -107,22 +107,22 @@ public:
 template<typename Ref>
 class LockedConditionReferencePtr : public LockedReferencePtr<Ref> {
 public:
-	typedef ConditionLock LockType;
+    typedef ConditionLock LockType;
 
-	LockedConditionReferencePtr(boost::shared_ptr<Ref> reference,
-			boost::shared_ptr<LockType> lockPtr) :
-		LockedReferencePtr<Ref>(reference, lockPtr){}
+    LockedConditionReferencePtr(boost::shared_ptr<Ref> reference,
+            boost::shared_ptr<LockType> lockPtr) :
+        LockedReferencePtr<Ref>(reference, lockPtr){}
 
-	virtual ~LockedConditionReferencePtr() {}
+    virtual ~LockedConditionReferencePtr() {}
 
-	Condition& getCondition() {
-		/*
-		 * We know this will always be a ConditionLock, because it had
-		 * to be so in the constructor. Thus it's safe to static cast
-		 * this to a Condition.
-		 */
-		return *(boost::static_pointer_cast<LockType, Lockable>(this->getLockablePtr()));
-	}
+    Condition& getCondition() {
+        /*
+         * We know this will always be a ConditionLock, because it had
+         * to be so in the constructor. Thus it's safe to static cast
+         * this to a Condition.
+         */
+        return *(boost::static_pointer_cast<LockType, Lockable>(this->getLockablePtr()));
+    }
 };
 
 /*
@@ -132,22 +132,22 @@ public:
 template<typename Ref>
 class LockedConditionReadableReferencePtr : public LockedReferencePtr<Ref> {
 public:
-	typedef ReadWriteConditionLock LockType;
+    typedef ReadWriteConditionLock LockType;
 
-	LockedConditionReadableReferencePtr(boost::shared_ptr<Ref> reference,
-			boost::shared_ptr<LockType> lockPtr) :
-		LockedReferencePtr<Ref>(reference, lockPtr){}
+    LockedConditionReadableReferencePtr(boost::shared_ptr<Ref> reference,
+            boost::shared_ptr<LockType> lockPtr) :
+        LockedReferencePtr<Ref>(reference, lockPtr){}
 
-	virtual ~LockedConditionReadableReferencePtr() {}
+    virtual ~LockedConditionReadableReferencePtr() {}
 
-	Condition& getCondition() {
-		/*
-		 * We know this will always be a ConditionLock, because it had
-		 * to be so in the constructor. Thus it's safe to static cast
-		 * this to a Condition.
-		 */
-		return *(boost::static_pointer_cast<LockType, Lockable>(this->getLockablePtr()));
-	}
+    Condition& getCondition() {
+        /*
+         * We know this will always be a ConditionLock, because it had
+         * to be so in the constructor. Thus it's safe to static cast
+         * this to a Condition.
+         */
+        return *(boost::static_pointer_cast<LockType, Lockable>(this->getLockablePtr()));
+    }
 };
 
 /*
@@ -157,33 +157,33 @@ public:
  */
 class ConditionLock : public WriteLock, public Condition {
 protected:
-	ConditionVariable condition;
+    ConditionVariable condition;
 
-	/*
-	 * Creates a locked reference for which this lockable is locked
-	 * until the locked reference goes out of scope (deconstructs).
-	 */
-	template<typename Ref> LockedConditionReferencePtr<Ref>
-	generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
-		return LockedConditionReferencePtr<Ref>(reference, castLock<ConditionLock>());
-	}
+    /*
+     * Creates a locked reference for which this lockable is locked
+     * until the locked reference goes out of scope (deconstructs).
+     */
+    template<typename Ref> LockedConditionReferencePtr<Ref>
+    generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
+        return LockedConditionReferencePtr<Ref>(reference, castLock<ConditionLock>());
+    }
 
 public:
-	/*
-	 * Used to retrieve the condition variable directly.
-	 */
-	ConditionVariable& getConditionVariable() {
-		return condition;
-	}
+    /*
+     * Used to retrieve the condition variable directly.
+     */
+    ConditionVariable& getConditionVariable() {
+        return condition;
+    }
 
-	explicit ConditionLock(int priority = 0) :
-		WriteLock(priority), Condition() {}
+    explicit ConditionLock(int priority = 0) :
+        WriteLock(priority), Condition() {}
 
-	virtual ~ConditionLock() {}
+    virtual ~ConditionLock() {}
 
-	void lock() { WriteLock::lock(); }
-	bool tryLock() { return WriteLock::tryLock(); }
-	void unlock() { WriteLock::unlock(); }
+    void lock() { WriteLock::lock(); }
+    bool tryLock() { return WriteLock::tryLock(); }
+    void unlock() { WriteLock::unlock(); }
 };
 
 /*
@@ -194,31 +194,31 @@ public:
  */
 class ConditionLockProxy : public LockableProxy, public Condition {
 protected:
-	/*
-	 * Creates a locked reference for which this lockable is locked
-	 * until the locked reference goes out of scope (deconstructs).
-	 */
-	template<typename Ref> LockedConditionReferencePtr<Ref>
-	generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
-		return LockedConditionReferencePtr<Ref>(reference, castLock<ConditionLock>());
-	}
+    /*
+     * Creates a locked reference for which this lockable is locked
+     * until the locked reference goes out of scope (deconstructs).
+     */
+    template<typename Ref> LockedConditionReferencePtr<Ref>
+    generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
+        return LockedConditionReferencePtr<Ref>(reference, castLock<ConditionLock>());
+    }
 
 public:
-	/*
-	 * Used to retrieve the condition variable directly.
-	 */
-	ConditionVariable& getConditionVariable() {
-		return castLock<ConditionLock>()->getConditionVariable();
-	}
+    /*
+     * Used to retrieve the condition variable directly.
+     */
+    ConditionVariable& getConditionVariable() {
+        return castLock<ConditionLock>()->getConditionVariable();
+    }
 
-	explicit ConditionLockProxy(boost::shared_ptr<ConditionLock> lReference) :
-		LockableProxy(lReference), Condition() {}
+    explicit ConditionLockProxy(boost::shared_ptr<ConditionLock> lReference) :
+        LockableProxy(lReference), Condition() {}
 
-	virtual ~ConditionLockProxy() {}
+    virtual ~ConditionLockProxy() {}
 
-	void lock() { LockableProxy::lock(); }
-	bool tryLock() { return LockableProxy::tryLock(); }
-	void unlock() { LockableProxy::unlock(); }
+    void lock() { LockableProxy::lock(); }
+    bool tryLock() { return LockableProxy::tryLock(); }
+    void unlock() { LockableProxy::unlock(); }
 };
 
 /*
@@ -228,33 +228,33 @@ public:
  */
 class ReadWriteConditionLock : public ReadWriteLock, public Condition {
 protected:
-	ConditionVariable condition;
+    ConditionVariable condition;
 
-	/*
-	 * Creates a locked reference for which this lockable is locked
-	 * until the locked reference goes out of scope (deconstructs).
-	 */
-	template<typename Ref> LockedConditionReadableReferencePtr<Ref>
-	generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
-		return LockedConditionReadableReferencePtr<Ref>(reference, castLock<ReadWriteConditionLock>());
-	}
+    /*
+     * Creates a locked reference for which this lockable is locked
+     * until the locked reference goes out of scope (deconstructs).
+     */
+    template<typename Ref> LockedConditionReadableReferencePtr<Ref>
+    generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
+        return LockedConditionReadableReferencePtr<Ref>(reference, castLock<ReadWriteConditionLock>());
+    }
 
 public:
-	/*
-	 * Used to retrieve the condition variable directly.
-	 */
-	ConditionVariable& getConditionVariable() {
-		return condition;
-	}
+    /*
+     * Used to retrieve the condition variable directly.
+     */
+    ConditionVariable& getConditionVariable() {
+        return condition;
+    }
 
-	explicit ReadWriteConditionLock(int priority = 0) :
-			ReadWriteLock(priority), Condition() {}
+    explicit ReadWriteConditionLock(int priority = 0) :
+            ReadWriteLock(priority), Condition() {}
 
-	virtual ~ReadWriteConditionLock() {}
+    virtual ~ReadWriteConditionLock() {}
 
-	void lock() { ReadWriteLock::lock(); }
-	bool tryLock() { return ReadWriteLock::tryLock(); }
-	void unlock() { ReadWriteLock::unlock(); }
+    void lock() { ReadWriteLock::lock(); }
+    bool tryLock() { return ReadWriteLock::tryLock(); }
+    void unlock() { ReadWriteLock::unlock(); }
 };
 
 /*
@@ -265,31 +265,31 @@ public:
  */
 class ReadWriteConditionLockProxy : public ReadWriteLockableProxy, public Condition {
 protected:
-	/*
-	 * Creates a locked reference for which this lockable is locked
-	 * until the locked reference goes out of scope (deconstructs).
-	 */
-	template<typename Ref> LockedConditionReadableReferencePtr<Ref>
-	generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
-		return LockedConditionReadableReferencePtr<Ref>(reference, castLock<ReadWriteConditionLock>());
-	}
+    /*
+     * Creates a locked reference for which this lockable is locked
+     * until the locked reference goes out of scope (deconstructs).
+     */
+    template<typename Ref> LockedConditionReadableReferencePtr<Ref>
+    generateLockedConditionReference(boost::shared_ptr<Ref> reference) {
+        return LockedConditionReadableReferencePtr<Ref>(reference, castLock<ReadWriteConditionLock>());
+    }
 
 public:
-	/*
-	 * Used to retrieve the condition variable directly.
-	 */
-	ConditionVariable& getConditionVariable() {
-		return castLock<ReadWriteConditionLock>()->getConditionVariable();
-	}
+    /*
+     * Used to retrieve the condition variable directly.
+     */
+    ConditionVariable& getConditionVariable() {
+        return castLock<ReadWriteConditionLock>()->getConditionVariable();
+    }
 
-	explicit ReadWriteConditionLockProxy(boost::shared_ptr<ReadWriteConditionLock> lReference) :
-		ReadWriteLockableProxy(lReference), Condition() {}
+    explicit ReadWriteConditionLockProxy(boost::shared_ptr<ReadWriteConditionLock> lReference) :
+        ReadWriteLockableProxy(lReference), Condition() {}
 
-	virtual ~ReadWriteConditionLockProxy() {}
+    virtual ~ReadWriteConditionLockProxy() {}
 
-	void lock() { ReadWriteLockableProxy::lock(); }
-	bool tryLock() { return ReadWriteLockableProxy::tryLock(); }
-	void unlock() { ReadWriteLockableProxy::unlock(); }
+    void lock() { ReadWriteLockableProxy::lock(); }
+    bool tryLock() { return ReadWriteLockableProxy::tryLock(); }
+    void unlock() { ReadWriteLockableProxy::unlock(); }
 };
 
 }}

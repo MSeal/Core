@@ -70,7 +70,7 @@ void enqueueT(threading::container::TSQueue<T>& tester, T& addType, unsigned int
 /* Dequeues some Ts */
 template<typename T>
 void dequeueT(threading::container::TSQueue<T>& tester, unsigned int numEnqueue) {
-	BOOST_TEST_MESSAGE("Dequeuing " << numEnqueue << " T items from TSQueue");
+    BOOST_TEST_MESSAGE("Dequeuing " << numEnqueue << " T items from TSQueue");
     for (unsigned int i = 0; i < numEnqueue; i++) {
         typename threading::container::TSQueue<T>::PtrType deq = tester.dequeue();
         BOOST_REQUIRE_MESSAGE(deq, "No element dequeued");
@@ -85,8 +85,8 @@ void dequeueT(threading::container::TSQueue<T>& tester, unsigned int numEnqueue)
 template<typename T>
 void testSingleTSQueueType(T& addType) {
     threading::container::TSQueue<T> tester;
-	enqueueT<T>(tester, addType, 100);
-	dequeueT<T>(tester, 100);
+    enqueueT<T>(tester, addType, 100);
+    dequeueT<T>(tester, 100);
 }
 
 /* Tests several types being added to a Queue */
@@ -174,7 +174,6 @@ BOOST_AUTO_TEST_CASE(tsQueueConcurrency) {
         }
         BOOST_TEST_MESSAGE("Dequeue Worker " << j << " finished");
     }
-    std::cout << intQ->size();
 
     BOOST_REQUIRE_MESSAGE(intQ->empty(),
             "Dequeue did not reduce Queue size during concurrency test");

@@ -14,11 +14,11 @@ ThreadManager::ThreadManager(ApplicationWPtr app) : threads(), curThreadCount(0)
  * Start tracking a given thread
  */
 ThreadTrackerPtr ThreadManager::trackThread(const std::string& name, ThreadPtr thrd) {
-	ThreadTrackerPtr track = ThreadTrackerPtr
-		(new ThreadTracker(name, atomic::atomic_inc32(&curThreadCount),
-		                   thrd, application));
-	threads.push_back(track);
-	return track;
+    ThreadTrackerPtr track = ThreadTrackerPtr
+        (new ThreadTracker(name, atomic::atomic_inc32(&curThreadCount),
+                           thrd, application));
+    threads.push_back(track);
+    return track;
 }
 
 /*
@@ -26,10 +26,10 @@ ThreadTrackerPtr ThreadManager::trackThread(const std::string& name, ThreadPtr t
  * be tracked by the global thread tracker.
  */
 ThreadTrackerPtr ThreadManager::spawnThread(const std::string& name, void(*worker)())  {
-	return trackThread(name, ThreadPtr(new Thread(worker)));
+    return trackThread(name, ThreadPtr(new Thread(worker)));
 }
 ThreadTrackerPtr ThreadManager::spawnThread(const std::string& name, boost::function0<void> worker) {
-	return trackThread(name, ThreadPtr(new Thread(worker)));
+    return trackThread(name, ThreadPtr(new Thread(worker)));
 }
 
 ThreadTrackerPtr ThreadManager::stopTrackingThreadImpl(
@@ -73,7 +73,7 @@ bool stopTrackingById(ThreadTrackerPtr tptr, const boost::thread::id id) {
 ThreadTrackerPtr ThreadManager::stopTrackingThread(const std::string& name) {
     boost::function1<bool, ThreadTrackerPtr> checkFound =
             boost::bind(stopTrackingByName, _1, boost::cref(name));
-	return stopTrackingThreadImpl(checkFound);
+    return stopTrackingThreadImpl(checkFound);
 }
 ThreadTrackerPtr ThreadManager::stopTrackingThread(const boost::thread::id id) {
     boost::function1<bool, ThreadTrackerPtr> checkFound =
@@ -86,13 +86,13 @@ ThreadTrackerPtr ThreadManager::stopTrackingThread(const boost::thread::id id) {
  * ending.
  */
 void ThreadManager::quitThreads() {
-	atomic::atomic_inc32(&quitIndicator);
+    atomic::atomic_inc32(&quitIndicator);
 }
 
 /*
  * A check for if the program is ending (used by threads).
  */
 bool ThreadManager::checkQuiting() {
-	return atomic::atomic_read32(&quitIndicator) != 0;
+    return atomic::atomic_read32(&quitIndicator) != 0;
 }
 }}

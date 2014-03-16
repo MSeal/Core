@@ -45,9 +45,9 @@ public:
     Factory(Builder build) : builder(build) {}
     virtual ~Factory() {}
 
-	virtual PtrType produce() {
-	    return PtrType(builder.build());
-	}
+    virtual PtrType produce() {
+        return PtrType(builder.build());
+    }
 };
 
 

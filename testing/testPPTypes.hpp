@@ -63,15 +63,15 @@ class WithMultiple {
 };
 
 // The magic template function generator
-CREATE_MEMBER_CHECK(test);
+CREATE_MEMBER_PRESENCE_CHECK(test);
 // Repeated template generator for 'bar' name
-CREATE_MEMBER_CHECK(bar);
+CREATE_MEMBER_PRESENCE_CHECK(bar);
 
-#define FUNC_MEMBER_PPTEST(testType)                            \
-    fCheck = HasMember_test<testType>::value;                   \
-    fCheckCompile = HasMember_test<testType>::type::value;      \
-    barCheck = HasMember_bar<testType>::value;                  \
-    barCheckCompile = HasMember_bar<testType>::type::value
+#define FUNC_MEMBER_PPTEST(testType)                               \
+    fCheck = testMethodPresent<testType>::value;                   \
+    fCheckCompile = testMethodPresent<testType>::type::value;      \
+    barCheck = barMethodPresent<testType>::value;                  \
+    barCheckCompile = barMethodPresent<testType>::type::value
 /*
  * Tests the detector for members of a class.
  * The detector should be able to see private, template, inherited
@@ -231,32 +231,31 @@ public:
     }
 };
 
-CREATE_MEMBER_FUNC_CHECK(test);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (int), primitive);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (const int), 1);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (int*), 2);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (long*), 3);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, long (long*), 4);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (long*) const, 5);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (const int*), 6);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, Intable (const int), 7);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, Intable (const int) const, 8);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (Intable), 9);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, int& (const int), 10);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, void (int), 11);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, const void *(const int*), 12);
-CREATE_MEMBER_FUNC_SIG_CHECK(test, int (int), 13);
+CREATE_MEMBER_ARG_CHECKS(test);
+CREATE_MEMBER_SIG_CHECK(test, void (int), primitive);
+CREATE_MEMBER_SIG_CHECK(test, void (const int), 1);
+CREATE_MEMBER_SIG_CHECK(test, void (int*), 2);
+CREATE_MEMBER_SIG_CHECK(test, void (long*), 3);
+CREATE_MEMBER_SIG_CHECK(test, long (long*), 4);
+CREATE_MEMBER_SIG_CHECK(test, void (long*) const, 5);
+CREATE_MEMBER_SIG_CHECK(test, void (const int*), 6);
+CREATE_MEMBER_SIG_CHECK(test, Intable (const int), 7);
+CREATE_MEMBER_SIG_CHECK(test, Intable (const int) const, 8);
+CREATE_MEMBER_SIG_CHECK(test, void (Intable), 9);
+CREATE_MEMBER_SIG_CHECK(test, int& (const int), 10);
+CREATE_MEMBER_SIG_CHECK(test, void (int), 11);
+CREATE_MEMBER_SIG_CHECK(test, const void *(const int*), 12);
+CREATE_MEMBER_SIG_CHECK(test, int (int), 13);
 
-#define FUNC_ASSIGN_PPTEST(testName, funcName, testType, testSignature)             \
-    testPossible = HasMemberFunc_##funcName                                         \
-                <testType, testSignature>::value;                                   \
-    testPossibleCompile = HasMemberFunc_##funcName                                  \
-                <testType, testSignature>::type::value;                             \
-    testSigPossible = BOOST_PP_CAT(HasMemberSigFunc_##funcName, _##testName)        \
-                <testType>::value;                                                  \
-    testSigPossibleCompile = BOOST_PP_CAT(HasMemberSigFunc_##funcName, _##testName) \
+#define FUNC_ASSIGN_PPTEST(testName, funcName, testType, testSignature)                     \
+    testPossible = funcName##MethodSignaturePresent                                         \
+                <testType, testSignature>::value;                                           \
+    testPossibleCompile = funcName##MethodSignaturePresent                                  \
+                <testType, testSignature>::type::value;                                     \
+    testSigPossible = BOOST_PP_CAT(funcName##MethodSignaturePresent, For##testName)         \
+                <testType>::value;                                                          \
+    testSigPossibleCompile = BOOST_PP_CAT(funcName##MethodSignaturePresent, For##testName)  \
                 <testType>::type::value
-
 
 BOOST_AUTO_TEST_CASE(hasMemberFunc) {
     bool testPossible;
@@ -384,12 +383,12 @@ BOOST_AUTO_TEST_CASE(hasMemberFunc) {
     void mcallconst(args) const {}
 
 #define MANY_FUNC_CREATE_PPTEST(args, testnum)                              \
-    CREATE_MEMBER_FUNC_SIG_CHECK(mcall, void args, testnum);                \
-    CREATE_MEMBER_FUNC_SIG_CHECK(mcall, void args const, const_##testnum);  \
-    CREATE_MEMBER_FUNC_SIG_CHECK(mcallret, int args, testnum);              \
-    CREATE_MEMBER_FUNC_SIG_CHECK(mcallret, int args const, const_##testnum);\
-    CREATE_MEMBER_FUNC_SIG_CHECK(mcallconst, void args, testnum);           \
-    CREATE_MEMBER_FUNC_SIG_CHECK(mcallconst, void args const, const_##testnum)
+    CREATE_MEMBER_SIG_CHECK(mcall, void args, testnum);                     \
+    CREATE_MEMBER_SIG_CHECK(mcall, void args const, Const##testnum);       \
+    CREATE_MEMBER_SIG_CHECK(mcallret, int args, testnum);                   \
+    CREATE_MEMBER_SIG_CHECK(mcallret, int args const, Const##testnum);     \
+    CREATE_MEMBER_SIG_CHECK(mcallconst, void args, testnum);                \
+    CREATE_MEMBER_SIG_CHECK(mcallconst, void args const, Const##testnum)
 
 // 1 arg
 #define MANY_FUNC_ARGS_PPTEST_1 int
@@ -504,21 +503,18 @@ public:
     MANY_FUNC_CREATE_CALLS_PPTEST(MANY_FUNC_ARGS_PPTEST_15)
 };
 
-#define MANY_FUNC_ASSIGN_PPTEST(testnum)                                    \
-    mcallPossible = HasMemberSigFunc_mcall_##testnum                        \
-            <ManyTestCallable>::value;                                      \
-    mcallPossibleAsConst =                                                  \
-        BOOST_PP_CAT(HasMemberSigFunc_mcall_const, _##testnum)              \
-            <ManyTestCallable>::value;                                      \
-    mcallRetPossible = HasMemberSigFunc_mcallret_##testnum                  \
-            <ManyTestCallable>::value;                                      \
-    mcallRetPossibleAsConst =                                               \
-        BOOST_PP_CAT(HasMemberSigFunc_mcallret_const, _##testnum)           \
-            <ManyTestCallable>::value;                                      \
-    mcallConstPossible = HasMemberSigFunc_mcallconst_##testnum              \
-            <ManyTestCallable>::value;                                      \
-    mcallConstPossibleAsConst =                                             \
-        BOOST_PP_CAT(HasMemberSigFunc_mcallconst_const, _##testnum)         \
+#define MANY_FUNC_ASSIGN_PPTEST(testnum)                                            \
+    mcallPossible = mcallMethodSignaturePresentFor##testnum                         \
+            <ManyTestCallable>::value;                                              \
+    mcallPossibleAsConst = mcallMethodSignaturePresentForConst##testnum             \
+            <ManyTestCallable>::value;                                              \
+    mcallRetPossible = mcallretMethodSignaturePresentFor##testnum                   \
+            <ManyTestCallable>::value;                                              \
+    mcallRetPossibleAsConst = mcallretMethodSignaturePresentForConst##testnum       \
+            <ManyTestCallable>::value;                                              \
+    mcallConstPossible = mcallconstMethodSignaturePresentFor##testnum               \
+            <ManyTestCallable>::value;                                              \
+    mcallConstPossibleAsConst = mcallconstMethodSignaturePresentForConst##testnum   \
             <ManyTestCallable>::value
 
 #define MANY_FUNC_CHECK_PPTEST()                                            \
@@ -695,7 +691,7 @@ public:
     int voidArg(int) const { return 1; }
 };
 
-CREATE_MEMBER_FUNC_CHECK(voidArg);
+CREATE_MEMBER_ARG_CHECKS(voidArg);
 
 /*
  * Tests all cases of no argument function checks.
@@ -704,89 +700,89 @@ CREATE_MEMBER_FUNC_CHECK(voidArg);
 BOOST_AUTO_TEST_CASE(voidArgTest) {
     bool intRetPossible;
     bool voidRetPossible;
-    intRetPossible = HasMemberFunc_voidArg<VoidClass, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidClass, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidClass, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidClass, void (void)>::value;
     BOOST_CHECK(intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidClass, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidClass, void (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidClass, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidClass, void (void) const>::value;
     BOOST_CHECK(!intRetPossible);
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidClassConst, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidClassConst, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidClassConst, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidClassConst, void (void)>::value;
     BOOST_CHECK(intRetPossible);
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidClassConst, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidClassConst, void (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidClassConst, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidClassConst, void (void) const>::value;
     BOOST_CHECK(intRetPossible);
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidInherit, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidInherit, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidInherit, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidInherit, void (void)>::value;
     BOOST_CHECK(intRetPossible);
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidInherit, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidInherit, void (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidInherit, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidInherit, void (void) const>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidClass, std::string (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidClass, std::string (void) const>::value;
     BOOST_CHECK(!intRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidClass, std::string (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidClass, std::string (void)>::value;
     BOOST_CHECK(!intRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<BadVoidClass, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<BadVoidClass, void (void) const>::value;
-    BOOST_CHECK(!intRetPossible); // Not
-    BOOST_CHECK(!voidRetPossible); // Not
-
-    intRetPossible = HasMemberFunc_voidArg<BadVoidClass, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<BadVoidClass, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<BadVoidClass, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<BadVoidClass, void (void) const>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<NonMethodVoidClass, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<NonMethodVoidClass, void (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<BadVoidClass, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<BadVoidClass, void (void)>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<NonMethodVoidClass, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<NonMethodVoidClass, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<NonMethodVoidClass, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<NonMethodVoidClass, void (void) const>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidRetClass, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidRetClass, void (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<NonMethodVoidClass, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<NonMethodVoidClass, void (void)>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidRetClass, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidRetClass, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidRetClass, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidRetClass, void (void) const>::value;
+    BOOST_CHECK(!intRetPossible); // Not
+    BOOST_CHECK(!voidRetPossible); // Not
+
+    intRetPossible = voidArgMethodSignaturePresent<VoidRetClass, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidRetClass, void (void)>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(voidRetPossible);
 
-    intRetPossible = HasMemberFunc_voidArg<VoidPrivateClass, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidPrivateClass, void (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidPrivateClass, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidPrivateClass, void (void) const>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidPrivateClass, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidPrivateClass, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidPrivateClass, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidPrivateClass, void (void)>::value;
     BOOST_CHECK(!intRetPossible); // Not
-    BOOST_CHECK(voidRetPossible); // (Should be Not, but our checkers sees private types...)
+    BOOST_CHECK(voidRetPossible); // (Should be Not, but our checkers sees private types)
 
-    intRetPossible = HasMemberFunc_voidArg<VoidArgsClass, int (void) const>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidArgsClass, void (void) const>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidArgsClass, int (void) const>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidArgsClass, void (void) const>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 
-    intRetPossible = HasMemberFunc_voidArg<VoidArgsClass, int (void)>::value;
-    voidRetPossible = HasMemberFunc_voidArg<VoidArgsClass, void (void)>::value;
+    intRetPossible = voidArgMethodSignaturePresent<VoidArgsClass, int (void)>::value;
+    voidRetPossible = voidArgMethodSignaturePresent<VoidArgsClass, void (void)>::value;
     BOOST_CHECK(!intRetPossible); // Not
     BOOST_CHECK(!voidRetPossible); // Not
 }

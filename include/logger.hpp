@@ -160,73 +160,73 @@ public:
 // Forward declare LoggerBuilder
 namespace detail { class LoggerBuilder; }
 class Logger {
-	// To allow our protected constructor to be called
-	friend class LoggingFactory;
-	friend class detail::LoggerBuilder;
+    // To allow our protected constructor to be called
+    friend class LoggingFactory;
+    friend class detail::LoggerBuilder;
 
 protected:
     boost::ptr_vector<LoggingSink> sinks;
 
-	// Only a factory can produce a Logger
-	Logger(const std::string& logname, ApplicationWPtr app) :
-	    sinks(), name(logname), application(app) {}
+    // Only a factory can produce a Logger
+    Logger(const std::string& logname, ApplicationWPtr app) :
+        sinks(), name(logname), application(app) {}
 
 public:
-	const std::string name;
-	ApplicationWPtr application;
+    const std::string name;
+    ApplicationWPtr application;
 
-	~Logger() {}
-	// Forces the log worker to wake up and process anything in
-	// the queue.
-	void flushLogs();
+    ~Logger() {}
+    // Forces the log worker to wake up and process anything in
+    // the queue.
+    void flushLogs();
 
-	/*
-	 * WARNING: Don't add sinks in multi-threaded environments
-	 * after logging has started.
-	 */
-	void addSink(LoggingSink *sinkptr) {
-	    sinks.push_back(sinkptr);
-	}
-	template<typename SmartPtr>
-	void addSink(SmartPtr sinkptr) {
+    /*
+     * WARNING: Don't add sinks in multi-threaded environments
+     * after logging has started.
+     */
+    void addSink(LoggingSink *sinkptr) {
+        sinks.push_back(sinkptr);
+    }
+    template<typename SmartPtr>
+    void addSink(SmartPtr sinkptr) {
         sinks.push_back(sinkptr.release());
     }
 
-	/*
-	 * Places the information string into each valid queue.
-	 * The enqueue function copies the string, so after this
-	 * point the information becomes immutable and is thread
-	 * safe.
-	 */
-	template<typename T>
+    /*
+     * Places the information string into each valid queue.
+     * The enqueue function copies the string, so after this
+     * point the information becomes immutable and is thread
+     * safe.
+     */
+    template<typename T>
     void logMessage(LogLevel level, const T& msg) {
-	    forEach (LoggingSink& logsink, sinks) {
+        forEach (LoggingSink& logsink, sinks) {
             logsink.sinkMessage(level, toString(msg));
         }
-	}
+    }
 
-	void logMessage(LogLevel level, const std::string& msg) {
+    void logMessage(LogLevel level, const std::string& msg) {
         forEach (LoggingSink& logsink, sinks) {
             logsink.sinkMessage(level, msg);
         }
-	}
+    }
 
-	// Log commands with a built-in level indicator
-	template<typename T>
-	void logDebug(const T& debug) { logMessage(LOG_DEBUG, debug); }
+    // Log commands with a built-in level indicator
+    template<typename T>
+    void logDebug(const T& debug) { logMessage(LOG_DEBUG, debug); }
 
-	template<typename T>
-	void logInfo(const T& info) { logMessage(LOG_INFO, info); }
+    template<typename T>
+    void logInfo(const T& info) { logMessage(LOG_INFO, info); }
 
-	template<typename T>
-	void logWarning(const T& warning) { logMessage(LOG_WARNING, warning); }
+    template<typename T>
+    void logWarning(const T& warning) { logMessage(LOG_WARNING, warning); }
 
-	template<typename T>
+    template<typename T>
     void logError(const T& error) { logMessage(LOG_ERROR, error); }
 
-	// Extracts the LogLevel from the boost exception and calls logMessage
-	void logException(const boost::exception &x) {
-	    LogLevel loglevel;
+    // Extracts the LogLevel from the boost exception and calls logMessage
+    void logException(const boost::exception &x) {
+        LogLevel loglevel;
         switch(getExceptionSeverity(x)) {
         case EXCEP_SEVERITY_NOTICE:
             loglevel = LOG_INFO;
@@ -240,7 +240,7 @@ public:
             break;
         }
         logMessage(loglevel, x);
-	}
+    }
 };
 
 

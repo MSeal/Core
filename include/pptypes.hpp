@@ -80,70 +80,61 @@ template<typename T, T> struct forceTypeCheck {
     static const bool value = true;
 };
 
-/*
- * Fake definition of HasMember for CDT parser, since it thinks boost::is_class
- * doesn't exist.
- */
-#ifdef __CDT_PARSER__
-#define CREATE_MEMBER_CHECK(mname)                                                          \
-template<typename Type>                                                                     \
-class HasMember_##mname                                                                     \
-{                                                                                           \
-public:                                                                                     \
-    static const bool value = false;                                                        \
-    typedef typename boost::integral_constant<bool, value> type;                            \
-}
+#define CREATE_MEMBER_PRESENCE_CHECK(mname)                                                 \
+    template<typename Type, typename SFINAE = void>                                         \
+    /* Fallback class definition if Type is not a class */                                  \
+    class mname##MethodPresent                                                              \
+    {                                                                                       \
+    public:                                                                                 \
+        /* Non-class types never have members */                                            \
+        static const bool value = false;                                                    \
+        /* Used for boost template logic */                                                 \
+        typedef typename boost::integral_constant<bool, value> type;                        \
+    };                                                                                      \
+                                                                                            \
+    /* Class definition for Types which are classes */                                      \
+    template<typename Type>                                                                 \
+    class mname##MethodPresent <Type, typename ::core::enableIf<                            \
+        boost::is_class<Type>::value>::type>                                                \
+    {                                                                                       \
+        /* Use char and long sizes to indicate occurrence */                                \
+        typedef char Yes;                                                                   \
+        typedef long No;                                                                    \
+                                                                                            \
+        struct Derived {                                                                    \
+            void mname(){}                                                                  \
+        };                                                                                  \
+                                                                                            \
+        struct MixedType : public Type, public Derived {};                                  \
+                                                                                            \
+        /* Negative case, if Derived was no in name conflict with Type */                   \
+        template<typename U>                                                                \
+        static typename ::core::enableIf<                                                   \
+            ::core::forceTypeCheck<void (Derived::*)(), &U::mname>::value,                  \
+        No>::type                                                                           \
+        resolve(U*);                                                                        \
+        static Yes resolve(...);                                                            \
+                                                                                            \
+        /* Performs the check, we could make different versions here if needed */           \
+        template<typename T>                                                                \
+        struct Check {                                                                      \
+            static const bool value = (sizeof(Yes) == sizeof(resolve((T*)(NULL))));         \
+        };                                                                                  \
+                                                                                            \
+    public:                                                                                 \
+        /* True if the class has the member */                                              \
+        static const bool value = Check<MixedType>::value;                                  \
+        /* Used for boost template logic */                                                 \
+        typedef typename boost::integral_constant<bool, value> type;                        \
+    }
+
+// Visual Studio's SFINAE support is laughablely buggy, so argument checks aren't available
+// under any VS platforms (there's an open bug ticket from 2006 which would fix the issue
+// if Microsoft ever addresses it -- not fixed in VS2013)
+#ifdef _MSC_VER
+#define MEMBER_ARG_CHECKS_AVAILABLE 0
 #else
-#define CREATE_MEMBER_CHECK(mname)                                                          \
-template<typename Type, typename SFINAE = void>                                             \
-/* Fallback class definition if Type is not a class */                                      \
-class HasMember_##mname                                                                     \
-{                                                                                           \
-public:                                                                                     \
-    /* Non-class types never have members */                                                \
-    static const bool value = false;                                                        \
-    /* Used for boost template logic */                                                     \
-    typedef typename boost::integral_constant<bool, value> type;                            \
-};                                                                                          \
-                                                                                            \
-/* Class definition for Types which are classes */                                          \
-template<typename Type>                                                                     \
-class HasMember_##mname <Type, typename ::core::enableIf<                                   \
-    boost::is_class<Type>::value>::type>                                                    \
-{                                                                                           \
-    /* Use char and long sizes to indicate occurrence */                                    \
-    typedef char Yes;                                                                       \
-    typedef long No;                                                                        \
-                                                                                            \
-    struct Derived {                                                                        \
-        void mname(){}                                                                      \
-    };                                                                                      \
-                                                                                            \
-    struct MixedType : public Type, public Derived {};                                      \
-                                                                                            \
-    /* Negative case, if Derived was no in name conflict with Type */                       \
-    template<typename U>                                                                    \
-    static typename ::core::enableIf<                                                       \
-        forceTypeCheck<void (Derived::*)(), &U::mname>::value,                              \
-    No>::type                                                                               \
-    resolve(U*);                                                                            \
-    static Yes resolve(...);                                                                \
-                                                                                            \
-    /* Performs the check, we could make different versions here if needed */               \
-    template<typename T>                                                                    \
-    struct Check {                                                                          \
-        static const bool value = (sizeof(Yes) == sizeof(resolve((T*)(NULL))));             \
-    };                                                                                      \
-                                                                                            \
-public:                                                                                     \
-    /* True if the class has the member */                                                  \
-    static const bool value = Check<MixedType>::value;                                      \
-    /* Used for boost template logic */                                                     \
-    typedef typename boost::integral_constant<bool, value> type;                            \
-}
-#endif
-
-
+#define MEMBER_ARG_CHECKS_AVAILABLE 1
 /*
  * Macros that are expanded upon in pptypeMemberCheck.hpp to generate
  * Checks for various number of arguments.
@@ -155,7 +146,7 @@ public:                                                                         
             sizeof(ReturnValueCheck<Type, R>::resolve(                                      \
                     /* Fake comma operator for void return */                               \
                     (((DerivedType*)NULL)->mname(farglist),                                 \
-                            hidden::voidResultHolder_##mname <Type>()))                     \
+                            hidden::mname##VoidResultHolder <Type>()))                      \
                    ) == sizeof(Yes);                                                        \
     };                                                                                      \
     template <targlist, typename R>                                                         \
@@ -164,7 +155,7 @@ public:                                                                         
             sizeof(ReturnValueCheck<Type, R>::resolve(                                      \
                     /* Fake comma operator for void return */                               \
                     (((DerivedConstMethodType*)NULL)->mname(farglist),                      \
-                            hidden::voidResultHolder_##mname <Type>()))                     \
+                            hidden::mname##VoidResultHolder <Type>()))                      \
                    ) == sizeof(Yes);                                                        \
     }
 
@@ -179,23 +170,10 @@ public:                                                                         
         <sizeof(static_cast<R (T::*)()>(&T::mname)) != 0 &&                                 \
                 !boost::is_same<R, void>::value, Yes>::type                                 \
     noArgMethodCheck(T*);                                                                   \
-    /* Don't forget const version! */                                                       \
-    template<typename R, typename T>                                                        \
-    static typename ::core::enableIf                                                        \
-        <sizeof(static_cast<R (T::*)() const>(&T::mname)) != 0 &&                           \
-                !boost::is_same<R, void>::value, Yes>::type                                 \
-    noArgMethodCheck(T*);                                                                   \
     /* Enabled if we can cast to a method returning void */                                 \
     template<typename R, typename T>                                                        \
     static typename ::core::enableIf                                                        \
         <sizeof(static_cast<void (T::*)()>(&T::mname)) != 0,                                \
-            typename ::core::chooseIf<boost::is_same<R, void>::value,                       \
-            Yes, No>::type>::type                                                           \
-    /* Don't forget const version! */                                                       \
-    noArgMethodCheck(T*);                                                                   \
-    template<typename R, typename T>                                                        \
-    static typename ::core::enableIf                                                        \
-        <sizeof(static_cast<void (T::*)() const>(&T::mname)) != 0,                          \
             typename ::core::chooseIf<boost::is_same<R, void>::value,                       \
             Yes, No>::type>::type                                                           \
     noArgMethodCheck(T*);                                                                   \
@@ -225,150 +203,133 @@ public:                                                                         
         static const bool value =                                                           \
             sizeof(noArgMethodConstCheck<R>((DerivedVoid*)NULL)) == sizeof(Yes);            \
     };                                                                                      \
-                                                                                            \
     template<typename R>                                                                    \
     struct Check<true, R()> {                                                               \
         static const bool value =                                                           \
-            sizeof(noArgMethodCheck<R>((DerivedVoid*)NULL)) == sizeof(Yes);                 \
+            sizeof(noArgMethodCheck<R>((DerivedVoid*)NULL)) == sizeof(Yes) ||               \
+            sizeof(noArgMethodConstCheck<R>((DerivedVoid*)NULL)) == sizeof(Yes);            \
     }
 
-/*
- * Fake definition of HasMemberFunc for CDT parser, since there is an ambiguity
- * for one of the templates on non-const checks.
- */
-#ifdef __CDT_PARSER__
-#define CREATE_MEMBER_FUNC_CHECK(mname)                                                     \
-template<typename Type, typename CallDetails>                                               \
-struct HasMemberFunc_##mname                                                                \
-{                                                                                           \
-public:                                                                                     \
-    static const bool value = false;                                                        \
-    typedef typename boost::integral_constant<bool, value> type;                            \
-}
-#else
-#define CREATE_MEMBER_FUNC_CHECK(mname)                                                     \
-template<typename Type, typename CallDetails>                                               \
-struct HasMemberFunc_##mname;                                                               \
+#define CREATE_MEMBER_ARG_CHECKS(mname)                                                     \
+    template<typename Type, typename CallDetails>                                           \
+    struct mname##MethodSignaturePresent;                                                   \
                                                                                             \
-namespace hidden {                                                                          \
-namespace membercheck {                                                                     \
+    namespace hidden {                                                                      \
+    namespace membercheck {                                                                 \
     /* Hide the member check function here to avoid name clobbering */                      \
-    CREATE_MEMBER_CHECK(mname);                                                             \
-}                                                                                           \
+    CREATE_MEMBER_PRESENCE_CHECK(mname);                                                    \
+    }                                                                                       \
     template<typename Type>                                                                 \
-    class voidResultHolder_##mname {};                                                      \
+    class mname##VoidResultHolder {};                                                       \
                                                                                             \
     /* Use comma operator because it has lowest precedence of C++ operators */              \
     /* This resolves bad return types (i.e. void) blowing up template calls */              \
     template<typename Type, typename U>                                                     \
-    U& operator,(U&, voidResultHolder_##mname <Type>);                                      \
+    U& operator,(U&, mname##VoidResultHolder <Type>);                                       \
     /* Need const version as well */                                                        \
     template<typename Type, typename U>                                                     \
-    U const& operator,(U const&, voidResultHolder_##mname <Type>);                          \
-}                                                                                           \
+    U const& operator,(U const&, mname##VoidResultHolder <Type>);                           \
+    }                                                                                       \
                                                                                             \
-template<typename Type, typename CallDetails>                                               \
-struct HasMemberFunc_##mname                                                                \
-{                                                                                           \
-private:                                                                                    \
-    /* Keep Yes and No as a struct to avoid ambiguity in inheritance */                     \
-    struct Yes { char check; };                                                             \
-    struct No { Yes notCheck[2]; };                                                         \
+    template<typename Type, typename CallDetails>                                           \
+    struct mname##MethodSignaturePresent                                                    \
+    {                                                                                       \
+    private:                                                                                \
+        /* Keep Yes and No as a struct to avoid ambiguity in inheritance */                 \
+        struct Yes { char check; };                                                         \
+        struct No { Yes notCheck[2]; };                                                     \
                                                                                             \
-    /* Check the result of the expression */                                                \
-    template<typename T, typename R>                                                        \
-    struct ReturnValueCheck {                                                               \
-        static Yes resolve(R);                                                              \
-        static Yes resolve(Yes);                                                            \
-        static No resolve(...);                                                             \
-        static No resolve(No);                                                              \
-    };                                                                                      \
+        /* Check the result of the expression */                                            \
+        template<typename T, typename R>                                                    \
+        struct ReturnValueCheck {                                                           \
+            static Yes resolve(R);                                                          \
+            static Yes resolve(Yes);                                                        \
+            static No resolve(...);                                                         \
+            static No resolve(No);                                                          \
+        };                                                                                  \
                                                                                             \
-    /* Fallback template typing for void returns */                                         \
-    template<typename T>                                                                    \
-    struct ReturnValueCheck<T, void> {                                                      \
-        static Yes resolve(Yes);                                                            \
-        static Yes resolve(...);                                                            \
-        static No resolve(No);                                                              \
-    };                                                                                      \
+        /* Fallback template typing for void returns */                                     \
+        template<typename T>                                                                \
+        struct ReturnValueCheck<T, void> {                                                  \
+            static Yes resolve(Yes);                                                        \
+            static Yes resolve(...);                                                        \
+            static No resolve(No);                                                          \
+        };                                                                                  \
                                                                                             \
-    /* Add an overloaded method */                                                          \
-    struct Derived : public Type {                                                          \
-        using Type::mname;                                                                  \
-        /* Gives warning with both active, not sure if certain compilers will need it... */ \
-        /*No mname(...);*/                                                                  \
-        No mname(...) const;                                                                \
-    };                                                                                      \
-    /* Add an overloaded method */                                                          \
-    struct DerivedConst : public Type {                                                     \
-        using Type::mname;                                                                  \
-        No mname(...) const;                                                                \
-    };                                                                                      \
-    /* Used to hide any private variables */                                                \
-    struct DerivedVoid : public Type {                                                      \
-        using Type::mname;                                                                  \
-    };                                                                                      \
+        /* Add an overloaded method */                                                      \
+        struct Derived : public Type {                                                      \
+            using Type::mname;                                                              \
+            /* Gives warning with both active, not sure if necessary ... */                 \
+            /*No mname(...);*/                                                              \
+            No mname(...) const;                                                            \
+        };                                                                                  \
+        /* Add an overloaded method */                                                      \
+        struct DerivedConst : public Type {                                                 \
+            using Type::mname;                                                              \
+            No mname(...) const;                                                            \
+        };                                                                                  \
+        /* Used to hide any private variables */                                            \
+        struct DerivedVoid : public Type {                                                  \
+            using Type::mname;                                                              \
+        };                                                                                  \
                                                                                             \
-    /* Keep constness of Type in Derived Type */                                            \
-    typedef typename ::core::constnessCheck                                                 \
-            <Type, Derived>::type DerivedType;                                              \
-    /* Force constant methods to have constant type */                                      \
-    typedef typename ::core::constnessCheck                                                 \
-            <const int, DerivedConst>::type DerivedConstMethodType;                         \
+        /* Keep constness of Type in Derived Type */                                        \
+        typedef typename ::core::constnessCheck                                             \
+                <Type, Derived>::type DerivedType;                                          \
+        /* Force constant methods to have constant type */                                  \
+        typedef typename ::core::constnessCheck                                             \
+                <const int, DerivedConst>::type DerivedConstMethodType;                     \
                                                                                             \
-    /* Default case is false */                                                             \
-    template<bool has, typename F>                                                          \
-    struct Check {                                                                          \
-        static const bool value = false;                                                    \
-    };                                                                                      \
+        /* Default case is false */                                                         \
+        template<bool has, typename F>                                                      \
+        struct Check {                                                                      \
+            static const bool value = false;                                                \
+        };                                                                                  \
                                                                                             \
-    /* The no arguments case was a pain to get right -- took a week of trying options */    \
-    /* It doesn't use the same system of inheritance as multi-arg checks */                 \
-    MEMBER_CHECK_NO_ARGS(mname);                                                            \
-    /* Create checks for 1 arg to up to 15 arguments */                                     \
-    MEMBER_CHECK_1_ARG(mname);                                                              \
-    MEMBER_CHECK_2_ARG(mname);                                                              \
-    MEMBER_CHECK_3_ARG(mname);                                                              \
-    MEMBER_CHECK_4_ARG(mname);                                                              \
-    MEMBER_CHECK_5_ARG(mname);                                                              \
-    MEMBER_CHECK_6_ARG(mname);                                                              \
-    MEMBER_CHECK_7_ARG(mname);                                                              \
-    MEMBER_CHECK_8_ARG(mname);                                                              \
-    MEMBER_CHECK_9_ARG(mname);                                                              \
-    MEMBER_CHECK_10_ARG(mname);                                                             \
-    MEMBER_CHECK_11_ARG(mname);                                                             \
-    MEMBER_CHECK_12_ARG(mname);                                                             \
-    MEMBER_CHECK_13_ARG(mname);                                                             \
-    MEMBER_CHECK_14_ARG(mname);                                                             \
-    MEMBER_CHECK_15_ARG(mname);                                                             \
+        /* The no arguments case was a pain to get right -- took a week of trying options */\
+        /* It doesn't use the same system of inheritance as multi-arg checks */             \
+        MEMBER_CHECK_NO_ARGS(mname);                                                        \
+        /* Create checks for 1 arg to up to 15 arguments */                                 \
+        MEMBER_CHECK_1_ARG(mname);                                                          \
+        MEMBER_CHECK_2_ARG(mname);                                                          \
+        MEMBER_CHECK_3_ARG(mname);                                                          \
+        MEMBER_CHECK_4_ARG(mname);                                                          \
+        MEMBER_CHECK_5_ARG(mname);                                                          \
+        MEMBER_CHECK_6_ARG(mname);                                                          \
+        MEMBER_CHECK_7_ARG(mname);                                                          \
+        MEMBER_CHECK_8_ARG(mname);                                                          \
+        MEMBER_CHECK_9_ARG(mname);                                                          \
+        MEMBER_CHECK_10_ARG(mname);                                                         \
+        MEMBER_CHECK_11_ARG(mname);                                                         \
+        MEMBER_CHECK_12_ARG(mname);                                                         \
+        MEMBER_CHECK_13_ARG(mname);                                                         \
+        MEMBER_CHECK_14_ARG(mname);                                                         \
+        MEMBER_CHECK_15_ARG(mname);                                                         \
                                                                                             \
-public:                                                                                     \
-    /* First check the availability of a method using HasMember */                          \
-    static const bool value = Check<hidden::membercheck::HasMember_##mname <Type>::value,   \
-                                   CallDetails>::value;                                     \
-    /* Used for boost template logic */                                                     \
-    typedef typename boost::integral_constant<bool, value> type;                            \
+    public:                                                                                 \
+        /* First check the availability of a method using MethodPresent */                  \
+        static const bool value = Check<                                                    \
+            hidden::membercheck::mname##MethodPresent <Type>::value, CallDetails>::value;   \
+        /* Used for boost template logic */                                                 \
+        typedef typename boost::integral_constant<bool, value> type;                        \
+    }
+
+#define CREATE_MEMBER_SIG_CHECK(mname, signature, signame)                                  \
+    namespace hidden { namespace sigcheck##signame {                                        \
+    CREATE_MEMBER_ARG_CHECKS(mname);                                                        \
+    }}                                                                                      \
+                                                                                            \
+    template<typename Type>                                                                 \
+    struct BOOST_PP_CAT(mname##MethodSignaturePresent, For##signame)                        \
+    {                                                                                       \
+    public:                                                                                 \
+        /* First check the availability of a method using HasMember */                      \
+        static const bool value = hidden::sigcheck##signame::mname##MethodSignaturePresent  \
+                                                                <Type, signature>::value;   \
+        typedef typename boost::integral_constant<bool, value> type;                        \
+    }
+
 }
 #endif
-
-#define CREATE_MEMBER_FUNC_SIG_CHECK(mname, signature, signame)                             \
-namespace hidden                                                                            \
-{                                                                                           \
-namespace sigcheck##signame {                                                               \
-    CREATE_MEMBER_FUNC_CHECK(mname);                                                        \
-}                                                                                           \
-}                                                                                           \
-                                                                                            \
-template<typename Type>                                                                     \
-struct BOOST_PP_CAT(HasMemberSigFunc_##mname, _##signame)                                   \
-{                                                                                           \
-public:                                                                                     \
-    /* First check the availability of a method using HasMember */                          \
-    static const bool value = hidden::sigcheck##signame::HasMemberFunc_##mname              \
-                                                            <Type, signature>::value;       \
-    typedef typename boost::integral_constant<bool, value> type;                            \
-}
-
-}
 
 #endif /* PREPROCESSOR_TYPES_H_ */

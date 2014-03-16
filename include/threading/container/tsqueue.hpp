@@ -20,56 +20,56 @@ template <typename T,
           typename Allocator = std::allocator<void*> >
 class TSQueue : public TSWrapper<typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList> {
 private:
-	// Class renaming for readability
-	typedef TSWrapper<typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList> Queue;
-	typedef typename Queue::ScopedLock ScopedLock;
+    // Class renaming for readability
+    typedef TSWrapper<typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList> Queue;
+    typedef typename Queue::ScopedLock ScopedLock;
 
 protected:
-	CloneAllocator cloner;
+    CloneAllocator cloner;
 
 public:
-	typedef T ElemType;
-	typedef typename pointers::smart<T>::UniquePtr PtrType;
-	typedef typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList QList;
-	typedef typename pointers::smart<QList>::SharedPtr QListPtr;
-	explicit TSQueue(int priority = 0) : Queue(priority), cloner() {}
+    typedef T ElemType;
+    typedef typename pointers::smart<T>::UniquePtr PtrType;
+    typedef typename pointers::lists<T, CloneAllocator, Allocator>::UniquePtrList QList;
+    typedef typename pointers::smart<QList>::SharedPtr QListPtr;
+    explicit TSQueue(int priority = 0) : Queue(priority), cloner() {}
 
-	/*
-	 * Ensure that all memory is deallocated and the appropiate
-	 * delete calls are made.
-	 */
-	~TSQueue() {
-		clear();
-	}
+    /*
+     * Ensure that all memory is deallocated and the appropiate
+     * delete calls are made.
+     */
+    ~TSQueue() {
+        clear();
+    }
 
-	/* Returns true if the queue is empty */
-	bool empty() {
-		ScopedLock lock(this->getMutex());
-		return this->wrapped->empty();
-	}
+    /* Returns true if the queue is empty */
+    bool empty() {
+        ScopedLock lock(this->getMutex());
+        return this->wrapped->empty();
+    }
 
-	/* Returns the size of the queue */
-	std::size_t size() {
-		ScopedLock lock(this->getMutex());
-		return this->wrapped->size();
-	}
+    /* Returns the size of the queue */
+    std::size_t size() {
+        ScopedLock lock(this->getMutex());
+        return this->wrapped->size();
+    }
 
-	/* Clears all queue elements from the queue */
-	void clear() {
-		ScopedLock lock(this->getMutex());
-		this->wrapped->clear();
-	}
+    /* Clears all queue elements from the queue */
+    void clear() {
+        ScopedLock lock(this->getMutex());
+        this->wrapped->clear();
+    }
 
-	/*
-	 * Enqueues a new element into the queue. This element can
-	 * be pulled back out of the queue by dequeuing all of the
-	 * elements off the front of the queue.
-	 */
-	template<typename U>
-	void enqueue(const U& enq) {
-	    ScopedLock lock(this->getMutex());
-	    this->wrapped->push_back(cloner.allocate_clone(enq));
-	}
+    /*
+     * Enqueues a new element into the queue. This element can
+     * be pulled back out of the queue by dequeuing all of the
+     * elements off the front of the queue.
+     */
+    template<typename U>
+    void enqueue(const U& enq) {
+        ScopedLock lock(this->getMutex());
+        this->wrapped->push_back(cloner.allocate_clone(enq));
+    }
 
     void enqueue(T *const enq) {
         ScopedLock lock(this->getMutex());
@@ -86,54 +86,54 @@ public:
         this->wrapped->push_back(enq);
     }
 
-	/*
-	 * Dequeues an element off of the front of the queue.
-	 */
-	PtrType dequeue() {
-		ScopedLock lock(this->getMutex());
-		// can't dequeue from an empty queue
-		if (!this->wrapped->empty()) {
-		    return this->wrapped->pop_front();
-		}
-		return PtrType();
-	}
+    /*
+     * Dequeues an element off of the front of the queue.
+     */
+    PtrType dequeue() {
+        ScopedLock lock(this->getMutex());
+        // can't dequeue from an empty queue
+        if (!this->wrapped->empty()) {
+            return this->wrapped->pop_front();
+        }
+        return PtrType();
+    }
 
-	/*
-	 * Dequeues up to N items from the queue at once and returns
-	 * a list containing all of those items.
-	 */
-	QListPtr dequeueN(std::size_t numDequeue) {
-		QListPtr deq;
+    /*
+     * Dequeues up to N items from the queue at once and returns
+     * a list containing all of those items.
+     */
+    QListPtr dequeueN(std::size_t numDequeue) {
+        QListPtr deq;
 
-		ScopedLock lock(this->getMutex());
-		numDequeue = std::min(numDequeue, this->wrapped->size());
-		// Taking all elements?
-		if (numDequeue == this->wrapped->size()) {
-		    // Just give our whole QListPtr
-		    deq = this->wrapped;
+        ScopedLock lock(this->getMutex());
+        numDequeue = std::min(numDequeue, this->wrapped->size());
+        // Taking all elements?
+        if (numDequeue == this->wrapped->size()) {
+            // Just give our whole QListPtr
+            deq = this->wrapped;
             this->wrapped = QListPtr(new QList());
-		}
-		// Taking some of our elements
-		else {
-		    deq = QListPtr(new QList());
+        }
+        // Taking some of our elements
+        else {
+            deq = QListPtr(new QList());
             for (std::size_t i = 0; i < numDequeue; i++) {
                 deq->push_back(this->wrapped->pop_front());
             }
-		}
-		return deq;
-	}
+        }
+        return deq;
+    }
 
-	/*
-	 * Dequeues up to all items from the queue at once and returns
-	 * a list containing all of those items. This has very little
-	 * locking overhead.
-	 */
-	QListPtr dequeueAll() {
-	    ScopedLock lock(this->getMutex());
-		QListPtr oldQueue = this->wrapped;
-		this->wrapped = QListPtr(new QList());
-		return oldQueue;
-	}
+    /*
+     * Dequeues up to all items from the queue at once and returns
+     * a list containing all of those items. This has very little
+     * locking overhead.
+     */
+    QListPtr dequeueAll() {
+        ScopedLock lock(this->getMutex());
+        QListPtr oldQueue = this->wrapped;
+        this->wrapped = QListPtr(new QList());
+        return oldQueue;
+    }
 };
 }}}
 

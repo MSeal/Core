@@ -6,51 +6,51 @@ Core is a heavily tested application framework designed to give users a wide ran
 built in usable platform independent application components. These components include:
 
 * Logging
-	* Allows multiple loggers to be active at same time
-	* Logs selectable by name
-	* Implement single function of class to add new processing of log events
+    * Allows multiple loggers to be active at same time
+    * Logs selectable by name
+    * Implement single function of class to add new processing of log events
 * Threading Management
-	* What threads are active
-	* Thread naming
-	* Polite quit requests
+    * What threads are active
+    * Thread naming
+    * Polite quit requests
 * Threadsafe objects/containers
-	* Flexible performance to match various use cases
-	* Handles the easy to forget threading mistakes
-	* Leaves complete control over event ordering/triggering
-	* Abstracts containers/collections to lockable objects
-	* Any object can be wrapped by lockwrap template
-	* Resource locks maintaining lock ordering for arbitrary sets of locks
+    * Flexible performance to match various use cases
+    * Handles the easy to forget threading mistakes
+    * Leaves complete control over event ordering/triggering
+    * Abstracts containers/collections to lockable objects
+    * Any object can be wrapped by lockwrap template
+    * Resource locks maintaining lock ordering for arbitrary sets of locks
 * Exceptions
-	* Automatic line/function/cause exception generation macros
-	* Treatable as boost exceptions or std exceptions
-	* String message convertable
-	* Coded by exception type/family
+    * Automatic line/function/cause exception generation macros
+    * Treatable as boost exceptions or std exceptions
+    * String message convertable
+    * Coded by exception type/family
 * Factories
-	* Object generating factory templates
-	* Various build options/constructor wrappers
-	* Trackable object generation
+    * Object generating factory templates
+    * Various build options/constructor wrappers
+    * Trackable object generation
 * Enumeration objects
-	* Extendible enumerations that can are bi-mapped to other objects
-	* Easy string/value representation of enumerated values
+    * Extendible enumerations that can are bi-mapped to other objects
+    * Easy string/value representation of enumerated values
 * Loops
-	* Many style of for loops for convenience of code minimization
-	* Python style enumeration loops
-	* Callback loops
+    * Many style of for loops for convenience of code minimization
+    * Python style enumeration loops
+    * Callback loops
 * Strings
-	* Conversion functionality for all common types to/from strings
-	* Efficient stream capabilities for conversion to string
-	* UTF-8, UTF-16, and UTF-32 aware string conversion capabilities
+    * Conversion functionality for all common types to/from strings
+    * Efficient stream capabilities for conversion to string
+    * UTF-8, UTF-16, and UTF-32 aware string conversion capabilities
 * Utilities
-	* Various other minor functions
+    * Various other minor functions
 
 ## Dependencies
 * C++03 Compiler (Need to test C++98 functionality)
 * Boost (>= 1.50)
 * Compiler requirements:
-	* class template partial specialization
-	* function type parsing
-	* SFINAE
-	
+    * class template partial specialization
+    * function type parsing
+    * SFINAE
+    
 ### Known Compliant Compilers
 * GCC 4.6
 
@@ -79,18 +79,18 @@ With -mt extension to name
 ### Fixes
 #### Boost Build:
 * Fix MinGW directory names in build.bat to true locations
-* Change `set toolset=msvc` inf bootstrap.bat to `set toolset=gcc`  
-	bootstrap  
-	b2 --threading=multi --with-thread --with-locale --with-test --build-type=complete --link=static -j 4 stage  
+* Change `set toolset=msvc` in bootstrap.bat to `set toolset=gcc`  
+    bootstrap  
+    b2 --threading=multi --with-thread --with-locale --with-test --build-type=complete --link=static -j 4 stage  
 #### Windows Thread Fixes (fixed in 1.54!):
 * Ticket #4878  
-	boost/thread/detail/config.hpp  
-	For MinGW (tested on gcc 4.6 with boost 1.50):  
-		line 153: #   if defined(BOOST_THREAD_PLATFORM_WIN32)  
-		line 154: #       if defined(BOOST_MSVC) || defined(BOOST_INTEL_WIN)  
-	should be followed by:  
-		|| defined(__MINGW32__) || defined(MINGW32) || defined(BOOST_MINGW32) // fix for mingw
-		
+    boost/thread/detail/config.hpp  
+    For MinGW (tested on gcc 4.6 with boost 1.50):  
+        line 153: #   if defined(BOOST_THREAD_PLATFORM_WIN32)  
+        line 154: #       if defined(BOOST_MSVC) || defined(BOOST_INTEL_WIN)  
+    should be followed by:  
+        || defined(__MINGW32__) || defined(MINGW32) || defined(BOOST_MINGW32) // fix for mingw
+        
 ## Repository Hierarchy
 ### include
 All header hpp files.  
@@ -104,8 +104,8 @@ never need to see.
 * threading  
 All thread related objects and functions. These include locks, threads, trackers, managers, 
 etc...
-	* container  
-	Containers which are threadsafe or thread aware.
+    * container  
+    Containers which are threadsafe or thread aware.
 
 ### src
 All source cpp files. The subdirectory hierarchy follows the include folder hierarchy.
@@ -115,8 +115,8 @@ All unit tests for the repo.
 
 ## Language Preferences
 * Camel Case
-	* When directly using boost, oftentimes revert to underscore style without renaming
-	boost variables. Commonly used boost abstractions sometimes have Core typedef renames.
+    * When directly using boost, oftentimes revert to underscore style without renaming
+    boost variables. Commonly used boost abstractions sometimes have Core typedef renames.
 * Object Oriented (with a few exceptions)
 
 ## TODO

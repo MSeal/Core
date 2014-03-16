@@ -9,8 +9,8 @@
  * int.
  *
  *
- * 	    forRepeat(numiter)
- * 	    forRepeatLong(numiter)
+ *         forRepeat(numiter)
+ *         forRepeatLong(numiter)
  *
  *
  * Runs a loop iterator from start to end repetitions. This is mostly
@@ -50,8 +50,8 @@
  *
  *      onEach(item, function, container)
  *      onEach(function, container)
- * 	    reverseOnEach(item, function, container)
- * 	    reverseOnEach(function, container)
+ *         reverseOnEach(item, function, container)
+ *         reverseOnEach(function, container)
  */
 
 #ifndef LOOPS_H_
@@ -83,84 +83,72 @@
 /* End For Iter */
 
 /* For Each */
-/* Used to trick the CDT Parser to accepting our syntax */
-#ifdef __CDT_PARSER__
-#   define forEach(item, container) for(item; container;)
-#   define reverseForEach(item, container) for(item; container;)
-#else
-#   define forEach BOOST_FOREACH
-#   define reverseForEach BOOST_REVERSE_FOREACH
-#endif
+#define forEach BOOST_FOREACH
+#define reverseForEach BOOST_REVERSE_FOREACH
 /* End For Each */
 
 /* Enumerate */
 namespace core { namespace loops { namespace detail {
 template<typename T>
 void incrementT(T *t) {
-	(*t)++;
+    (*t)++;
 }
 
 struct IncrementCounterPassthrough {
-	bool first;
-	boost::function0<void> incrementer;
+    bool first;
+    boost::function0<void> incrementer;
 
-	template<typename Count>
-	IncrementCounterPassthrough(Count& t) {
-		t = 0;
-		// Use first = true to avoid negative assignment to t
-		first = true;
-		incrementer = boost::bind(&incrementT<Count>, &t);
-	}
+    template<typename Count>
+    IncrementCounterPassthrough(Count& t) {
+        t = 0;
+        // Use first = true to avoid negative assignment to t
+        first = true;
+        incrementer = boost::bind(&incrementT<Count>, &t);
+    }
 
-	template<typename T>
-	T& operator=(T& rhs) {
-	    if (first) {
-	        first = false;
-	    } else {
-	        incrementer();
-	    }
-		return rhs;
-	}
+    template<typename T>
+    T& operator=(T& rhs) {
+        if (first) {
+            first = false;
+        } else {
+            incrementer();
+        }
+        return rhs;
+    }
 };
 }}}
 
-/* Used to trick the CDT Parser to accepting our syntax */
-#ifdef __CDT_PARSER__
-#   define enumerateEach(count, item, container) count = 0; for(item; container;)
-#   define reverseEnumerateEach(count, item, container) count = 0; for(item; container;)
-#else
-#   define enumerateEach(count, item, container)                                                                \
-        if (bool BOOST_FOREACH_ID(_enum_unique_) = false) {} else                                               \
-        for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass_)(count);   \
-                !BOOST_FOREACH_ID(_enum_unique_);                                                               \
-                BOOST_FOREACH_ID(_enum_unique_) = true)                                                         \
-            BOOST_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass_), container)
+#define enumerateEach(count, item, container)                                                               \
+    if (bool BOOST_FOREACH_ID(_enum_unique_) = false) {} else                                               \
+    for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass_)(count);   \
+            !BOOST_FOREACH_ID(_enum_unique_);                                                               \
+            BOOST_FOREACH_ID(_enum_unique_) = true)                                                         \
+        BOOST_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass_), container)
 
-#   define reverseEnumerateEach(count, item, container)                                                         \
-        if (bool BOOST_FOREACH_ID(_enum_unique_) = false) {} else                                               \
-        for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass_)(count);   \
-                !BOOST_FOREACH_ID(_enum_unique_);                                                               \
-                BOOST_FOREACH_ID(_enum_unique_) = true)                                                         \
-            BOOST_REVERSE_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass_), container)
-#endif
+#define reverseEnumerateEach(count, item, container)                                                        \
+    if (bool BOOST_FOREACH_ID(_enum_unique_) = false) {} else                                               \
+    for(::core::loops::detail::IncrementCounterPassthrough BOOST_FOREACH_ID(_foreach_count_pass_)(count);   \
+            !BOOST_FOREACH_ID(_enum_unique_);                                                               \
+            BOOST_FOREACH_ID(_enum_unique_) = true)                                                         \
+        BOOST_REVERSE_FOREACH(item = BOOST_FOREACH_ID(_foreach_count_pass_), container)
 /* End Enumerate */
 
 /* On Each */
 template <class I, class C>
 inline void onEach(void (*function)(I), C & container) {
-	forEach(I& item, container) function(item);
+    forEach(I& item, container) function(item);
 }
 template <class I, class C>
 inline void onEach(I& item, void (*function)(I), C & container) {
-	forEach(item, container) function(item);
+    forEach(item, container) function(item);
 }
 template <class I, class C>
 inline void onEach(void (*function)(I&), C & container) {
-	forEach(I& item, container) function(item);
+    forEach(I& item, container) function(item);
 }
 template <class I, class C>
 inline void onEach(I& item, void (*function)(I&), C & container) {
-	forEach(item, container) function(item);
+    forEach(item, container) function(item);
 }
 // Do the same for boost::function
 template <class I, class C>

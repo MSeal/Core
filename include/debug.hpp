@@ -22,40 +22,40 @@ namespace core {
  */
 inline bool debugModeOn() {
 #ifdef CORE_DEBUG
-	return true;
+    return true;
 #else
-	return false;
+    return false;
 #endif
 }
 
 #ifdef BOOST_MSVC
 inline void debugMessage(const char *str) {
 #ifdef CORE_DEBUG
-	OutputDebugStringA(str);
-	OutputDebugStringA("\n");
+    OutputDebugStringA(str);
+    OutputDebugStringA("\n");
 #endif
 }
 
 template<typename charT, typename traits, typename Alloc>
 inline void debugMessage(const std::basic_string<charT, traits, Alloc>& str) {
 #ifdef CORE_DEBUG
-	OutputDebugStringA(str.c_str());
-	OutputDebugStringA("\n");
+    OutputDebugStringA(str.c_str());
+    OutputDebugStringA("\n");
 #endif
 }
 #else 
 inline void debugMessage(const char *str) {
 #ifdef CORE_DEBUG
-	fprintf(stdout, str);
-	fprintf(stdout, "\n");
+    fprintf(stdout, str);
+    fprintf(stdout, "\n");
 #endif
 }
 
 template<typename charT, typename traits, typename Alloc>
 inline void debugMessage(const std::basic_string<charT, traits, Alloc>& str) {
 #ifdef CORE_DEBUG
-	fprintf(stdout, str.c_str());
-	fprintf(stdout, "\n");
+    fprintf(stdout, str.c_str());
+    fprintf(stdout, "\n");
 #endif
 }
 #endif

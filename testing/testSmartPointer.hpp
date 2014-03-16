@@ -27,7 +27,6 @@ public:
     int object;
 
     IntrusiveCheck() : counter(0), object(0) {}
-    ~IntrusiveCheck() {std::cout<<"Deleted";}
 
     std::size_t refCount() {
         return counter;
@@ -114,7 +113,6 @@ BOOST_AUTO_TEST_CASE(pointerCreation) {
     count = intruPtr2->refCount();
     BOOST_CHECK_EQUAL(count, (std::size_t)2);
     BOOST_CHECK_EQUAL(intruPtr->get(), 2);
-
 }
 
 /*
@@ -147,7 +145,6 @@ BOOST_AUTO_TEST_CASE(stringPointerCreation) {
     *sharedPtr = str4;
     StrPtr sharedPtr1(weakPtr);
     BOOST_CHECK_EQUAL(sharedPtr1->compare(str4), 0);
-
 }
 
 /*

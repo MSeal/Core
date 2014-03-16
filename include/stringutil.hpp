@@ -129,16 +129,23 @@ public:
  * Not defined in exceptions to avoid circular include logic.
  * Undefined at end of file.
  */
-#define throwCastException(message, sourceType, destType) \
-    throw ExceptionBasis(message, ::core::CAST_EXCEPTION, \
-            ::core::EXCEP_SEVERITY_ERROR, ::core::CastException) \
-             << ::core::ThrowErrorCastSource(&sourceType) \
+#define throwCastException(message, sourceType, destType)           \
+    throw ExceptionBasis(message, ::core::CAST_EXCEPTION,           \
+            ::core::EXCEP_SEVERITY_ERROR, ::core::CastException)    \
+             << ::core::ThrowErrorCastSource(&sourceType)           \
              << ::core::ThrowErrorCastDest(&destType)
 
 namespace detail {
-//CREATE_MEMBER_CHECK(toString);
-// Creates HasMemberSigFunc_toString_strcheck
-CREATE_MEMBER_FUNC_SIG_CHECK(toString, std::string (void), strcheck);
+#if MEMBER_ARG_CHECKS_AVAILABLE
+    CREATE_MEMBER_SIG_CHECK(toString, std::string (void), StrCheck);
+    #define hasStringSigCheck(templatearg)                                              \
+        ::core::detail::toStringMethodSignaturePresentForStrCheck<templatearg>::value
+#else
+    // Certain compilers don't fully support SFINAE to allow for argument checks
+    CREATE_MEMBER_PRESENCE_CHECK(toString);
+    #define hasStringSigCheck(templatearg)                                              \
+        ::core::detail::toStringMethodPresent<templatearg>::value
+#endif
 
 /*
  * This function has no working knowledge of the type, so it just tries
@@ -177,8 +184,7 @@ struct StringImplStruct<true, T> {
 template<typename T>
 inline std::string toString(const T& castable) {
     return detail::StringImplStruct
-            <detail::HasMemberSigFunc_toString_strcheck<T>::value, T>::
-                toStringImpl(castable);
+        <hasStringSigCheck(T), T>::toStringImpl(castable);
 }
 
 template<typename T>

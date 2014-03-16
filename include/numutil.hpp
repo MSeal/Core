@@ -132,7 +132,7 @@ inline unsigned long ceilToPowerOfTwo(long double input) {
 /* Limits the val to be between a minVal and maxVal and returns its new value */
 template <typename T>
 inline T constrained(const T val, const T minval, const T maxval) {
-	return std::min(std::max(val, minval), maxval);
+    return std::min(std::max(val, minval), maxval);
 }
 }
 

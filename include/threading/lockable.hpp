@@ -45,43 +45,43 @@ static int compareMutexes(const Lockable& first, const Lockable& second,
  */
 template<typename Ref>
 class LockedReference : private boost::noncopyable {
-	friend class LockedReferencePtr<Ref>;
+    friend class LockedReferencePtr<Ref>;
 
 private:
-	typedef typename pointers::smart<Ref>::SharedPtr RefPtr;
+    typedef typename pointers::smart<Ref>::SharedPtr RefPtr;
 
-	LockablePtr lockable;
-	RefPtr lockedRef;
+    LockablePtr lockable;
+    RefPtr lockedRef;
 
-	/* Define these after we've defined Lockable */
-	void lock();
-	void unlock();
+    /* Define these after we've defined Lockable */
+    void lock();
+    void unlock();
 
 public:
-	LockedReference(RefPtr reference, LockablePtr lockPtr) :
-		lockable(lockPtr), lockedRef(reference) {
-		lock();
-	}
+    LockedReference(RefPtr reference, LockablePtr lockPtr) :
+        lockable(lockPtr), lockedRef(reference) {
+        lock();
+    }
 
-	Ref& operator *() const {
-		return *lockedRef;
-	}
+    Ref& operator *() const {
+        return *lockedRef;
+    }
 
-	Ref *operator ->() const {
-		return lockedRef.get();
-	}
+    Ref *operator ->() const {
+        return lockedRef.get();
+    }
 
-	Ref *get() const {
-		return lockedRef.get();
-	}
+    Ref *get() const {
+        return lockedRef.get();
+    }
 
-	Lockable& getLock() const {
-		return *lockable;
-	}
+    Lockable& getLock() const {
+        return *lockable;
+    }
 
-	virtual ~LockedReference() {
-		unlock();
-	}
+    virtual ~LockedReference() {
+        unlock();
+    }
 };
 
 /**
@@ -97,33 +97,33 @@ private:
     SharedLockedReferencePtr ptr;
 
 protected:
-	LockablePtr getLockablePtr() { return ptr->lockable; }
-	RefPtr getReferencePtr() { return ptr->lockedRef; }
+    LockablePtr getLockablePtr() { return ptr->lockable; }
+    RefPtr getReferencePtr() { return ptr->lockedRef; }
 
 public:
-	LockedReferencePtr(RefPtr reference, LockablePtr lockPtr) :
-		ptr(new LockedReference<Ref>(reference, lockPtr)) {}
+    LockedReferencePtr(RefPtr reference, LockablePtr lockPtr) :
+        ptr(new LockedReference<Ref>(reference, lockPtr)) {}
 
-	explicit LockedReferencePtr(const LockedReferencePtr& lockedReference) :
-		ptr(lockedReference.ptr) {}
+    explicit LockedReferencePtr(const LockedReferencePtr& lockedReference) :
+        ptr(lockedReference.ptr) {}
 
-	virtual ~LockedReferencePtr() {}
+    virtual ~LockedReferencePtr() {}
 
-	Ref& operator *() const {
-		return **ptr;
-	}
+    Ref& operator *() const {
+        return **ptr;
+    }
 
-	Ref *operator ->() const {
-		return ptr->get();
-	}
+    Ref *operator ->() const {
+        return ptr->get();
+    }
 
-	Ref *get() const {
-		return ptr->get();
-	}
+    Ref *get() const {
+        return ptr->get();
+    }
 
-	Lockable& getLock() const {
-		return ptr->getLock();
-	}
+    Lockable& getLock() const {
+        return ptr->getLock();
+    }
 };
 
 /**
@@ -133,44 +133,44 @@ public:
  */
 template<typename Ref>
 class ReadLockedReference : private boost::noncopyable {
-	friend class ReadLockedReferencePtr<Ref>;
+    friend class ReadLockedReferencePtr<Ref>;
 
 private:
-	typedef typename pointers::smart<Ref>::SharedPtr RefPtr;
-	typedef typename pointers::smart<ReadLockedReference<Ref> >::SharedPtr ReadLockedReferencePtr;
+    typedef typename pointers::smart<Ref>::SharedPtr RefPtr;
+    typedef typename pointers::smart<ReadLockedReference<Ref> >::SharedPtr ReadLockedReferencePtr;
 
-	ReadWriteLockablePtr lockable;
-	RefPtr lockedRef;
+    ReadWriteLockablePtr lockable;
+    RefPtr lockedRef;
 
-	/* Define these after we've defined ReadWriteLockable */
-	void lock();
-	void unlock();
+    /* Define these after we've defined ReadWriteLockable */
+    void lock();
+    void unlock();
 
 public:
-	ReadLockedReference(RefPtr reference, ReadLockedReferencePtr lockPtr) :
-		lockable(lockPtr), lockedRef(reference) {
-		lock();
-	}
+    ReadLockedReference(RefPtr reference, ReadLockedReferencePtr lockPtr) :
+        lockable(lockPtr), lockedRef(reference) {
+        lock();
+    }
 
-	Ref& operator *() const {
-		return *lockedRef;
-	}
+    Ref& operator *() const {
+        return *lockedRef;
+    }
 
-	Ref *operator ->() const {
-		return lockedRef.get();
-	}
+    Ref *operator ->() const {
+        return lockedRef.get();
+    }
 
-	Ref *get() const {
-		return lockedRef.get();
-	}
+    Ref *get() const {
+        return lockedRef.get();
+    }
 
-	ReadWriteLockable& getLock() const {
-		return *lockable;
-	}
+    ReadWriteLockable& getLock() const {
+        return *lockable;
+    }
 
-	virtual ~ReadLockedReference() {
-		unlock();
-	}
+    virtual ~ReadLockedReference() {
+        unlock();
+    }
 };
 
 /**
@@ -189,38 +189,38 @@ protected:
     LockablePtr getLockablePtr() { return ptr->lockable; }
     RefPtr getReferencePtr() { return ptr->lockedRef; }
 
-	/*
-	 * Used to wrap the Lockable pointer cast.
-	 */
-	template<typename LockType>
-	boost::shared_ptr<LockType> castLock() {
-		return boost::static_pointer_cast<LockType, Lockable>(ptr->lockable);
-	}
+    /*
+     * Used to wrap the Lockable pointer cast.
+     */
+    template<typename LockType>
+    boost::shared_ptr<LockType> castLock() {
+        return boost::static_pointer_cast<LockType, Lockable>(ptr->lockable);
+    }
 
 public:
-	ReadLockedReferencePtr(RefPtr reference, LockablePtr lockPtr) :
-		ptr(new ReadLockedReference<Ref>(reference, lockPtr)) {}
+    ReadLockedReferencePtr(RefPtr reference, LockablePtr lockPtr) :
+        ptr(new ReadLockedReference<Ref>(reference, lockPtr)) {}
 
-	explicit ReadLockedReferencePtr(const ReadLockedReferencePtr& lockedReference) :
-		ptr(lockedReference.ptr) {}
+    explicit ReadLockedReferencePtr(const ReadLockedReferencePtr& lockedReference) :
+        ptr(lockedReference.ptr) {}
 
-	virtual ~ReadLockedReferencePtr() {}
+    virtual ~ReadLockedReferencePtr() {}
 
-	Ref& operator *() const {
-		return **ptr;
-	}
+    Ref& operator *() const {
+        return **ptr;
+    }
 
-	Ref *operator ->() const {
-		return ptr->get();
-	}
+    Ref *operator ->() const {
+        return ptr->get();
+    }
 
-	Ref *get() const {
-		return ptr->get();
-	}
+    Ref *get() const {
+        return ptr->get();
+    }
 
-	ReadWriteLockable& getLock() const {
-		return ptr->getLock();
-	}
+    ReadWriteLockable& getLock() const {
+        return ptr->getLock();
+    }
 };
 
 /**
@@ -229,104 +229,104 @@ public:
  */
 class Lockable : public boost::enable_shared_from_this<Lockable>, private boost::noncopyable {
 private:
-	const int mutexPriority;
-	const bool readLockable;
+    const int mutexPriority;
+    const bool readLockable;
 
 protected:
-	/*
-	 * Creates a locked reference for which this lockable is locked
-	 * until the locked reference goes out of scope (deconstructs).
-	 */
-	template<typename Ref>
-	LockedReferencePtr<Ref> generateLockedReference(typename pointers::smart<Ref>::SharedPtr reference) {
-		return LockedReferencePtr<Ref>(reference, getLockablePtr());
-	}
+    /*
+     * Creates a locked reference for which this lockable is locked
+     * until the locked reference goes out of scope (deconstructs).
+     */
+    template<typename Ref>
+    LockedReferencePtr<Ref> generateLockedReference(typename pointers::smart<Ref>::SharedPtr reference) {
+        return LockedReferencePtr<Ref>(reference, getLockablePtr());
+    }
 
 public:
-	explicit Lockable(int priority = 0, bool readLock = false) :
-		mutexPriority(priority), readLockable(readLock) {}
+    explicit Lockable(int priority = 0, bool readLock = false) :
+        mutexPriority(priority), readLockable(readLock) {}
 
-	virtual void lock() = 0;
-	virtual bool tryLock() = 0;
-	virtual void unlock() = 0;
+    virtual void lock() = 0;
+    virtual bool tryLock() = 0;
+    virtual void unlock() = 0;
 
-	virtual void lockSharedIfPossible() { lock(); }
-	virtual bool tryLockSharedIfPossible() { return tryLock(); }
-	virtual void unlockSharedIfPossible() { unlock(); }
+    virtual void lockSharedIfPossible() { lock(); }
+    virtual bool tryLockSharedIfPossible() { return tryLock(); }
+    virtual void unlockSharedIfPossible() { unlock(); }
 
-	/**
-	 * Used to indicate which address should be compared by
-	 * mutex comparison functions.
-	 */
-	virtual void *getAddress() const { return (void *)this; }
+    /**
+     * Used to indicate which address should be compared by
+     * mutex comparison functions.
+     */
+    virtual void *getAddress() const { return (void *)this; }
 
-	virtual bool isReadLockable() const {
-		return readLockable;
-	}
-	virtual int getPriority() const {
-		return mutexPriority;
-	}
+    virtual bool isReadLockable() const {
+        return readLockable;
+    }
+    virtual int getPriority() const {
+        return mutexPriority;
+    }
 
-	/*
-	 * These four methods allow a reference Lockable to act as
-	 * this object's lockable by proxy.
-	 */
-	virtual LockablePtr getLockablePtr() {
-		return getLockable().shared_from_this();
-	}
-	virtual ConstLockablePtr getLockablePtr() const {
-		return getLockable().shared_from_this();
-	}
-	virtual Lockable& getLockable() {
-		return *this;
-	}
-	virtual const Lockable& getLockable() const {
-		return *this;
-	}
+    /*
+     * These four methods allow a reference Lockable to act as
+     * this object's lockable by proxy.
+     */
+    virtual LockablePtr getLockablePtr() {
+        return getLockable().shared_from_this();
+    }
+    virtual ConstLockablePtr getLockablePtr() const {
+        return getLockable().shared_from_this();
+    }
+    virtual Lockable& getLockable() {
+        return *this;
+    }
+    virtual const Lockable& getLockable() const {
+        return *this;
+    }
 
-	/*
-	 * Used to wrap the Lockable pointer cast.
-	 */
-	template<typename LockType>
-	typename pointers::smart<LockType>::SharedPtr castLock() {
-		return boost::static_pointer_cast<LockType, Lockable>(getLockablePtr());
-	}
+    /*
+     * Used to wrap the Lockable pointer cast.
+     */
+    template<typename LockType>
+    typename pointers::smart<LockType>::SharedPtr castLock() {
+        return boost::static_pointer_cast<LockType, Lockable>(getLockablePtr());
+    }
 
-	/**
-	 * Non-blocking comparison between a lockable and a(any)
-	 * mutex to determine the locking order.
-	 */
-	template<typename T>
-	int compareLockables(const T& other) const {
-		return compareMutexes(getLockable(), other, getPriority());
-	}
+    /**
+     * Non-blocking comparison between a lockable and a(any)
+     * mutex to determine the locking order.
+     */
+    template<typename T>
+    int compareLockables(const T& other) const {
+        return compareMutexes(getLockable(), other, getPriority());
+    }
 
-	/**
-	 * Non-blocking comparison between two lockables to
-	 * determine the locking order.
-	 */
-	int compareLockables(const Lockable& other) const {
-		return compareMutexes(getLockable(), other.getLockable(), getPriority(), other.getPriority());
-	}
+    /**
+     * Non-blocking comparison between two lockables to
+     * determine the locking order.
+     */
+    int compareLockables(const Lockable& other) const {
+        return compareMutexes(getLockable(), other.getLockable(), getPriority(), other.getPriority());
+    }
 
-	template<typename T>
-	bool operator <(const T& other) const {
-		return compareLockables(other) < 0;
-	}
-	template<typename T>
-	bool operator <=(const T& other) const {
-		return compareLockables(other) <= 0;
-	}
-	template<typename T>
-	bool operator >(const T& other) const {
-		return compareLockables(other) > 0;
-	}
-	template<typename T>
-	bool operator >=(const T& other) const {
-		return compareLockables(other) >= 0;
-	}
+    template<typename T>
+    bool operator <(const T& other) const {
+        return compareLockables(other) < 0;
+    }
+    template<typename T>
+    bool operator <=(const T& other) const {
+        return compareLockables(other) <= 0;
+    }
+    template<typename T>
+    bool operator >(const T& other) const {
+        return compareLockables(other) > 0;
+    }
+    template<typename T>
+    bool operator >=(const T& other) const {
+        return compareLockables(other) >= 0;
+    }
 
-	virtual ~Lockable() {}
+    virtual ~Lockable() {}
 };
 
 /**
@@ -337,45 +337,45 @@ public:
  */
 class LockableProxy : public Lockable {
 protected:
-	LockablePtr lockReference;
+    LockablePtr lockReference;
 
 public:
-	explicit LockableProxy(LockablePtr lReference) :
-		Lockable(lReference->getPriority(), lReference->isReadLockable()),
-		lockReference(lReference) {}
+    explicit LockableProxy(LockablePtr lReference) :
+        Lockable(lReference->getPriority(), lReference->isReadLockable()),
+        lockReference(lReference) {}
 
-	virtual ~LockableProxy() {}
+    virtual ~LockableProxy() {}
 
-	virtual void lock() {
-		lockReference->lock();
-	}
-	virtual bool tryLock() {
-		return lockReference->tryLock();
-	}
-	virtual void unlock() {
-		lockReference->unlock();
-	}
+    virtual void lock() {
+        lockReference->lock();
+    }
+    virtual bool tryLock() {
+        return lockReference->tryLock();
+    }
+    virtual void unlock() {
+        lockReference->unlock();
+    }
 
-	virtual void *getAddress() const {
-	    return lockReference->getAddress();
-	}
+    virtual void *getAddress() const {
+        return lockReference->getAddress();
+    }
 
-	/*
-	 * These four methods allow a reference Lockable to act as
-	 * this object's lockable by proxy.
-	 */
-	virtual LockablePtr getLockablePtr() {
-		return lockReference;
-	}
-	virtual ConstLockablePtr getLockablePtr() const {
-		return lockReference;
-	}
-	virtual Lockable& getLockable() {
-		return *lockReference;
-	}
-	virtual const Lockable& getLockable() const {
-		return *lockReference;
-	}
+    /*
+     * These four methods allow a reference Lockable to act as
+     * this object's lockable by proxy.
+     */
+    virtual LockablePtr getLockablePtr() {
+        return lockReference;
+    }
+    virtual ConstLockablePtr getLockablePtr() const {
+        return lockReference;
+    }
+    virtual Lockable& getLockable() {
+        return *lockReference;
+    }
+    virtual const Lockable& getLockable() const {
+        return *lockReference;
+    }
 };
 
 /*
@@ -430,27 +430,27 @@ public:
  */
 class ReadWriteLockable : public Lockable {
 protected:
-	/**
-	 * Creates a read locked reference for which this lockable is locked
-	 * until the locked reference goes out of scope (deconstructs).
-	 */
-	template<typename Ref>
-	ReadLockedReferencePtr<Ref> generateReadLockedReference(typename pointers::smart<Ref>::SharedPtr reference) {
-		return ReadLockedReferencePtr<Ref>(reference, getLockablePtr());
-	}
+    /**
+     * Creates a read locked reference for which this lockable is locked
+     * until the locked reference goes out of scope (deconstructs).
+     */
+    template<typename Ref>
+    ReadLockedReferencePtr<Ref> generateReadLockedReference(typename pointers::smart<Ref>::SharedPtr reference) {
+        return ReadLockedReferencePtr<Ref>(reference, getLockablePtr());
+    }
 
 public:
-	explicit ReadWriteLockable(int priority = 0) : Lockable(priority, true) {}
+    explicit ReadWriteLockable(int priority = 0) : Lockable(priority, true) {}
 
-	virtual void lockShared() = 0;
-	virtual bool tryLockShared() = 0;
-	virtual void unlockShared() = 0;
+    virtual void lockShared() = 0;
+    virtual bool tryLockShared() = 0;
+    virtual void unlockShared() = 0;
 
-	virtual void lockSharedIfPossible() { lockShared(); }
-	virtual bool tryLockSharedIfPossible() { return tryLockShared(); }
-	virtual void unlockSharedIfPossible() { unlockShared(); }
+    virtual void lockSharedIfPossible() { lockShared(); }
+    virtual bool tryLockSharedIfPossible() { return tryLockShared(); }
+    virtual void unlockSharedIfPossible() { unlockShared(); }
 
-	virtual ~ReadWriteLockable() {}
+    virtual ~ReadWriteLockable() {}
 };
 
 /**
@@ -462,54 +462,54 @@ public:
  */
 class ReadWriteLockableProxy : public ReadWriteLockable {
 private:
-	const ReadWriteLockablePtr lockReference;
+    const ReadWriteLockablePtr lockReference;
 
 public:
-	explicit ReadWriteLockableProxy(ReadWriteLockablePtr lReference) :
-		ReadWriteLockable(lReference->getPriority()), lockReference(lReference) {}
+    explicit ReadWriteLockableProxy(ReadWriteLockablePtr lReference) :
+        ReadWriteLockable(lReference->getPriority()), lockReference(lReference) {}
 
-	virtual ~ReadWriteLockableProxy() {}
+    virtual ~ReadWriteLockableProxy() {}
 
-	virtual void lock() {
-		lockReference->lock();
-	}
-	virtual bool tryLock() {
-		return lockReference->tryLock();
-	}
-	virtual void unlock() {
-		lockReference->unlock();
-	}
+    virtual void lock() {
+        lockReference->lock();
+    }
+    virtual bool tryLock() {
+        return lockReference->tryLock();
+    }
+    virtual void unlock() {
+        lockReference->unlock();
+    }
 
-	virtual void lockShared() {
-		lockReference->lockShared();
-	}
-	virtual bool tryLockShared() {
-		return lockReference->tryLockShared();
-	}
-	virtual void unlockShared() {
-		lockReference->unlockShared();
-	}
+    virtual void lockShared() {
+        lockReference->lockShared();
+    }
+    virtual bool tryLockShared() {
+        return lockReference->tryLockShared();
+    }
+    virtual void unlockShared() {
+        lockReference->unlockShared();
+    }
 
-	virtual void *getAddress() const {
-	    return lockReference->getAddress();
-	}
+    virtual void *getAddress() const {
+        return lockReference->getAddress();
+    }
 
-	/**
-	 * These four methods allow a reference Lockable to act as
-	 * this object's lockable by proxy.
-	 */
-	virtual LockablePtr getLockablePtr() {
-		return lockReference;
-	}
-	virtual ConstLockablePtr getLockablePtr() const {
-		return lockReference;
-	}
-	virtual Lockable& getLockable() {
-		return *lockReference;
-	}
-	virtual const Lockable& getLockable() const {
-		return *lockReference;
-	}
+    /**
+     * These four methods allow a reference Lockable to act as
+     * this object's lockable by proxy.
+     */
+    virtual LockablePtr getLockablePtr() {
+        return lockReference;
+    }
+    virtual ConstLockablePtr getLockablePtr() const {
+        return lockReference;
+    }
+    virtual Lockable& getLockable() {
+        return *lockReference;
+    }
+    virtual const Lockable& getLockable() const {
+        return *lockReference;
+    }
 };
 
 /**
@@ -643,32 +643,32 @@ static int compareMutexes(const LockablePtr first, const LockablePtr second,
  */
 template <typename T, typename U>
 static void lockMutexes(T& first, U& second,
-		                bool readLockFirst = false,
-		                bool readLockSecond = false) {
-	int lockFirst = compareMutexes(first, second, first.getPriority(), second.getPriority());
-	if (lockFirst > 0) {
-		readLockFirst ? first.lockSharedIfPossible() : first.lock();
-		readLockSecond ? second.lockSharedIfPossible() : second.lock();
-	} else if (lockFirst < 0) {
-		readLockSecond ? second.lockSharedIfPossible() : second.lock();
-		readLockFirst ? first.lockSharedIfPossible() : first.lock();
-	} else {
-		// We were asked to lock the same lock twice...
-		(readLockFirst && readLockSecond) ? first.lockSharedIfPossible() : first.lock();
-	}
+                        bool readLockFirst = false,
+                        bool readLockSecond = false) {
+    int lockFirst = compareMutexes(first, second, first.getPriority(), second.getPriority());
+    if (lockFirst > 0) {
+        readLockFirst ? first.lockSharedIfPossible() : first.lock();
+        readLockSecond ? second.lockSharedIfPossible() : second.lock();
+    } else if (lockFirst < 0) {
+        readLockSecond ? second.lockSharedIfPossible() : second.lock();
+        readLockFirst ? first.lockSharedIfPossible() : first.lock();
+    } else {
+        // We were asked to lock the same lock twice...
+        (readLockFirst && readLockSecond) ? first.lockSharedIfPossible() : first.lock();
+    }
 }
 template <typename T, typename U>
 static void lockMutexes(T& first, typename pointers::smart<U>::SharedPtr second) {
-	lockMutexes(first, *second);
+    lockMutexes(first, *second);
 }
 template <typename T, typename U>
 static void lockMutexes(typename pointers::smart<T>::SharedPtr first, U& second) {
-	lockMutexes(*first, second);
+    lockMutexes(*first, second);
 }
 template <typename T, typename U>
 static void lockMutexes(typename pointers::smart<T>::SharedPtr first,
                         typename pointers::smart<U>::SharedPtr second) {
-	lockMutexes(*first, *second);
+    lockMutexes(*first, *second);
 }
 
 /**
@@ -677,27 +677,27 @@ static void lockMutexes(typename pointers::smart<T>::SharedPtr first,
  */
 template <typename T, typename U>
 static void unlockMutexes(T& first, U& second,
-		bool readLockFirst = false, bool readLockSecond = false) {
-	if ((&first) != (&second)) {
-		readLockFirst ? first.unlockSharedIfPossible() : first.unlock();
-		readLockSecond ? second.unlockSharedIfPossible() : second.unlock();
-	} else {
-		// We were asked to unlock the same lock twice...
-		(readLockFirst && readLockSecond) ? first.unlockSharedIfPossible() : first.unlock();
-	}
+        bool readLockFirst = false, bool readLockSecond = false) {
+    if ((&first) != (&second)) {
+        readLockFirst ? first.unlockSharedIfPossible() : first.unlock();
+        readLockSecond ? second.unlockSharedIfPossible() : second.unlock();
+    } else {
+        // We were asked to unlock the same lock twice...
+        (readLockFirst && readLockSecond) ? first.unlockSharedIfPossible() : first.unlock();
+    }
 }
 template <typename T, typename U>
 static void unlockMutexes(T& first, typename pointers::smart<U>::SharedPtr second) {
-	unlockMutexes(first, *second);
+    unlockMutexes(first, *second);
 }
 template <typename T, typename U>
 static void unlockMutexes(typename pointers::smart<T>::SharedPtr first, U& second) {
-	unlockMutexes(*first, second);
+    unlockMutexes(*first, second);
 }
 template <typename T, typename U>
 static void unlockMutexes(typename pointers::smart<T>::SharedPtr first,
                           typename pointers::smart<U>::SharedPtr second) {
-	unlockMutexes(*first, *second);
+    unlockMutexes(*first, *second);
 }
 
 /**
@@ -706,16 +706,16 @@ static void unlockMutexes(typename pointers::smart<T>::SharedPtr first,
  * ugly circular dependencies with two separate header files.
  */
 template <class Ref> void LockedReference<Ref>::lock() {
-	lockable->lock();
+    lockable->lock();
 }
 template <class Ref> void LockedReference<Ref>::unlock() {
-	lockable->unlock();
+    lockable->unlock();
 }
 template <class Ref> void ReadLockedReference<Ref>::lock() {
-	lockable->lockShared();
+    lockable->lockShared();
 }
 template <class Ref> void ReadLockedReference<Ref>::unlock() {
-	lockable->unlockShared();
+    lockable->unlockShared();
 }
 
 /**
@@ -723,15 +723,15 @@ template <class Ref> void ReadLockedReference<Ref>::unlock() {
  */
 class WriteLock : public Lockable {
 private:
-	boost::mutex mutex;
-	explicit WriteLock(const WriteLock& mutex) : Lockable(), mutex() {}
+    boost::mutex mutex;
+    explicit WriteLock(const WriteLock& mutex) : Lockable(), mutex() {}
 public:
-	explicit WriteLock(int priority = 0) : Lockable(priority), mutex() {}
-	virtual ~WriteLock() {}
+    explicit WriteLock(int priority = 0) : Lockable(priority), mutex() {}
+    virtual ~WriteLock() {}
 
-	void lock() { mutex.lock(); }
-	bool tryLock() { return mutex.try_lock(); }
-	void unlock() { mutex.unlock(); }
+    void lock() { mutex.lock(); }
+    bool tryLock() { return mutex.try_lock(); }
+    void unlock() { mutex.unlock(); }
 };
 
 /**
@@ -739,20 +739,20 @@ public:
  */
 class ReadWriteLock : public ReadWriteLockable {
 private:
-	boost::shared_mutex mutex;
-	explicit ReadWriteLock(const ReadWriteLock& mutex) : ReadWriteLockable(), mutex() {}
+    boost::shared_mutex mutex;
+    explicit ReadWriteLock(const ReadWriteLock& mutex) : ReadWriteLockable(), mutex() {}
 
 public:
-	explicit ReadWriteLock(int priority = 0) : ReadWriteLockable(priority), mutex() {}
-	virtual ~ReadWriteLock() {}
+    explicit ReadWriteLock(int priority = 0) : ReadWriteLockable(priority), mutex() {}
+    virtual ~ReadWriteLock() {}
 
-	void lock() { mutex.lock(); }
-	bool tryLock() { return mutex.try_lock(); }
-	void unlock() { mutex.unlock(); }
+    void lock() { mutex.lock(); }
+    bool tryLock() { return mutex.try_lock(); }
+    void unlock() { mutex.unlock(); }
 
-	void lockShared() { mutex.lock_shared(); }
-	bool tryLockShared() { return mutex.try_lock_shared(); }
-	void unlockShared() { mutex.unlock_shared(); }
+    void lockShared() { mutex.lock_shared(); }
+    bool tryLockShared() { return mutex.try_lock_shared(); }
+    void unlockShared() { mutex.unlock_shared(); }
 };
 
 }}

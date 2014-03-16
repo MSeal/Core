@@ -452,16 +452,17 @@ public:
 
 class StringableInherit : public Stringable {};
 
+class NotStringable {};
+
 /*
  * Checks that any class with the toString method is callable with toString function.
  */
 BOOST_AUTO_TEST_CASE(toStringClass) {
     Stringable stringy;
     StringableInherit inherit;
-    bool hasToStr = detail::HasMemberSigFunc_toString_strcheck<Stringable>::value;
-    BOOST_CHECK(hasToStr);
-    hasToStr = detail::HasMemberSigFunc_toString_strcheck<StringableInherit>::value;
-    BOOST_CHECK(hasToStr);
+    BOOST_CHECK(hasStringSigCheck(Stringable));
+    BOOST_CHECK(hasStringSigCheck(StringableInherit));
+    BOOST_CHECK(!hasStringSigCheck(NotStringable));
     BOOST_CHECK_EQUAL(toString(stringy).compare(stringName), 0);
     BOOST_CHECK_EQUAL(toString(inherit).compare(stringName), 0);
 }
