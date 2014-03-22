@@ -2,7 +2,6 @@
 #define EXCEPTIONS_UTIL_H_
 
 #include "detail/exception_types.hpp"
-#include "detail/string_builders.hpp"
 
 namespace core {
 /*

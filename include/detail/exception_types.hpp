@@ -6,6 +6,7 @@
 
 #include <boost/exception/all.hpp>
 #include <boost/current_function.hpp>
+#include "detail/string_builders.hpp"
 #include "pointers.hpp"
 #include "enum.hpp"
 

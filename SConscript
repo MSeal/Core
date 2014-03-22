@@ -16,6 +16,7 @@ for root, dirnames, filenames in os.walk('src'):
         lib_sources.append(os.path.join(root, filename))
 # In case we're in a subdirectory -- check parent src
 for root, dirnames, filenames in os.walk(os.path.join('..', 'src')):
+    root = os.path.join(*root.split(os.sep)[1:])
     for filename in fnmatch.filter(filenames, '*.cpp'):
         lib_sources.append(os.path.join(root, filename))
 if project == 'test':
