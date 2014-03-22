@@ -12,7 +12,7 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "threading/container/tswrapper.hpp"
 #include "threading/container/tsqueue.hpp"
-#include "threading/threadTracker.hpp"
+#include "threading/thread_tracker.hpp"
 #include "exceptions.hpp"
 #include "stringutil.hpp"
 #include "pointers.hpp"

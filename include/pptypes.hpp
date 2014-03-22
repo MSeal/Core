@@ -27,7 +27,7 @@
 #include <boost/type_traits/is_class.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/static_assert.hpp>
-#include "detail/pptypeMemberCheck.hpp"
+#include "detail/pptype_member_check.hpp"
 
 namespace core {
 

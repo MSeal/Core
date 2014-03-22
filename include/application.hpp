@@ -8,7 +8,7 @@
 #include "pointers.hpp"
 #include "factory.hpp"
 #include "logger.hpp"
-#include "threading/threadTracker.hpp"
+#include "threading/thread_tracker.hpp"
 
 namespace core {
 class Application : public pointers::smart<Application>::Sharable {

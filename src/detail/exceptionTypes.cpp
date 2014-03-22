@@ -1,4 +1,4 @@
-#include "detail/exceptionTypes.hpp"
+#include "detail/exception_types.hpp"
 
 namespace core {
 

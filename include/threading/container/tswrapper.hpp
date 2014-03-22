@@ -10,7 +10,7 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include "threading/lockable.hpp"
-#include "threading/conditionLockable.hpp"
+#include "threading/condition_lockable.hpp"
 #include "pointers.hpp"
 
 namespace core { namespace threading { namespace container {

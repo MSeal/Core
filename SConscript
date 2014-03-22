@@ -12,12 +12,17 @@ if project == 'test':
 
 lib_sources = []
 for root, dirnames, filenames in os.walk('src'):
-  for filename in fnmatch.filter(filenames, '*.cpp'):
-      lib_sources.append(os.path.join(root, filename))
+    for filename in fnmatch.filter(filenames, '*.cpp'):
+        lib_sources.append(os.path.join(root, filename))
+# In case we're in a subdirectory -- check parent src
+for root, dirnames, filenames in os.walk(os.path.join('..', 'src')):
+    for filename in fnmatch.filter(filenames, '*.cpp'):
+        lib_sources.append(os.path.join(root, filename))
 if project == 'test':
-    lib_sources.append(os.path.join('testing', 'fullTest.cpp'))
+    lib_sources.append(os.path.join('testing', 'full_test.cpp'))
 
-req_libs = ['boost_thread', 'boost_system', 'boost_chrono', 'boost_locale', 'boost_unit_test_framework']
+req_libs = ['boost_thread', 'boost_system', 'boost_chrono', 'boost_locale', 
+            'boost_unit_test_framework']
 lib_modes = ['mt']
 if mode == 'debug':
     lib_modes.append('d')

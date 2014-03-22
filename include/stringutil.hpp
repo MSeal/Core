@@ -9,12 +9,12 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/locale/encoding_utf.hpp>
-#include <boost/variant.hpp>
 #include <boost/mpl/if.hpp>
 #include <vector>
 #include <sstream>
 #include <limits.h>
-#include "detail/exceptionTypes.hpp"
+#include "detail/string_builders.hpp"
+#include "detail/exception_types.hpp"
 #include "loops.hpp"
 #include "pointers.hpp"
 #include "pptypes.hpp"
@@ -51,68 +51,7 @@ template<typename T> inline std::string toString(const T& castable);
 inline std::string toString(const std::type_info& castable);
 inline std::string toString(const std::type_info *castable);
 template<typename T> inline T stringToType(const std::string& str);
-class StrStreamer;
-typedef pointers::smart<StrStreamer>::UniquePtr StrStreamerPtr;
 
-// Struct used to trigger buildString methods in StrStreamer.
-struct StrStreamEnder{};
-
-/*
- * The StrStreamer class is a string builder which incrementally
- * builds references to string objects until either the buildString
- * method is called or a StrStreamEnder struct is passed into
- * the stream operator. In either of these cases the string is
- * finalized and a string of the appropriate length is constructed
- * and returned.
- *
- * The class relies on the toString function defined in stringutil
- * to convert any type to a string. If the streamed object is already
- * a string, then a pointer to that string is generated instead of
- * copying the original string. Note that this means that if the a
- * string becomes deallocated between being passed into a streamer and
- * triggering to buildString method then undefined behavior will insue.
- */
-class StrStreamer {
-    // Used to end the stream and build a string
-    friend inline std::string operator <<(
-            StrStreamerPtr builder, const StrStreamEnder& convertable);
-    template<typename T>
-    friend inline StrStreamerPtr operator <<(
-            StrStreamerPtr builder, const T& convertable);
-    friend inline StrStreamerPtr operator <<(
-            StrStreamerPtr builder, const std::string& convertable);
-
-private:
-    typedef boost::variant<const std::string *, std::string> stringTypes;
-    std::vector<stringTypes> stracker;
-
-    // Converts stringTypes to a string reference.
-    const std::string& getStrRef(stringTypes& strin);
-
-public:
-    // Used in case of error
-    static const std::string emptyStr;
-    StrStreamer(const size_t reserve=128) : stracker() {
-        stracker.reserve(std::vector<stringTypes>::size_type(reserve));
-    }
-
-    // Builds the string seen so far by streams.
-    std::string buildString();
-};
-
-// Used to start a stream without an explicit constructor calls
-struct StrStreamStarter {
-    template <typename T>
-    StrStreamerPtr operator <<(const T& b) const {
-        return StrStreamerPtr(new StrStreamer()) << b;
-    }
-};
-/*
- * Since starters and enders are stateless objects, there are
- * some constant constructed versions available.
- */
-extern const StrStreamStarter strstarter;
-extern const StrStreamEnder strender;
 
 /*
  * Can be used with custom classes to force the creation of a
@@ -215,7 +154,6 @@ inline T stringToTypeNoThrow(const std::string& str) {
     }
 }
 
-
 /*
  * Type: std::string
  * For unknown type conversion when the type is in fact a string.
@@ -236,7 +174,6 @@ inline std::string toString(const Stringifyable& obj) {
     return obj.toString();
 }
 
-
 /*
  * Helper macros that automatically generate the error string,
  * templates, and type identifying for a locale string conversion.
@@ -244,13 +181,13 @@ inline std::string toString(const Stringifyable& obj) {
 #define LOCALE_MACRO_EXPAND(tok) tok
 #define LOCALE_STR_MACRO_EXPAND(tok) #tok
 #define LOCALE_STR_MACRO(tok) LOCALE_STR_MACRO_EXPAND(tok)
-#define LOCALE_CAST_QUOTE(incharstr, outstring) \
+#define LOCALE_CAST_QUOTE(incharstr, outstring)                                                 \
         Unable to convert LOCALE_MACRO_EXPAND(incharstr) to LOCALE_MACRO_EXPAND(outstring);
 #define LOCALE_CAST_QUOTE_ILLEGAL invalid character found
 #define LOCALE_CAST_QUOTE_CRASH unexpected exception occured (bad string pointer?)
-#define LOCALE_CAST_QUOTE_COMBINE(incharstr, outstring) \
+#define LOCALE_CAST_QUOTE_COMBINE(incharstr, outstring)                                         \
         LOCALE_CAST_QUOTE(incharstr, outstring) LOCALE_CAST_QUOTE_ILLEGAL
-#define LOCALE_CRASH_QUOTE_COMBINE(incharstr, outstring) \
+#define LOCALE_CRASH_QUOTE_COMBINE(incharstr, outstring)                                        \
         LOCALE_CAST_QUOTE(incharstr, outstring) LOCALE_CAST_QUOTE_CRASH
 
 #define LOCALE_CONVERT_FILL(incharstr, inputname, outstring, outchar)                           \
@@ -816,25 +753,6 @@ inline u32string stringToUTF32NoThrow(const UTF32 *str) {
     return u32string(str);
 }
 #endif
-
-/*
- * These must go at the end of the file.
- */
-inline std::string operator <<(
-        StrStreamerPtr builder, const StrStreamEnder& convertable) {
-    return builder->buildString();
-}
-template<typename T>
-inline StrStreamerPtr operator <<(
-        StrStreamerPtr builder, const T& convertable) {
-    builder->stracker.push_back(toString(convertable));
-    return StrStreamerPtr(builder.release());
-}
-inline StrStreamerPtr operator <<(
-        StrStreamerPtr builder, const std::string& convertable) {
-    builder->stracker.push_back(&convertable);
-    return StrStreamerPtr(builder.release());
-}
 }
 
 // Get rid of this macro, it was only temporarily here

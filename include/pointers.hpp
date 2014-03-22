@@ -32,8 +32,8 @@
 #define POINTERS_H_
 
 #include <boost/move/move.hpp>
-#include "detail/boostPointers.hpp"
-#include "container/uniquePtrList.hpp"
+#include "detail/boost_pointers.hpp"
+#include "container/unique_ptr_list.hpp"
 
 namespace core { namespace pointers {
 
