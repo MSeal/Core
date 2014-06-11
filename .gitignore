@@ -1,12 +1,10 @@
-Debug
-DebugStatic
-DebugShared
-DebugTest
+*DebugStatic
+*DebugShared
+*DebugTest
 
-Release
-ReleaseStatic
-ReleaseShared
-ReleaseTest
+*ReleaseStatic
+*ReleaseShared
+*ReleaseTest
 
 .cproject
 .project

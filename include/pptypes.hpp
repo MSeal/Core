@@ -132,9 +132,31 @@ template<typename T, T> struct forceTypeCheck {
 // under any VS platforms (there's an open bug ticket from 2006 which would fix the issue
 // if Microsoft ever addresses it -- not fixed in VS2013)
 #ifdef _MSC_VER
+
+// Example seen on http://stackoverflow.com/questions/6438468/force-warning-error
+#define STRINGIZE_HELPER(x) #x
+#define STRINGIZE(x) STRINGIZE_HELPER(x)
+#define __MESSAGE(text) __pragma( message(__FILE__ "(" STRINGIZE(__LINE__) ")" text) )
+#define WARNING(text) __MESSAGE( " : Warning: " #text )
+#define ERROR(text) __MESSAGE( " : Error: " #text )
+#define MESSAGE(text) __MESSAGE( ": " #text )
+#define TODO(text) WARNING( TODO: text )
+
 #define MEMBER_ARG_CHECKS_AVAILABLE 0
+
+#define MEMBER_CHECK_ARG_GEN(mname, targlist, carglist, farglist)                           \
+    ERROR(Member check arguments unavilable for msvc)
+#define MEMBER_CHECK_NO_ARGS(mname)                                                         \
+    ERROR(Member check no arguments unavilable for msvc)
+#define CREATE_MEMBER_ARG_CHECKS(mname)                                                     \
+    ERROR(Create member argument checks unavilable for msvc)
+#define CREATE_MEMBER_SIG_CHECK(mname, signature, signame)                                  \
+    ERROR(Create member signature checks unavilable for msvc)
+
 #else
+
 #define MEMBER_ARG_CHECKS_AVAILABLE 1
+
 /*
  * Macros that are expanded upon in pptypeMemberCheck.hpp to generate
  * Checks for various number of arguments.
@@ -328,8 +350,7 @@ template<typename T, T> struct forceTypeCheck {
                                                                 <Type, signature>::value;   \
         typedef typename boost::integral_constant<bool, value> type;                        \
     }
-
-}
 #endif
 
+}
 #endif /* PREPROCESSOR_TYPES_H_ */

@@ -76,7 +76,31 @@ With -mt extension to name
 #### CDT Console Output:
 * Add mingw/bin and mingw/msys/bin directories to PATH environment variable
 
+### Build
+Use one ofthe following build depending on local setup. Use mingw instead of gcc on windows machines
+setup with mingw's gcc. Adding no compiler should default to a usable compilation tool chain.
+* scons compiler=mingw
+* scons compiler=gcc
+* scons compiler=msvc
+* scons compiler=clang
+
+#### Arguments
+* mode=
+    * release (default) - Builds the project in release mode (maximum optimization)
+    * debug - Builds the project in debug mode (lower optimize, more warnings)
+* build=
+    * static (default) - Specifies a static library output
+    * shared - Specifies a shared library output
+    * test - Builds the test suite for unit testing the application
+* compiler=
+    * default (default) - Uses the system default compiler
+    * mingw - Uses mingw's gcc compiler for windows
+    * gcc - Uses gcc compiler (non-windows)
+    * clang - Uses osx clang compiler
+    * msvc - Uses microsoft visual studio compiler
+
 ### Fixes
+
 #### Boost Build:
 * Fix MinGW directory names in build.bat to true locations
 * Change `set toolset=msvc` in bootstrap.bat to `set toolset=gcc`  
@@ -92,6 +116,7 @@ With -mt extension to name
         || defined(__MINGW32__) || defined(MINGW32) || defined(BOOST_MINGW32) // fix for mingw
         
 ## Repository Hierarchy
+
 ### include
 All header hpp files.  
 
@@ -104,8 +129,8 @@ never need to see.
 * threading  
 All thread related objects and functions. These include locks, threads, trackers, managers, 
 etc...
-    * container  
-    Containers which are threadsafe or thread aware.
+* container
+Containers which are threadsafe or thread aware.
 
 ### src
 All source cpp files. The subdirectory hierarchy follows the include folder hierarchy.

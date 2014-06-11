@@ -60,18 +60,18 @@ void intrusive_ptr_release(IntrusiveCheck* ptr) {
     }
 }
 
-typedef typename core::pointers::smart<int>::SharedPtr IntPtr;
-typedef typename core::pointers::smart<std::string>::SharedPtr StrPtr;
-typedef typename core::pointers::smart<DeleteCheck>::SharedPtr CheckPtr;
+typedef core::pointers::smart<int>::SharedPtr IntPtr;
+typedef core::pointers::smart<std::string>::SharedPtr StrPtr;
+typedef core::pointers::smart<DeleteCheck>::SharedPtr CheckPtr;
 
-typedef typename core::pointers::smart<int>::ScopedPtr ScopedIntPtr;
-typedef typename core::pointers::smart<std::string>::ScopedPtr ScopedStrPtr;
-typedef typename core::pointers::smart<DeleteCheck>::ScopedPtr ScopedCheckPtr;
+typedef core::pointers::smart<int>::ScopedPtr ScopedIntPtr;
+typedef core::pointers::smart<std::string>::ScopedPtr ScopedStrPtr;
+typedef core::pointers::smart<DeleteCheck>::ScopedPtr ScopedCheckPtr;
 
-typedef typename core::pointers::smart<int>::WeakPtr WIntPtr;
-typedef typename core::pointers::smart<std::string>::WeakPtr WStrPtr;
+typedef core::pointers::smart<int>::WeakPtr WIntPtr;
+typedef core::pointers::smart<std::string>::WeakPtr WStrPtr;
 
-typedef typename core::pointers::smart<IntrusiveCheck>::IntrusivePtr IntrusivePtr;
+typedef core::pointers::smart<IntrusiveCheck>::IntrusivePtr IntrusivePtr;
 
 
 /*

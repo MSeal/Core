@@ -60,8 +60,9 @@ namespace detail {
 
     template <typename EnumType, typename ValType>
     const ValType& enumToValueMultiVal(EnumType eval) {
-        return enumToValueBase<EnumType, ValType, boost::bimap<EnumType, boost::bimaps::multiset_of<ValType> > >
-                (enumMappings<EnumType, boost::bimaps::multiset_of<ValType> >(), eval);
+        return enumToValueBase<EnumType, ValType,
+            boost::bimap<EnumType, boost::bimaps::multiset_of<ValType> > >
+            (enumMappings<EnumType, boost::bimaps::multiset_of<ValType> >(), eval);
     }
 }
 

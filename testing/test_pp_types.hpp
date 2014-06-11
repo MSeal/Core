@@ -203,6 +203,7 @@ BOOST_AUTO_TEST_CASE(hasMember) {
     BOOST_CHECK(barCheckCompile);
 }
 
+#if MEMBER_ARG_CHECKS_AVAILABLE
 
 struct Intable {
     // Keep non-explicit to allow strange
@@ -858,6 +859,8 @@ BOOST_AUTO_TEST_CASE(privateChecker) {
 
 }
 */
+
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 }

@@ -6,8 +6,15 @@
 #ifndef TEST_NUM_UTIL_H_
 #define TEST_NUM_UTIL_H_
 
-#include "numutil.hpp"
 #include <boost/test/unit_test.hpp>
+#include <math.h>
+#include "numutil.hpp"
+
+#ifdef _MSC_VER
+inline double round(double number) {
+    return number < 0.0 ? ceil(number - 0.5) : floor(number + 0.5);
+}
+#endif
 
 namespace core {
 BOOST_AUTO_TEST_SUITE(NumberUtilityTests)
