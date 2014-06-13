@@ -1,6 +1,9 @@
 # Core
 An application framework for C++ using Boost.
 
+## Version
+1.1.0
+
 ## Description
 Core is a heavily tested application framework designed to give users a wide range of
 built in usable platform independent application components. These components include:
@@ -155,7 +158,7 @@ All unit tests for the repo.
 * Add utf iterators which step by character instead of by byte
 * Change tracked factory to store shared pointers to objects
 * Change file location macro to strip down to core relative directories
-* Add configuration yml file for build
+* Use boost logging
 
 ## Author
 Author(s): Matthew Seal
