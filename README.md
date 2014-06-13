@@ -53,6 +53,7 @@ built in usable platform independent application components. These components in
     
 ### Known Compliant Compilers
 * GCC 4.6
+* MSVC 11 (Restricted PPTypes)
 
 ### Known Non-Compliant Compilers
 * Visual C++ 5.0 or lower
@@ -102,10 +103,13 @@ setup with mingw's gcc. Adding no compiler should default to a usable compilatio
 ### Fixes
 
 #### Boost Build:
-* Fix MinGW directory names in build.bat to true locations
-* Change `set toolset=msvc` in bootstrap.bat to `set toolset=gcc`  
-    bootstrap  
-    b2 --threading=multi --with-thread --with-locale --with-test --build-type=complete --link=static -j 4 stage  
+If using mingw, fix the mingw directory names in build.bat to installed locations.
+Set `toolset=[gcc|msvc|clang|...]` as first arguement to b2 if default compiler is incorrect.
+For MSVC compilations for 64 bit machines, `address-model=64` is sometimes required.
+
+    bootstrap
+    b2 runtime-link=static link=static threading=multi --layout=tagged --with-thread --with-locale --with-test --build-type=complete -j 4 stage
+
 #### Windows Thread Fixes (fixed in 1.54!):
 * Ticket #4878  
     boost/thread/detail/config.hpp  
@@ -151,6 +155,7 @@ All unit tests for the repo.
 * Add utf iterators which step by character instead of by byte
 * Change tracked factory to store shared pointers to objects
 * Change file location macro to strip down to core relative directories
+* Add configuration yml file for build
 
 ## Author
 Author(s): Matthew Seal

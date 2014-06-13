@@ -1,9 +1,9 @@
 *DebugStatic
-*DebugShared
+*DebugDynamic
 *DebugTest
 
 *ReleaseStatic
-*ReleaseShared
+*ReleaseDynamic
 *ReleaseTest
 
 .cproject

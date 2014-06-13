@@ -150,9 +150,16 @@ inline ResponseTestStringMap& enumMappings<ResponseEnumTest, std::string>() {
 //}
 
 // Instead we use this convention and circumvent bimaps
+#ifdef _MSC_VER
+    // MSVC warns about truncating the indeterminate_value assignment
+    #pragma warning(disable:4305)
+#endif
 const boost::tribool TRIBOOL_TEST_TRUE = boost::tribool::true_value;
 const boost::tribool TRIBOOL_TEST_FALSE = boost::tribool::false_value;
 const boost::tribool TRIBOOL_TEST_INDETERM = boost::tribool::indeterminate_value;
+#ifdef _MSC_VER
+    #pragma warning(default:4305)
+#endif
 template<>
 const boost::tribool& enumToValue<boost::tribool>(ResponseEnumTest eval) {
     switch (eval) {

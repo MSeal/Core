@@ -10,12 +10,6 @@
 #include <math.h>
 #include "numutil.hpp"
 
-#ifdef _MSC_VER
-inline double round(double number) {
-    return number < 0.0 ? ceil(number - 0.5) : floor(number + 0.5);
-}
-#endif
-
 namespace core {
 BOOST_AUTO_TEST_SUITE(NumberUtilityTests)
 
@@ -71,42 +65,42 @@ BOOST_AUTO_TEST_CASE(powerOfTwo) {
  * Tests the various rounding functions
  */
 BOOST_AUTO_TEST_CASE(roundTypes) {
-    BOOST_CHECK_CLOSE(roundValue(0.1), 0.0, 0.0001);
+    BOOST_CHECK_CLOSE(round(0.1), 0.0, 0.0001);
     BOOST_CHECK_EQUAL(roundToInt(0.1), 0);
     BOOST_CHECK_EQUAL(roundToLong(0.1), 0);
 #ifdef BOOST_HAS_LONG_LONG
     BOOST_CHECK_EQUAL(roundToLongLong(-0.1), 0);
 #endif
 
-    BOOST_CHECK_CLOSE(roundValue(0.6), 1.0, 0.0001);
+    BOOST_CHECK_CLOSE(round(0.6), 1.0, 0.0001);
     BOOST_CHECK_EQUAL(roundToInt(0.6), 1);
     BOOST_CHECK_EQUAL(roundToLong(0.6), 1);
 #ifdef BOOST_HAS_LONG_LONG
     BOOST_CHECK_EQUAL(roundToLongLong(-0.1), 0);
 #endif
 
-    BOOST_CHECK_CLOSE(roundValue(0.4999F), 0.0, 0.0001);
+    BOOST_CHECK_CLOSE(round(0.4999F), 0.0, 0.0001);
     BOOST_CHECK_EQUAL(roundToInt(0.4999F), 0);
     BOOST_CHECK_EQUAL(roundToLong(0.4999F), 0);
 #ifdef BOOST_HAS_LONG_LONG
     BOOST_CHECK_EQUAL(roundToLongLong(-0.1), 0);
 #endif
 
-    BOOST_CHECK_CLOSE(roundValue(-0.1), 0.0, 0.0001);
+    BOOST_CHECK_CLOSE(round(-0.1), 0.0, 0.0001);
     BOOST_CHECK_EQUAL(roundToInt(-0.1), 0);
     BOOST_CHECK_EQUAL(roundToLong(-0.1), 0);
 #ifdef BOOST_HAS_LONG_LONG
     BOOST_CHECK_EQUAL(roundToLongLong(-0.1), 0);
 #endif
 
-    BOOST_CHECK_CLOSE(roundValue(-0.6), -1.0, 0.0001);
+    BOOST_CHECK_CLOSE(round(-0.6), -1.0, 0.0001);
     BOOST_CHECK_EQUAL(roundToInt(-0.6), -1);
     BOOST_CHECK_EQUAL(roundToLong(-0.6), -1);
 #ifdef BOOST_HAS_LONG_LONG
     BOOST_CHECK_EQUAL(roundToLongLong(-0.6), -1);
 #endif
 
-    BOOST_CHECK_CLOSE(roundValue(3.14F), 3.0F, 0.0001F);
+    BOOST_CHECK_CLOSE(round(3.14F), 3.0F, 0.0001F);
     BOOST_CHECK_EQUAL(roundToInt(3.14F), 3);
     BOOST_CHECK_EQUAL(roundToLong(3.14F), 3);
 #ifdef BOOST_HAS_LONG_LONG

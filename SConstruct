@@ -1,4 +1,5 @@
 import os
+import fnmatch
 
 for req_env in ['BOOST_INCLUDE_PATH', 'BOOST_LIB_PATH']:
     if req_env not in os.environ:
@@ -11,10 +12,8 @@ if not (mode in expected_modes):
 build = ARGUMENTS.get('build', 'static')
 mode = ARGUMENTS.get('mode', 'release')
 compiler = ARGUMENTS.get('compiler', 'default')
-boost_version = ARGUMENTS.get('boost-ver', '1_54').replace('.', '_')
-boost_compiler = ARGUMENTS.get('boost-comp', '')
 
-
+# Compiler
 VS_CHECKS = ['msvc', 'mslink', 'vs', 'vc']
 GCC_CHECKS = ['gnu', 'gcc', 'g++', 'mingw']
 # Determine which compiler is defaulted
@@ -27,40 +26,78 @@ if compiler == 'default':
         if tool in GCC_CHECKS:
             compiler = tool
             break
-# TODO match version numbers as well
+
 if compiler in VS_CHECKS:
     compiler = 'msvc'
     tools = ['mslink', 'msvc', 'mslib']
-    if not boost_compiler:
-        boost_compiler = 'vc110' # An example default
 elif compiler in GCC_CHECKS:
     tools = [compiler]
     compiler = 'gnu'
-    if not boost_compiler:
-        boost_compiler = 'mgw46' # An example default
 else:
     tools = [compiler]
 
-variant_dir = compiler + (mode.title() + 'Test' if build == 'test' else mode.title() + build.title())
-src_dir = 'testing' if build == 'test' else 'src'
-
 env = Environment(tools=tools)
 
+# Flags
 cflags = []
 if compiler == 'gnu':
     cflags.extend(['-c', '-fmessage-length=0'])
     if mode == 'debug':
         cflags.append('-g')
 if compiler == 'msvc':
-    cflags.extend(['/EHsc',
-        '/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619', '/wd4668', '/wd4435'])
+    cflags.append('/EHsc')
+    if mode == 'debug':
+        cflags.append('/MTd')
+    else:
+        cflags.append('/MT')
+    cflags.extend(['/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619', '/wd4668', '/wd4435'])
+elif compiler == 'gnu':
+    cflags.extend(['-c', '-fmessage-length=0'])
+    if mode == 'debug':
+        cflags.append('-g')
 
 if mode == 'debug':
     cflags.extend(['-Wall'])
 else:
     cflags.extend(['-Ox' if compiler == 'msvc' else '-O3'])
 
-Export('env', 'mode', 'build', 'cflags', 'boost_version', 'boost_compiler')
+# Includes
+req_libs = ['boost_thread', 'boost_system', 'boost_locale', 'boost_unit_test_framework']
+if compiler == 'msvc':
+    req_libs = ['lib' + req for req in req_libs]
+
+lib_modes = ['mt']
+if mode == 'debug':
+    if compiler == 'msvc':
+        lib_modes.append('sd')
+    else:
+        lib_modes.append('sgd')
+else:
+    lib_modes.append('s')
+
+libs = ['-'.join([lib] + lib_modes) for lib in req_libs]
+
+lib_includes = ['include', os.environ['BOOST_INCLUDE_PATH']]
+if build == 'test':
+    lib_includes.append('testing')
+
+lib_sources = []
+for root, dirnames, filenames in os.walk('src'):
+    for filename in fnmatch.filter(filenames, '*.cpp'):
+        lib_sources.append(os.path.join(root, filename))
+# In case we're in a subdirectory -- check parent src
+for root, dirnames, filenames in os.walk(os.path.join('..', 'src')):
+    root = os.path.join(*root.split(os.sep)[1:])
+    for filename in fnmatch.filter(filenames, '*.cpp'):
+        lib_sources.append(os.path.join(root, filename))
+if build == 'test':
+    lib_sources.append(os.path.join('testing', 'full_test.cpp'))
+
+# Build Directories
+variant_dir = compiler + (mode.title() + 'Test' if build == 'test' else mode.title() + build.title())
+src_dir = 'testing' if build == 'test' else 'src'
+
+Export('env', 'compiler', 'mode', 'build', 'cflags', 'libs', 'lib_includes', 'lib_sources')
 
 # Put all .sconsign files in one place
 env.SConsignFile()

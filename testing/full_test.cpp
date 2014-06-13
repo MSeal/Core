@@ -1,7 +1,8 @@
-
 #define BOOST_TEST_MAIN
+#define BOOST_LIB_NAME boost_unit_test_framework
 #define BOOST_TEST_MODULE CoreTestSuite
 #define BOOST_TEST_LOG_LEVEL message
+
 #include <boost/test/unit_test.hpp>
 
 #include <stdio.h>

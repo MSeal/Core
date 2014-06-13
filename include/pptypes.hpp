@@ -136,22 +136,22 @@ template<typename T, T> struct forceTypeCheck {
 // Example seen on http://stackoverflow.com/questions/6438468/force-warning-error
 #define STRINGIZE_HELPER(x) #x
 #define STRINGIZE(x) STRINGIZE_HELPER(x)
-#define __MESSAGE(text) __pragma( message(__FILE__ "(" STRINGIZE(__LINE__) ")" text) )
-#define WARNING(text) __MESSAGE( " : Warning: " #text )
-#define ERROR(text) __MESSAGE( " : Error: " #text )
-#define MESSAGE(text) __MESSAGE( ": " #text )
-#define TODO(text) WARNING( TODO: text )
+#define _PRAGMA__MESSAGE(text) __pragma( message(__FILE__ "(" STRINGIZE(__LINE__) ")" text) )
+#define PRAGMA_WARNING(text) _PRAGMA__MESSAGE( " : Warning: " #text )
+#define PRAGMA_ERROR(text) _PRAGMA__MESSAGE( " : Error: " #text )
+#define PRAGMA_MESSAGE(text) _PRAGMA__MESSAGE( ": " #text )
+#define PRAGMA_TODO(text) WARNING( TODO: text )
 
 #define MEMBER_ARG_CHECKS_AVAILABLE 0
 
 #define MEMBER_CHECK_ARG_GEN(mname, targlist, carglist, farglist)                           \
-    ERROR(Member check arguments unavilable for msvc)
+    PRAGMA_ERROR(Member check arguments unavilable for msvc)
 #define MEMBER_CHECK_NO_ARGS(mname)                                                         \
-    ERROR(Member check no arguments unavilable for msvc)
+    PRAGMA_ERROR(Member check no arguments unavilable for msvc)
 #define CREATE_MEMBER_ARG_CHECKS(mname)                                                     \
-    ERROR(Create member argument checks unavilable for msvc)
+    PRAGMA_ERROR(Create member argument checks unavilable for msvc)
 #define CREATE_MEMBER_SIG_CHECK(mname, signature, signame)                                  \
-    ERROR(Create member signature checks unavilable for msvc)
+    PRAGMA_ERROR(Create member signature checks unavilable for msvc)
 
 #else
 

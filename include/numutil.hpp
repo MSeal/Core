@@ -14,17 +14,19 @@ namespace core {
 
 /*
  * Rounds a floating type
- * 'round' is a name conflict with gcc compiler
  */
-inline float roundValue(float f) {
-    return (f > 0.0) ? floor(f + 0.5F) : ceil(f - 0.5F);
+#ifdef _MSC_VER
+/* Round is not defined in MSVC */
+inline float round(float number) {
+    return number < 0.0F ? ceil(number - 0.5F) : floor(number + 0.5F);
 }
-inline double roundValue(double d) {
-    return (d > 0.0) ? floor(d + 0.5) : ceil(d - 0.5);
+inline double round(double number) {
+    return number < 0.0 ? ceil(number - 0.5) : floor(number + 0.5);
 }
-inline long double roundValue(long double d) {
-    return (d > 0.0) ? floor(d + 0.5) : ceil(d - 0.5);
+inline long double round(long double number) {
+    return number < 0.0 ? ceil(number - 0.5) : floor(number + 0.5);
 }
+#endif
 
 
 /* Rounds a float to an integer */
@@ -86,7 +88,7 @@ inline T floorToPowerOfTwo(const T input) {
     return value;
 }
 inline unsigned long floorToPowerOfTwo(float input) {
-    float value = 1.0;
+    float value = 1.0F;
     float check = input / 2.0F;
     while (value < check) { value *= 2.0F; }
     return roundToLong(value);
@@ -94,13 +96,13 @@ inline unsigned long floorToPowerOfTwo(float input) {
 inline unsigned long floorToPowerOfTwo(double input) {
     double value = 1.0;
     double check = input / 2.0;
-    while (value < check) { value *= 2.0F; }
+    while (value < check) { value *= 2.0; }
     return roundToLong(value);
 }
 inline unsigned long floorToPowerOfTwo(long double input) {
     long double value = 1.0;
     long double check = input / 2.0;
-    while (value < check) { value *= 2.0F; }
+    while (value < check) { value *= 2.0; }
     return roundToLong(value);
 }
 
@@ -113,27 +115,39 @@ inline T ceilToPowerOfTwo(const T input) {
     return value;
 }
 inline unsigned long ceilToPowerOfTwo(float input) {
-    float value = 1.0;
+    float value = 1.0F;
     while (value < input) { value *= 2.0F; }
     return roundToLong(value);
 }
 inline unsigned long ceilToPowerOfTwo(double input) {
     double value = 1.0;
-    while (value < input) { value *= 2.0F; }
+    while (value < input) { value *= 2.0; }
     return roundToLong(value);
 }
 inline unsigned long ceilToPowerOfTwo(long double input) {
     long double value = 1.0;
-    while (value < input) { value *= 2.0F; }
+    while (value < input) { value *= 2.0; }
     return roundToLong(value);
 }
 
+#ifdef _MSC_VER
+    // Some header #define's min and max on MSVC...
+    #define tmpmin min
+    #define tmpmax max
+    #undef min
+    #undef max
+#endif
 
 /* Limits the val to be between a minVal and maxVal and returns its new value */
 template <typename T>
 inline T constrained(const T val, const T minval, const T maxval) {
     return std::min(std::max(val, minval), maxval);
 }
+
+#ifdef _MSC_VER
+    #define min tmpmin
+    #define max tmpmax
+#endif
 }
 
 #endif /* NUM_UTIL_H_ */
