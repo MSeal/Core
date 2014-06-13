@@ -162,6 +162,6 @@ Author(s): Matthew Seal
 Contributor(s): Caitlin Seal
 
 ## License
-Pending!
+LPGL 2.1 (see LICENSE file)
 
 #### (C) Copyright 2012, [Matthew Seal](http://???)
