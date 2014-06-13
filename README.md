@@ -81,6 +81,9 @@ With -mt extension to name
 * Add mingw/bin and mingw/msys/bin directories to PATH environment variable
 
 ### Build
+Scons is required to manage the build process. Please see link for installation instructions:
+http://www.scons.org/doc/production/HTML/scons-user.html#chap-build-install
+
 Use one ofthe following build depending on local setup. Use mingw instead of gcc on windows machines
 setup with mingw's gcc. Adding no compiler should default to a usable compilation tool chain.
 * scons compiler=mingw
