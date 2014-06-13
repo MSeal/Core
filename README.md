@@ -162,9 +162,10 @@ All unit tests for the repo.
 
 ## Author
 Author(s): Matthew Seal
+
 Contributor(s): Caitlin Seal
 
 ## License
 LPGL 2.1 (see LICENSE file)
 
-#### (C) Copyright 2012, [Matthew Seal](http://???)
+#### (C) Copyright 2014, [Matthew Seal](http://???)
