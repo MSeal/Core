@@ -20,12 +20,7 @@ namespace core {
  */
 template<typename T>
 class Singleton : private boost::noncopyable {
-#ifdef _MSC_VER
-    // MSVC complains about pointer not being a class type
-    friend typename pointers::smart<T>::ScopedPtr;
-#else
-    friend class pointers::smart<T>::ScopedPtr;
-#endif
+    ELABORATED_FRIEND(T, pointers::smart<T>::ScopedPtr);
 public:
     typedef typename pointers::smart<T>::ScopedPtr SingletonPtr;
 

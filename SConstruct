@@ -27,6 +27,7 @@ compiler = ARGUMENTS.get('compiler', 'default')
 # Compiler
 VS_CHECKS = ['msvc', 'mslink', 'vs', 'vc']
 GCC_CHECKS = ['gnu', 'gcc', 'g++', 'mingw']
+CLANG_CHECKS = ['clang', 'clang++']
 # Determine which compiler is defaulted
 if compiler == 'default':
     check = Environment()
@@ -36,7 +37,12 @@ if compiler == 'default':
         for tool in VS_CHECKS:
             if tool in check._dict['TOOLS']:
                 compiler = 'msvc'
-    else:
+    elif platform.system() == 'Darwin':
+        for tool in CLANG_CHECKS:
+            if tool in check._dict['TOOLS']:
+                compiler = 'clang'
+
+    if compiler == 'default':
         for tool in GCC_CHECKS:
             if tool in check._dict['TOOLS']:
                 compiler = 'gcc'
@@ -53,14 +59,27 @@ elif compiler in GCC_CHECKS:
 else:
     tools = [compiler]
 
-env = Environment(tools=tools)
+if compiler in ['msvc', 'gcc']:
+    env = Environment(tools=tools)
+elif compiler in ['clang', 'clang++']:
+    env = Environment()
+    env.static_libraries = 0
+    env.static_bpl = 0
+    cc = "clang"
+    cxx = "clang++"
+    env.Replace(
+      CC=cc,
+      SHCC=cc,
+      CXX=cxx,
+      LINK=cxx,
+      SHCXX=cxx,
+      SHLINK=cxx)
+    env.c_link = cc
+else:
+    raise ValueError('Cannot setup environment for {} compiler'.format(compiler))
 
 # Flags
 cflags = []
-if compiler == 'gcc':
-    cflags.append('-fmessage-length=0')
-    if mode == 'debug':
-        cflags.append('-g')
 if compiler == 'msvc':
     cflags.append('/EHsc')
     if mode == 'debug':
@@ -68,8 +87,8 @@ if compiler == 'msvc':
     else:
         cflags.append('/MT')
     cflags.extend(['/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619', '/wd4668', '/wd4435'])
-elif compiler == 'gcc':
-    cflags.extend(['-c', '-fmessage-length=0'])
+elif compiler == 'gcc' or compiler == 'clang':
+    cflags.extend(['-fmessage-length=0'])
     if mode == 'debug':
         cflags.append('-g')
 

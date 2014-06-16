@@ -47,7 +47,7 @@ built in usable platform independent application components. These components in
     * Various other minor functions
 
 ## Dependencies
-* C++03 Compiler (Need to test C++98 functionality)
+* C++03 Compiler
 * Boost (>= 1.50)
 * Compiler requirements:
     * class template partial specialization
@@ -56,6 +56,7 @@ built in usable platform independent application components. These components in
     
 ### Known Compliant Compilers
 * GCC 4.6, 4.8
+* Clang 3.4
 * MSVC 11 (Restricted PPTypes)
 
 ### Known Non-Compliant Compilers

@@ -28,15 +28,15 @@ template<typename Ref> class ReadLockedReferencePtr;
 
 template<typename FirstMutex, typename SecondMutex>
 static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
-                          int firstPriority, int secondPriority);
+                          int firstPriority = 0, int secondPriority = 0);
 template<typename SecondMutex>
 static int compareMutexes(const Lockable& first, const SecondMutex& second,
-                          int firstPriority, int secondPriority);
+                          int firstPriority = 0, int secondPriority = 0);
 template<typename FirstMutex>
 static int compareMutexes(const FirstMutex& first, const Lockable& second,
-                          int firstPriority, int secondPriority);
+                          int firstPriority = 0, int secondPriority = 0);
 static int compareMutexes(const Lockable& first, const Lockable& second,
-                          int firstPriority, int secondPriority);
+                          int firstPriority = 0, int secondPriority = 0);
 
 /**
  * Used to create a locked reference to an object. The mutex
@@ -574,7 +574,7 @@ public:
  */
 template<typename FirstMutex, typename SecondMutex>
 static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
-                          int firstPriority = 0, int secondPriority = 0) {
+                          int firstPriority, int secondPriority) {
     if (firstPriority == secondPriority) {
         if ((&first) - (&second) > 0) return 1;
         else if ((&first) - (&second) < 0) return -1;
@@ -586,7 +586,7 @@ static int compareMutexes(const FirstMutex& first, const SecondMutex& second,
 
 template<typename FirstMutex>
 static int compareMutexes(const FirstMutex& first, const Lockable& second,
-                          int firstPriority = 0, int secondPriority = 0) {
+                          int firstPriority, int secondPriority) {
     if (firstPriority == secondPriority) {
         if ((&first) - second.getAddress() > 0) return 1;
         else if ((&first) - second.getAddress() < 0) return -1;
@@ -598,13 +598,13 @@ static int compareMutexes(const FirstMutex& first, const Lockable& second,
 
 template<typename FirstMutex>
 static int compareMutexes(const FirstMutex& first, const LockablePtr second,
-                          int firstPriority = 0, int secondPriority = 0) {
+                          int firstPriority, int secondPriority) {
     return compareMutexes(first, *second, firstPriority, secondPriority);
 }
 
 template<typename SecondMutex>
 static int compareMutexes(const Lockable& first, const SecondMutex& second,
-                          int firstPriority = 0, int secondPriority = 0) {
+                          int firstPriority, int secondPriority) {
     if (firstPriority == secondPriority) {
         if (first.getAddress() - (&second) > 0) return 1;
         else if (first.getAddress() - (&second) < 0) return -1;
@@ -616,12 +616,12 @@ static int compareMutexes(const Lockable& first, const SecondMutex& second,
 
 template<typename SecondMutex>
 static int compareMutexes(const LockablePtr first, const SecondMutex& second,
-                          int firstPriority = 0, int secondPriority = 0) {
+                          int firstPriority, int secondPriority) {
     return compareMutexes(*first, second, firstPriority, secondPriority);
 }
 
 static int compareMutexes(const Lockable& first, const Lockable& second,
-                          int firstPriority = 0, int secondPriority = 0) {
+                          int firstPriority, int secondPriority) {
     if (firstPriority == secondPriority) {
         // Cast away from void* because you can't add/subtract from void*
         if ((char *)first.getAddress() - (char *)second.getAddress() > 0) return 1;
@@ -633,7 +633,7 @@ static int compareMutexes(const Lockable& first, const Lockable& second,
 }
 
 static int compareMutexes(const LockablePtr first, const LockablePtr second,
-                          int firstPriority = 0, int secondPriority = 0) {
+                          int firstPriority, int secondPriority) {
     return compareMutexes(*first, *second, firstPriority, secondPriority);
 }
 

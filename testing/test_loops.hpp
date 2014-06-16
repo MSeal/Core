@@ -7,7 +7,7 @@
 #define TEST_LOOPS_HPP_
 
 #include "loops.hpp"
-#include "ppmessages.hpp"
+#include "ppcomp.hpp"
 #include <boost/test/unit_test.hpp>
 #include <limits>
 #include <boost/bind.hpp>

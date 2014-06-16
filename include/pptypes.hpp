@@ -28,7 +28,7 @@
 #include <boost/preprocessor/cat.hpp>
 #include <boost/static_assert.hpp>
 #include "detail/pptype_member_check.hpp"
-#include "ppmessages.hpp"
+#include "ppcomp.hpp"
 
 namespace core {
 
