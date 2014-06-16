@@ -64,7 +64,7 @@ public:
 // Used to start a stream without an explicit constructor calls
 struct StrStreamStarter {
     template <typename T>
-    StrStreamerPtr operator <<(const T& b) const {
+    inline StrStreamerPtr operator <<(const T& b) const {
         return StrStreamerPtr(new StrStreamer()) << b;
     }
 };

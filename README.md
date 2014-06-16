@@ -162,6 +162,7 @@ All unit tests for the repo.
 * Change tracked factory to store shared pointers to objects
 * Change file location macro to strip down to core relative directories
 * Use boost logging
+* Test custom exceptions
 
 ## Author
 Author(s): Matthew Seal

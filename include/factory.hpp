@@ -122,28 +122,29 @@ public:
     }
 
     /*
-     * Drops an element from the tracker. A new getOrProduce
-     * request will create a new instance of the object type.
+     * Drops an element from the tracker. That element is deleted.
+     * A new getOrProduce request will create a new instance of the
+     * object type.
      */
-    TPtr drop(const Key& key) {
+    void drop(const Key& key) {
         TPtr elem = tryGet(key);
         if (!elem) {
             throwAttributeException("Key not found in Factory");
         }
         tracker.erase(key);
-        return elem;
     }
 
     /*
      * Attempts to drops an element from the tracker. Returns
-     * empty pointer on failure.
+     * true if an element was deleted.
      */
-    TPtr tryDrop(const Key& key) {
+    bool tryDrop(const Key& key) {
         TPtr elem = tryGet(key);
         if (elem) {
             tracker.erase(key);
+            return true;
         }
-        return elem;
+        return false;
     }
 };
 

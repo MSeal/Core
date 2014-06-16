@@ -1,9 +1,20 @@
 import os
+import sys
 import fnmatch
+import platform
 
 for req_env in ['BOOST_INCLUDE_PATH', 'BOOST_LIB_PATH']:
     if req_env not in os.environ:
-        raise EnvironmentError("Environment variable '%s' missing" % req_env)
+        if os.name == 'nt':
+            raise EnvironmentError("Environment variable '%s' missing" % req_env)
+        # Can't use pkg-config -- it's not implemented in bjam yet
+        elif req_env == 'BOOST_INCLUDE_PATH':
+            os.environ[req_env] = '/usr/include/boost'
+        elif req_env == 'BOOST_LIB_PATH':
+            if sys.maxsize > 2**32: # 64 bit
+                os.environ[req_env] = '/usr/lib/x86_64-linux-gnu'
+            else:
+                os.environ[req_env] = '/usr/lib'
 
 expected_modes = ['debug', 'release']
 mode = ARGUMENTS.get('mode', 'release')
@@ -19,20 +30,26 @@ GCC_CHECKS = ['gnu', 'gcc', 'g++', 'mingw']
 # Determine which compiler is defaulted
 if compiler == 'default':
     check = Environment()
-    for tool in check._dict['TOOLS']:
-        if tool in VS_CHECKS:
-            compiler = tool
-            break
-        if tool in GCC_CHECKS:
-            compiler = tool
-            break
+    if platform.system() == 'Windows':
+        if 'mingw' in check._dict['TOOLS']:
+            compiler = 'mingw'
+        for tool in VS_CHECKS:
+            if tool in check._dict['TOOLS']:
+                compiler = 'msvc'
+    else:
+        for tool in GCC_CHECKS:
+            if tool in check._dict['TOOLS']:
+                compiler = 'gcc'
 
 if compiler in VS_CHECKS:
     compiler = 'msvc'
     tools = ['mslink', 'msvc', 'mslib']
-elif compiler in GCC_CHECKS:
+elif compiler == 'mingw':
     tools = [compiler]
-    compiler = 'gnu'
+    compiler = 'gcc'
+elif compiler in GCC_CHECKS:
+    tools = ['g++', 'gnulink']
+    compiler = 'gcc'
 else:
     tools = [compiler]
 
@@ -40,8 +57,8 @@ env = Environment(tools=tools)
 
 # Flags
 cflags = []
-if compiler == 'gnu':
-    cflags.extend(['-c', '-fmessage-length=0'])
+if compiler == 'gcc':
+    cflags.append('-fmessage-length=0')
     if mode == 'debug':
         cflags.append('-g')
 if compiler == 'msvc':
@@ -51,7 +68,7 @@ if compiler == 'msvc':
     else:
         cflags.append('/MT')
     cflags.extend(['/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619', '/wd4668', '/wd4435'])
-elif compiler == 'gnu':
+elif compiler == 'gcc':
     cflags.extend(['-c', '-fmessage-length=0'])
     if mode == 'debug':
         cflags.append('-g')
@@ -62,20 +79,37 @@ else:
     cflags.extend(['-Ox' if compiler == 'msvc' else '-O3'])
 
 # Includes
-req_libs = ['boost_thread', 'boost_system', 'boost_locale', 'boost_unit_test_framework']
-if compiler == 'msvc':
-    req_libs = ['lib' + req for req in req_libs]
-
-lib_modes = ['mt']
-if mode == 'debug':
-    if compiler == 'msvc':
-        lib_modes.append('sd')
-    else:
-        lib_modes.append('sgd')
+static_link_libs = set(['boost_thread', 'boost_system', 'boost_unit_test_framework'])
+no_link_libs = set(['boost_locale'])
+non_boost_libs = set()
+req_libs = static_link_libs | no_link_libs
+if platform.system() == 'Windows':
+    # Windows is special and has different linking dependencies
+    static_link_libs.add('boost_locale')
+    no_link_libs.remove('boost_locale')
 else:
-    lib_modes.append('s')
+    # We need pthread explcitly included because we're using static import
+    non_boost_libs.add('pthread')
 
-libs = ['-'.join([lib] + lib_modes) for lib in req_libs]
+libs = list(non_boost_libs)
+for lib in req_libs:
+    # Build up the flags to append to the lib name
+    lib_modes = ['mt']
+    if mode == 'debug':
+        if lib in static_link_libs:
+            if platform.system() == 'Windows' and compiler != 'msvc':
+                lib_modes.append('sgd')
+            else:
+                lib_modes.append('sd')
+        else:
+            lib_modes.append('d')
+    else:
+        if lib in static_link_libs:
+            lib_modes.append('s')
+
+    if compiler == 'msvc':
+        lib = 'lib' + lib
+    libs.append('-'.join([lib] + lib_modes))
 
 lib_includes = ['include', os.environ['BOOST_INCLUDE_PATH']]
 if build == 'test':

@@ -25,10 +25,10 @@ class ReadWriteConditionLockProxy;
  * Implementing classes must provide the locking mechanism.
  */
 class Condition {
-    friend class boost::detail::basic_condition_variable;
+    //friend class boost::detail::basic_condition_variable;
     friend class boost::condition_variable_any;
 
-protected:
+public:
     typedef boost::condition_variable_any ConditionVariable;
 
     /*
@@ -40,7 +40,6 @@ protected:
     virtual bool tryLock() = 0;
     virtual void unlock() = 0;
 
-public:
     /*
      * Used to retrieve the condition variable directly.
      */

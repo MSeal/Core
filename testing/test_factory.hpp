@@ -111,8 +111,7 @@ BOOST_AUTO_TEST_CASE(trackedFactoryDrop) {
     BlobPtr bptr = fact.produce(5);
     BOOST_CHECK_EQUAL(bptr->assigned, 47);
     bptr->assigned = 1;
-    bptr = fact.drop(5);
-    BOOST_CHECK_EQUAL(bptr->assigned, 1);
+    fact.drop(5);
 
     bptr = fact.tryGet(5);
     BOOST_CHECK(!bptr);
@@ -120,15 +119,12 @@ BOOST_AUTO_TEST_CASE(trackedFactoryDrop) {
 
 BOOST_AUTO_TEST_CASE(trackedFactoryTryDrop) {
     TestTrackedFactory fact(42);
+    BOOST_CHECK(!fact.tryDrop(5));
 
-    BlobPtr bptr = fact.tryDrop(5);
-    BOOST_CHECK(!bptr);
-
-    bptr = fact.produce(5);
+    BlobPtr bptr = fact.produce(5);
     BOOST_CHECK_EQUAL(bptr->assigned, 47);
     bptr->assigned = 1;
-    bptr = fact.tryDrop(5);
-    BOOST_CHECK_EQUAL(bptr->assigned, 1);
+    BOOST_CHECK(fact.tryDrop(5));
 
     bptr = fact.tryGet(5);
     BOOST_CHECK(!bptr);

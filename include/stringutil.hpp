@@ -13,11 +13,11 @@
 #include <vector>
 #include <sstream>
 #include <limits.h>
-#include "detail/string_builders.hpp"
-#include "detail/exception_types.hpp"
 #include "loops.hpp"
 #include "pointers.hpp"
 #include "pptypes.hpp"
+ #include "detail/exception_enums.hpp"
+
 
 // For demangling text in gcc
 #ifdef __GNUC__ // gcc
@@ -46,13 +46,6 @@ typedef uint32_t UTF32;
 #endif
 typedef std::basic_string<UTF32> u32string;
 
-// Forward declarations
-template<typename T> inline std::string toString(const T& castable);
-inline std::string toString(const std::type_info& castable);
-inline std::string toString(const std::type_info *castable);
-template<typename T> inline T stringToType(const std::string& str);
-
-
 /*
  * Can be used with custom classes to force the creation of a
  * toString method which will be detected by the toString operator.
@@ -62,6 +55,311 @@ public:
     virtual std::string toString() const;
 };
 
+/* 
+ * Foward delcare all toString conversions to let string builder know
+ * about them before it's tempaltes are built.
+ */
+
+/*
+ * Type: Generic
+ */
+template<typename T>
+inline std::string toString(const T& castable);
+template<typename T>
+inline std::string toStringNoThrow(const T& castable);
+template<typename T>
+inline T stringToType(const std::string& str);
+template<typename T>
+inline T stringToTypeNoThrow(const std::string& str);
+
+/*
+ * Type: std::string
+ * For unknown type conversion when the type is in fact a string.
+ * Performs a copy, as the lifetime of castable is unclear.
+ */
+inline std::string toString(const std::string& castable);
+inline std::string toStringNoThrow(const std::string& castable);
+
+/*
+ * Type: Stringifyable
+ * For user defined classes which implement toString
+ */
+inline std::string toString(const Stringifyable& obj);
+
+/*
+ * Type: wstring
+ */
+inline std::string toString(const std::wstring& castable);
+inline std::string toStringNoThrow(const std::wstring& castable);
+template<>
+inline std::wstring stringToType<std::wstring>(const std::string& str);
+template<>
+inline std::wstring stringToTypeNoThrow<std::wstring>(const std::string& str);
+
+
+/*
+ * Type: UTF8 string
+ */
+#if CHAR_MAX != 0xFF
+inline std::string toString(const u8string& castable);
+inline std::string toStringNoThrow(const u8string& castable);
+template<>
+inline u8string stringToType<u8string>(const std::string& str);
+template<>
+inline u8string stringToTypeNoThrow<u8string>(const std::string& str);
+#endif
+
+
+/*
+ * Type: UTF16 string
+ */
+#if CHAR_MAX != 0xFFFF
+inline std::string toString(const u16string& castable);
+inline std::string toStringNoThrow(const u16string& castable);
+template<>
+inline u16string stringToType<u16string>(const std::string& str);
+template<>
+inline u16string stringToTypeNoThrow<u16string>(const std::string& str);
+#endif
+
+
+/*
+ * Type: UTF32 string
+ */
+#if CHAR_MAX != 0xFFFFFFFF
+inline std::string toString(const u32string& castable);
+inline std::string toStringNoThrow(const u32string& castable);
+template<>
+inline u32string stringToType<u32string>(const std::string& str);
+template<>
+inline u32string stringToTypeNoThrow<u32string>(const std::string& str);
+#endif
+
+
+/*
+ * Type: char *
+ * Unnecessary really, but here for convenience
+ */
+inline std::string toString(const char *castable);
+inline std::string toStringNoThrow(const char *castable);
+/*
+ * Type: char
+ */
+inline std::string toString(const char castable);
+inline std::string toStringNoThrow(const char castable);
+
+
+/*
+ * Type: wchar_t *
+ */
+inline std::string toString(const wchar_t *castable);
+inline std::string toStringNoThrow(const wchar_t *castable);
+/*
+ * Type: wchar_t
+ */
+inline std::string toString(const wchar_t castable);
+inline std::string toStringNoThrow(const wchar_t castable);
+
+
+/*
+ * Type: UTF8
+ */
+#if CHAR_MAX != 0xFF
+inline std::string toString(const UTF8 *castable);
+inline std::string toStringNoThrow(const UTF8 *castable);
+#endif
+
+
+/*
+ * Type: UTF16
+ */
+#if CHAR_MAX != 0xFFFF
+inline std::string toString(const UTF16 *castable);
+inline std::string toStringNoThrow(const UTF16 *castable);
+#endif
+
+
+/*
+ * Type: UTF32
+ */
+#if CHAR_MAX != 0xFFFFFFFF
+inline std::string toString(const UTF32 *castable);
+inline std::string toStringNoThrow(const UTF32 *castable);
+#endif
+
+
+/*
+ * Type: std::type_info
+ */
+inline std::string toString(const std::type_info& castable);
+inline std::string toString(const std::type_info *castable);
+inline std::string toStringNoThrow(const std::type_info& castable);
+inline std::string toStringNoThrow(const std::type_info *castable);
+
+
+/*
+ * Type: ExceptionSeverity
+ */
+inline const std::string& toString(const ExceptionSeverity severity);
+template<>
+inline ExceptionSeverity stringToType<ExceptionSeverity>(const std::string& str);
+template<>
+inline ExceptionSeverity stringToTypeNoThrow<ExceptionSeverity>(const std::string& str);
+
+
+/*
+ * Type: ExceptionCode
+ */
+inline const std::string& toString(const ExceptionCode code);
+template<>
+inline ExceptionCode stringToType<ExceptionCode>(const std::string& str);
+template<>
+inline ExceptionCode stringToTypeNoThrow<ExceptionCode>(const std::string& str);
+
+
+/*
+ * Type: boost::exception
+ */
+std::string toString(const boost::exception& x);
+inline std::string toString(const boost::exception *x);
+
+/*
+ * Type: std::exception
+ */
+std::string toString(const std::exception& x);
+inline std::string toString(const std::exception *x);
+
+//TODO add more overloads for speedup/removal of exception throwing
+
+/*
+ * Conversion renaming for ease of use with UTF8.
+ */
+inline u8string stringToUTF8(const std::string& str);
+inline u8string stringToUTF8NoThrow(const std::string& str);
+inline u8string stringToUTF8(const char *str);
+inline u8string stringToUTF8NoThrow(const char *str);
+
+inline u8string stringToUTF8(const std::wstring& str);
+inline u8string stringToUTF8NoThrow(const std::wstring& str);
+inline u8string stringToUTF8(const wchar_t *str);
+inline u8string stringToUTF8NoThrow(const wchar_t *str);
+
+inline u8string UTF16ToUTF8(const u16string& str);
+inline u8string UTF16ToUTF8NoThrow(const u16string& str);
+inline u8string UTF32ToUTF8(const u32string& str);
+inline u8string UTF32ToUTF8NoThrow(const u32string& str);
+
+// Mask utf8 to utf8
+#if CHAR_MAX != 0xFF
+inline u8string stringToUTF8(const u8string& str);
+inline u8string stringToUTF8NoThrow(const u8string& str);
+inline u8string stringToUTF8(const UTF8 *str);
+inline u8string stringToUTF8NoThrow(const UTF8 *str);
+#endif
+// Mask utf16 to utf8
+#if CHAR_MAX != 0xFFFF
+inline u8string stringToUTF8(const u16string& str);
+inline u8string stringToUTF8NoThrow(const u16string& str);
+inline u8string stringToUTF8(const UTF16 *str);
+inline u8string stringToUTF8NoThrow(const UTF16 *str);
+#endif
+// Mask utf32 to utf8
+#if CHAR_MAX != 0xFFFFFFFF
+inline u8string stringToUTF8(const u32string& str);
+inline u8string stringToUTF8NoThrow(const u32string& str);
+inline u8string stringToUTF8(const UTF32 *str);
+inline u8string stringToUTF8NoThrow(const UTF32 *str);
+#endif
+
+/*
+ * Conversion renaming for ease of use with UTF16.
+ */
+inline u16string stringToUTF16(const std::string& str);
+inline u16string stringToUTF16NoThrow(const std::string& str);
+inline u16string stringToUTF16(const char *str);
+inline u16string stringToUTF16NoThrow(const char *str);
+
+inline u16string stringToUTF16(const std::wstring& str);
+inline u16string stringToUTF16NoThrow(const std::wstring& str);
+inline u16string stringToUTF16(const wchar_t *str);
+inline u16string stringToUTF16NoThrow(const wchar_t *str);
+
+inline u16string UTF8ToUTF16(const u8string& str);
+inline u16string UTF8ToUTF16NoThrow(const u8string& str);
+inline u16string UTF32ToUTF16(const u32string& str);
+inline u16string UTF32ToUTF16NoThrow(const u32string& str);
+
+// Mask utf8 to utf16
+#if CHAR_MAX != 0xFF
+inline u16string stringToUTF16(const u8string& str);
+inline u16string stringToUTF16NoThrow(const u8string& str);
+inline u16string stringToUTF16(const UTF8 *str);
+inline u16string stringToUTF16NoThrow(const UTF8 *str);
+#endif
+// Mask utf16 to utf16
+#if CHAR_MAX != 0xFFFF
+inline u16string stringToUTF16(const u16string& str);
+inline u16string stringToUTF16NoThrow(const u16string& str);
+inline u16string stringToUTF16(const UTF16 *str);
+inline u16string stringToUTF16NoThrow(const UTF16 *str);
+#endif
+// Mask utf32 to utf16
+#if CHAR_MAX != 0xFFFFFFFF
+inline u16string stringToUTF16(const u32string& str);
+inline u16string stringToUTF16NoThrow(const u32string& str);
+inline u16string stringToUTF16(const UTF32 *str);
+inline u16string stringToUTF16NoThrow(const UTF32 *str);
+#endif
+
+/*
+ * Conversion renaming for ease of use with UTF32.
+ */
+inline u32string stringToUTF32(const std::string& str);
+inline u32string stringToUTF32NoThrow(const std::string& str);
+inline u32string stringToUTF32(const char *str);
+inline u32string stringToUTF32NoThrow(const char *str);
+
+inline u32string stringToUTF32(const std::wstring& str);
+inline u32string stringToUTF32NoThrow(const std::wstring& str);
+inline u32string stringToUTF32(const wchar_t *str);
+inline u32string stringToUTF32NoThrow(const wchar_t *str);
+
+inline u32string UTF8ToUTF32(const u8string& str);
+inline u32string UTF8ToUTF32NoThrow(const u8string& str);
+inline u32string UTF16ToUTF32(const u16string& str);
+inline u32string UTF16ToUTF32NoThrow(const u16string& str);
+
+// Mask utf8 to utf32
+#if CHAR_MAX != 0xFF
+inline u32string stringToUTF32(const u8string& str);
+inline u32string stringToUTF32NoThrow(const u8string& str);
+inline u32string stringToUTF32(const UTF8 *str);
+inline u32string stringToUTF32NoThrow(const UTF8 *str);
+#endif
+// Mask utf16 to utf32
+#if CHAR_MAX != 0xFFFF
+inline u32string stringToUTF32(const u16string& str);
+inline u32string stringToUTF32NoThrow(const u16string& str);
+inline u32string stringToUTF32(const UTF16 *str);
+inline u32string stringToUTF32NoThrow(const UTF16 *str);
+#endif
+// Mask utf32 to utf32
+#if CHAR_MAX != 0xFFFFFFFF
+inline u32string stringToUTF32(const u32string& str);
+inline u32string stringToUTF32NoThrow(const u32string& str);
+inline u32string stringToUTF32(const UTF32 *str);
+inline u32string stringToUTF32NoThrow(const UTF32 *str);
+#endif
+}
+
+#include "detail/string_builders.hpp"
+#include "detail/exception_types.hpp"
+
+/*
+ * We needed to define all of the conversions before importing the builder implementations.
+ */
+
+namespace core {
 /*
  * Do this as a macro so the __LINE__ matches where the error
  * occurred.
@@ -122,8 +420,7 @@ struct StringImplStruct<true, T> {
  */
 template<typename T>
 inline std::string toString(const T& castable) {
-    return detail::StringImplStruct
-        <hasStringSigCheck(T), T>::toStringImpl(castable);
+    return detail::StringImplStruct<hasStringSigCheck(T), T>::toStringImpl(castable);
 }
 
 template<typename T>
@@ -173,6 +470,7 @@ inline std::string toStringNoThrow(const std::string& castable) {
 inline std::string toString(const Stringifyable& obj) {
     return obj.toString();
 }
+
 
 /*
  * Helper macros that automatically generate the error string,
