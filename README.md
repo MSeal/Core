@@ -55,7 +55,7 @@ built in usable platform independent application components. These components in
     * SFINAE
     
 ### Known Compliant Compilers
-* GCC 4.6
+* GCC 4.6, 4.8
 * MSVC 11 (Restricted PPTypes)
 
 ### Known Non-Compliant Compilers
