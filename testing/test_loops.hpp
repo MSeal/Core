@@ -7,6 +7,7 @@
 #define TEST_LOOPS_HPP_
 
 #include "loops.hpp"
+#include "ppmessages.hpp"
 #include <boost/test/unit_test.hpp>
 #include <limits>
 #include <boost/bind.hpp>
@@ -80,9 +81,9 @@ BOOST_AUTO_TEST_CASE(forEachLoops) {
 
 BOOST_AUTO_TEST_CASE(enumerateEachLoops) {
     int count = 0;
-    std::vector<int> unused;
+    std::vector<int> emptyvec;
     // Test empty
-    enumerateEach(count, int uncalled, unused) {}
+    enumerateEach(count, IGNORE_UNUSED_WARNING(int uncalled), emptyvec) {}
     BOOST_CHECK_EQUAL(count, 0);
 
     std::vector<int> vect;

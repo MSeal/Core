@@ -69,7 +69,6 @@ Eclipse.
 With -mt extension to name
 * boost_thread
 * boost_system (required by thread)
-* boost_chrono (required by thread)
 * boost_locale
 * boost_unit_test_framework (for test exe's)
 

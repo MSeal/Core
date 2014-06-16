@@ -28,6 +28,7 @@
 #include <boost/preprocessor/cat.hpp>
 #include <boost/static_assert.hpp>
 #include "detail/pptype_member_check.hpp"
+#include "ppmessages.hpp"
 
 namespace core {
 
@@ -132,26 +133,7 @@ template<typename T, T> struct forceTypeCheck {
 // under any VS platforms (there's an open bug ticket from 2006 which would fix the issue
 // if Microsoft ever addresses it -- not fixed in VS2013)
 #ifdef _MSC_VER
-
-// Example seen on http://stackoverflow.com/questions/6438468/force-warning-error
-#define STRINGIZE_HELPER(x) #x
-#define STRINGIZE(x) STRINGIZE_HELPER(x)
-#define _PRAGMA__MESSAGE(text) __pragma( message(__FILE__ "(" STRINGIZE(__LINE__) ")" text) )
-#define PRAGMA_WARNING(text) _PRAGMA__MESSAGE( " : Warning: " #text )
-#define PRAGMA_ERROR(text) _PRAGMA__MESSAGE( " : Error: " #text )
-#define PRAGMA_MESSAGE(text) _PRAGMA__MESSAGE( ": " #text )
-#define PRAGMA_TODO(text) WARNING( TODO: text )
-
 #define MEMBER_ARG_CHECKS_AVAILABLE 0
-
-#define MEMBER_CHECK_ARG_GEN(mname, targlist, carglist, farglist)                           \
-    PRAGMA_ERROR(Member check arguments unavilable for msvc)
-#define MEMBER_CHECK_NO_ARGS(mname)                                                         \
-    PRAGMA_ERROR(Member check no arguments unavilable for msvc)
-#define CREATE_MEMBER_ARG_CHECKS(mname)                                                     \
-    PRAGMA_ERROR(Create member argument checks unavilable for msvc)
-#define CREATE_MEMBER_SIG_CHECK(mname, signature, signame)                                  \
-    PRAGMA_ERROR(Create member signature checks unavilable for msvc)
 
 #else
 
