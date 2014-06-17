@@ -1,7 +1,13 @@
 import os
 import sys
 import fnmatch
-import platform
+
+def is_windows():
+    return sys.platform in ['win32', 'cygwin']
+def is_mac():
+    return sys.platform == 'darwin'
+def is_linux():
+    return sys.platform.startswith('linux')
 
 for req_env in ['BOOST_INCLUDE_PATH', 'BOOST_LIB_PATH']:
     if req_env not in os.environ:
@@ -31,13 +37,13 @@ CLANG_CHECKS = ['clang', 'clang++']
 # Determine which compiler is defaulted
 if compiler == 'default':
     check = Environment()
-    if platform.system() == 'Windows':
+    if is_windows():
         if 'mingw' in check._dict['TOOLS']:
             compiler = 'mingw'
         for tool in VS_CHECKS:
             if tool in check._dict['TOOLS']:
                 compiler = 'msvc'
-    elif platform.system() == 'Darwin':
+    elif is_mac():
         for tool in CLANG_CHECKS:
             if tool in check._dict['TOOLS']:
                 compiler = 'clang'
@@ -78,22 +84,45 @@ elif compiler in ['clang', 'clang++']:
 else:
     raise ValueError('Cannot setup environment for {} compiler'.format(compiler))
 
-# Flags
+# Flags (see https://svn.boost.org/trac/boost/wiki/Guidelines/WarningsGuidelines) for good guidelines
 cflags = []
 if compiler == 'msvc':
-    cflags.append('/EHsc')
+    cflags.extend(['/EHsc', '/DNOMINMAX'])
+    # Warning that should be treated as errors
+    cflags.extend([
+        '/we4288', # For-loop scoping
+        '/we4238', # Don't take address of temporaries
+        '/we4239', # Don't bind temporaries to non-const references (Stephan's "Evil Extension")
+        '/we4346', # Require "typename" where the standard requires it.
+        '/we4146'  # Unary minus operator applied to unsigned type, result still unsigned
+    ])
+    # Warning that should be ignored
+    cflags.extend([
+        '/wd4127', # Conditional expression is constant
+        '/wd4324', # Structure was padded due to declspec(align())
+        '/wd4503', # Decorated name length exceeded
+        '/wd4725', # Inline assembly instruction that may not produce accurate results on some Pentium microprocessors
+        '/wd4996'  # 'putenv': The POSIX name for this item is deprecated (but NOT by POSIX!)
+    ])
     if mode == 'debug':
         cflags.append('/MTd')
     else:
         cflags.append('/MT')
-    cflags.extend(['/wd4503', '/wd4820', '/wd4512', '/wd4625', '/wd4626', '/wd4619', '/wd4668', '/wd4435'])
-elif compiler == 'gcc' or compiler == 'clang':
-    cflags.extend(['-fmessage-length=0'])
+    
+if compiler == 'gcc' or compiler == 'clang':
+    cflags.append('-fmessage-length=0')
     if mode == 'debug':
         cflags.append('-g')
 
 if mode == 'debug':
-    cflags.extend(['-Wall'])
+    if compiler == 'msvc':
+        cflags.extend(['/W4'])
+    elif compiler == 'clang':
+        cflags.extend(['-Wall', '-Wextra', '-Wpedantic', '-Wno-long-long'])
+    elif compiler == 'gcc':
+        cflags.extend(['-Wall', '-Wextra', '-pedantic', '-Wno-long-long'])
+    else:
+        cflags.extend(['-Wall'])
 else:
     cflags.extend(['-Ox' if compiler == 'msvc' else '-O3'])
 
@@ -102,7 +131,7 @@ static_link_libs = set(['boost_thread', 'boost_system', 'boost_unit_test_framewo
 no_link_libs = set(['boost_locale'])
 non_boost_libs = set()
 req_libs = static_link_libs | no_link_libs
-if platform.system() == 'Windows':
+if is_windows():
     # Windows is special and has different linking dependencies
     static_link_libs.add('boost_locale')
     no_link_libs.remove('boost_locale')
@@ -116,7 +145,7 @@ for lib in req_libs:
     lib_modes = ['mt']
     if mode == 'debug':
         if lib in static_link_libs:
-            if platform.system() == 'Windows' and compiler != 'msvc':
+            if compiler == 'msvc':
                 lib_modes.append('sgd')
             else:
                 lib_modes.append('sd')

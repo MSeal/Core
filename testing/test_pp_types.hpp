@@ -7,9 +7,18 @@
 #ifndef TEST_PPTYPES_H_
 #define TEST_PPTYPES_H_
 
-#include <boost/test/unit_test.hpp>
 #include <vector>
 #include "pptypes.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/test/unit_test.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
+
 
 namespace core {
 BOOST_AUTO_TEST_SUITE(PPTypesTests)

@@ -8,8 +8,6 @@
 
 #include <string>
 #include <vector>
-#include <boost/thread/thread_time.hpp>
-#include <boost/ptr_container/ptr_vector.hpp>
 #include "threading/container/tswrapper.hpp"
 #include "threading/container/tsqueue.hpp"
 #include "threading/thread_tracker.hpp"
@@ -19,6 +17,16 @@
 #include "factory.hpp"
 #include "loops.hpp"
 #include "enum.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/thread/thread_time.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 // Forward declarations

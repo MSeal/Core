@@ -5,6 +5,10 @@
 #ifndef POINTERS_BOOSTED_H_
 #define POINTERS_BOOSTED_H_
 
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/smart_ptr.hpp>
 #include <boost/interprocess/smart_ptr/unique_ptr.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
@@ -14,6 +18,9 @@
 #include <boost/ptr_container/ptr_set.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 #include <boost/move/move.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core { namespace pointers { namespace detail {
 template<typename T> struct DefaultDeleter {

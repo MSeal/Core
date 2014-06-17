@@ -7,7 +7,20 @@
 #define TEST_EXCEPTIONS_HPP_
 
 #include "exceptions.hpp"
+
+// Disable unreachable code warnings temporarily
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push)
+#   pragma warning(disable : 4702)
+//  Don't listen to warnings about boost on msvc
+#   pragma warning(push, 0)
+#endif
+
 #include <boost/test/unit_test.hpp>
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 BOOST_AUTO_TEST_SUITE(ExceptionTests)
@@ -151,5 +164,9 @@ BOOST_AUTO_TEST_CASE(exceptionCast) {
 BOOST_AUTO_TEST_SUITE_END()
 }
 
+// Undo our temporary warning disable
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 #endif /* TEST_EXCEPTIONS_HPP_ */

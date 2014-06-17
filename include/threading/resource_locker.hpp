@@ -10,11 +10,19 @@
 #define RESOURCELOCKER_H_
 
 #include <vector>
+#include "lockable.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/thread.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/logic/tribool.hpp>
-#include "lockable.hpp"
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core { namespace threading {
 

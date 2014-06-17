@@ -1,6 +1,14 @@
 #include "threading/thread_tracker.hpp"
 #include "application.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/interprocess/detail/atomic.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core { namespace threading {
 

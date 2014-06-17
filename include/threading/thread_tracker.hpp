@@ -9,11 +9,19 @@
 #define THREAD_TRACKER_H_
 
 #include "threading/thread.hpp"
+#include "threading/container/tsvector.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/smart_ptr.hpp>
 #include <boost/thread.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/cstdint.hpp>
-#include "threading/container/tsvector.hpp"
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 

@@ -7,17 +7,25 @@
 #ifndef STRING_UTIL_H_
 #define STRING_UTIL_H_
 
-#include <boost/lexical_cast.hpp>
-#include <boost/locale/encoding_utf.hpp>
-#include <boost/mpl/if.hpp>
+
 #include <vector>
 #include <sstream>
 #include <limits.h>
 #include "loops.hpp"
 #include "pointers.hpp"
 #include "pptypes.hpp"
- #include "detail/exception_enums.hpp"
+#include "detail/exception_enums.hpp"
 
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/lexical_cast.hpp>
+#include <boost/locale/encoding_utf.hpp>
+#include <boost/mpl/if.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 // For demangling text in gcc
 #ifdef __GNUC__ // gcc

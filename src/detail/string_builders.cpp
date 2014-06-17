@@ -1,5 +1,13 @@
 #include "detail/string_builders.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/foreach.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 const std::string StrStreamer::emptyStr = std::string();

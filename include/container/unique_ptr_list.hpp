@@ -9,8 +9,16 @@
 #ifndef UNIQUEPTRLIST_H_
 #define UNIQUEPTRLIST_H_
 
-#include <boost/ptr_container/ptr_list.hpp>
 #include "detail/boost_pointers.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/ptr_container/ptr_list.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core { namespace container {
 

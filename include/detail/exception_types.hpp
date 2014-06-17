@@ -7,11 +7,19 @@
 #ifndef EXCEPTION_TYPES_H_
 #define EXCEPTION_TYPES_H_
 
-#include <boost/exception/all.hpp>
-#include <boost/current_function.hpp>
 #include "detail/exception_enums.hpp"
 #include "pointers.hpp"
 #include "enum.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/exception/all.hpp>
+#include <boost/current_function.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 

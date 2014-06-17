@@ -31,9 +31,17 @@
 #ifndef POINTERS_H_
 #define POINTERS_H_
 
-#include <boost/move/move.hpp>
 #include "detail/boost_pointers.hpp"
 #include "container/unique_ptr_list.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/move/move.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core { namespace pointers {
 

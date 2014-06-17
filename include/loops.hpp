@@ -57,10 +57,17 @@
 #ifndef LOOPS_H_
 #define LOOPS_H_
 
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/foreach.hpp>
 #include <boost/any.hpp>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 /* For Repeat */
 #define forRepeat(numiter)                                                          \

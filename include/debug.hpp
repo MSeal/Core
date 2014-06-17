@@ -9,12 +9,20 @@
 #ifndef GAME_DEBUG_H_
 #define GAME_DEBUG_H_
 
-#include <boost/config/select_compiler_config.hpp>
-#include BOOST_COMPILER_CONFIG
 #include <iostream>
 #include <stdio.h>
 #include <string>
 #include <sstream>
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/config/select_compiler_config.hpp>
+#include BOOST_COMPILER_CONFIG
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 /*

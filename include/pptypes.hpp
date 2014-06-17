@@ -23,12 +23,20 @@
 #ifndef PREPROCESSOR_TYPES_H_
 #define PREPROCESSOR_TYPES_H_
 
+#include "detail/pptype_member_check.hpp"
+#include "ppcomp.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/type_traits/is_class.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/static_assert.hpp>
-#include "detail/pptype_member_check.hpp"
-#include "ppcomp.hpp"
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 

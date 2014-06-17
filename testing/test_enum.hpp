@@ -7,9 +7,17 @@
 #define TEST_ENUM_HPP_
 
 #include "enum.hpp"
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
 #include <boost/bimap/multiset_of.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/logic/tribool.hpp>
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 

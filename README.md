@@ -48,13 +48,14 @@ built in usable platform independent application components. These components in
 
 ## Dependencies
 * C++03 Compiler
+* C99 Compatability (Except for msvc)
 * Boost (>= 1.50)
 * Compiler requirements:
     * class template partial specialization
     * function type parsing
     * SFINAE
     
-### Known Compliant Compilers
+### Known Usable Compilers
 * GCC 4.6, 4.8
 * Clang 3.4
 * MSVC 11 (Restricted PPTypes)

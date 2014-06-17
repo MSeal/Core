@@ -6,9 +6,17 @@
 #ifndef NUM_UTIL_H_
 #define NUM_UTIL_H_
 
-#include <boost/config/select_compiler_config.hpp> // For BOOST_HAS_LONG_LONG
 #include <math.h>
 #include <algorithm>
+
+// Don't listen to warnings about boost on msvc
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(push, 0)
+#endif
+#include <boost/config/select_compiler_config.hpp> // For BOOST_HAS_LONG_LONG
+#if defined(_MSC_VER) && (_MSC_VER >= 1500)
+#   pragma warning(pop)
+#endif
 
 namespace core {
 
@@ -131,11 +139,11 @@ inline unsigned long ceilToPowerOfTwo(long double input) {
 }
 
 #ifdef _MSC_VER
-    // Some header #define's min and max on MSVC...
-    #define tmpmin min
-    #define tmpmax max
-    #undef min
-    #undef max
+// Some header #define's min and max on MSVC... 
+#   define tmpmin min
+#   define tmpmax max
+#   undef min
+#   undef max
 #endif
 
 /* Limits the val to be between a minVal and maxVal and returns its new value */
@@ -145,8 +153,8 @@ inline T constrained(const T val, const T minval, const T maxval) {
 }
 
 #ifdef _MSC_VER
-    #define min tmpmin
-    #define max tmpmax
+#   define min tmpmin
+#   define max tmpmax
 #endif
 }
 
